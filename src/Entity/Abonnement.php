@@ -42,5 +42,69 @@ class Abonnement
      */
     private $prix;
 
+    /**
+     * @return int
+     */
+    public function getIdabonnement(): int
+    {
+        return $this->idabonnement;
+    }
+
+    /**
+     * @param int $idabonnement
+     */
+    public function setIdabonnement(int $idabonnement): void
+    {
+        $this->idabonnement = $idabonnement;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNom(): string
+    {
+        return $this->nom;
+    }
+
+    /**
+     * @param string $nom
+     */
+    public function setNom(string $nom): void
+    {
+        $this->nom = $nom;
+    }
+
+    /**
+     * @return float
+     */
+    public function getDuree(): float
+    {
+        return $this->duree;
+    }
+
+    /**
+     * @param float $duree
+     */
+    public function setDuree(float $duree): void
+    {
+        $this->duree = $duree;
+    }
+
+    /**
+     * @return float
+     */
+    public function getPrix(): float
+    {
+        return $this->prix;
+    }
+
+    /**
+     * @param float $prix
+     */
+    public function setPrix(float $prix): void
+    {
+        $this->prix = $prix;
+    }
+
 
 }

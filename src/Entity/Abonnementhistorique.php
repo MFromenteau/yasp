@@ -48,5 +48,69 @@ class Abonnementhistorique
      */
     private $idutilisateur;
 
+    /**
+     * @return int
+     */
+    public function getIdabonnementhistorique(): int
+    {
+        return $this->idabonnementhistorique;
+    }
+
+    /**
+     * @param int $idabonnementhistorique
+     */
+    public function setIdabonnementhistorique(int $idabonnementhistorique): void
+    {
+        $this->idabonnementhistorique = $idabonnementhistorique;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getDebut(): DateTime
+    {
+        return $this->debut;
+    }
+
+    /**
+     * @param DateTime $debut
+     */
+    public function setDebut(DateTime $debut): void
+    {
+        $this->debut = $debut;
+    }
+
+    /**
+     * @return Abonnement
+     */
+    public function getIdabonnement(): Abonnement
+    {
+        return $this->idabonnement;
+    }
+
+    /**
+     * @param Abonnement $idabonnement
+     */
+    public function setIdabonnement(Abonnement $idabonnement): void
+    {
+        $this->idabonnement = $idabonnement;
+    }
+
+    /**
+     * @return User
+     */
+    public function getIdutilisateur(): User
+    {
+        return $this->idutilisateur;
+    }
+
+    /**
+     * @param User $idutilisateur
+     */
+    public function setIdutilisateur(User $idutilisateur): void
+    {
+        $this->idutilisateur = $idutilisateur;
+    }
+
 
 }
