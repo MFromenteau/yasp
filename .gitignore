@@ -4,6 +4,5 @@
 /vendor/
 .web-server-pid
 .idea/php.xml
-.idea/workspace.xml
 .idea/dataSources.local.xml
 .idea/dataSources/
