@@ -9,6 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Video;
+use App\Entity\Commentaire;
 
 class VideoCtrl extends Controller
 {
@@ -35,7 +36,13 @@ class VideoCtrl extends Controller
             return $this->render('all/404.html.twig');
         }
 
-        return $this->render('all/video.html.twig',array('video' => $video));
+        $commentaries = $this->getDoctrine()
+            ->getRepository(Commentaire::class)
+            ->findBy([
+                'idvideo' => $id
+            ]);
+
+        return $this->render('all/video.html.twig',array('video' => $video,'commentaries' => $commentaries));
 
 	}
 

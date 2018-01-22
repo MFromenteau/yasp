@@ -22,9 +22,9 @@ class Commentaire
     private $idcommentaire;
 
     /**
-     * @var int
+     * @var string
      *
-     * @ORM\Column(name="message", type="integer", nullable=false)
+     * @ORM\Column(name="message", type="text", nullable=false)
      */
     private $message;
 
@@ -55,17 +55,17 @@ class Commentaire
     }
 
     /**
-     * @return int
+     * @return string
      */
-    public function getMessage(): int
+    public function getMessage(): string
     {
         return $this->message;
     }
 
     /**
-     * @param int $message
+     * @param string $message
      */
-    public function setMessage(int $message): void
+    public function setMessage(string $message): void
     {
         $this->message = $message;
     }
