@@ -20,7 +20,7 @@ class UserCtrl extends Controller
 	public function register(LoggerInterface $logger,Request $request){
         $request = Request::createFromGlobals();
         $logger->info("!! request : ");
-        file_put_contents( 'logs/debug' . date('_M_D_H,m,s',time()  ).'.log', var_export( $request, true));
+        //file_put_contents( 'debug' . date('_M_D_H,m,s',time()  ).'.log', var_export( $request, true));
        // $logger->info(var_dump($request->request));
 
         $email = $request->request->get('email');
@@ -66,7 +66,7 @@ class UserCtrl extends Controller
         $em->persist($usr);
         $em->flush();
 
-        file_put_contents( 'logs/debugobj' . date('_M_D_H,m,s',time()  ).'.log', var_export( $usr, true));
+        //file_put_contents( 'logs/debugobj' . date('_M_D_H,m,s',time()  ).'.log', var_export( $usr, true));
 
         return new Response('User créé, id :'.$usr->getIdutilisateur());
 	}
