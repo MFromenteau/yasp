@@ -20,7 +20,7 @@ class UserCtrl extends Controller
 	public function register(LoggerInterface $logger,Request $request){
         $request = Request::createFromGlobals();
         $logger->info("!! request : ");
-        file_put_contents( 'debug' . date('_M_D_H_m_s',time()  ).'.log', var_export( $request, true));
+        file_put_contents( 'debug' . date('_M_D_H,m,s',time()  ).'.log', var_export( $request, true));
         $logger->info(var_dump($request->request));
 
         $email = $request->request->get('email');
@@ -57,7 +57,7 @@ class UserCtrl extends Controller
 
         if( $em->getRepository(User::class)
             ->findBy([
-                'mail' => $email
+                'email' => $email
             ])
         ){
             return new Response('User déjà présent avec cet email.');
