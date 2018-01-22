@@ -30,7 +30,7 @@ class VideoCtrl extends Controller
             return $this->render('all/404.html.twig');
         }
 
-        return $this->render('all/video.html.twig');
+        return $this->render('all/video.html.twig',array('video' => $video));
 
 	}
 	/**
