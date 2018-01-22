@@ -188,60 +188,38 @@ class srcDevDebugProjectContainerUrlMatcher extends Symfony\Bundle\FrameworkBund
         }
 
         elseif (0 === strpos($pathinfo, '/user')) {
-            if (0 === strpos($pathinfo, '/user/register')) {
-                // test
-                if ('/user/register' === $pathinfo) {
-                    return array (  '_controller' => 'App\\Controller\\UserCtrl::test',  '_route' => 'test',);
-                }
-
-                // enregistrement
-                if ('/user/register' === $pathinfo) {
-                    if ('POST' !== $canonicalMethod) {
-                        $allow[] = 'POST';
-                        goto not_enregistrement;
-                    }
-
-                    return array (  '_controller' => 'App\\Controller\\UserCtrl::register',  '_route' => 'enregistrement',);
-                }
-                not_enregistrement:
-
-            }
-
-            elseif (0 === strpos($pathinfo, '/user/login')) {
-                // login
-                if ('/user/login' === $pathinfo) {
-                    if ('GET' !== $canonicalMethod) {
-                        $allow[] = 'GET';
-                        goto not_login;
-                    }
-
-                    return array (  '_controller' => 'App\\Controller\\UserCtrl::login',  '_route' => 'login',);
-                }
-                not_login:
-
-                // loginPost
-                if ('/user/login' === $pathinfo) {
-                    if ('POST' !== $canonicalMethod) {
-                        $allow[] = 'POST';
-                        goto not_loginPost;
-                    }
-
-                    return array (  '_controller' => 'App\\Controller\\UserCtrl::loginPost',  '_route' => 'loginPost',);
-                }
-                not_loginPost:
-
-            }
-
-            // connecte
-            if (preg_match('#^/user/(?P<id>[^/]++)/connecte$#s', $pathinfo, $matches)) {
+            // enregistrement
+            if ('/user/register' === $pathinfo) {
                 if ('POST' !== $canonicalMethod) {
                     $allow[] = 'POST';
-                    goto not_connecte;
+                    goto not_enregistrement;
                 }
 
-                return $this->mergeDefaults(array_replace($matches, array('_route' => 'connecte')), array (  '_controller' => 'App\\Controller\\UserCtrl::isLoggedIn',));
+                return array (  '_controller' => 'App\\Controller\\UserCtrl::register',  '_route' => 'enregistrement',);
             }
-            not_connecte:
+            not_enregistrement:
+
+            // loginPost
+            if ('/user/login' === $pathinfo) {
+                if ('POST' !== $canonicalMethod) {
+                    $allow[] = 'POST';
+                    goto not_loginPost;
+                }
+
+                return array (  '_controller' => 'App\\Controller\\UserCtrl::loginPost',  '_route' => 'loginPost',);
+            }
+            not_loginPost:
+
+            // isLoggedIn
+            if (preg_match('#^/user/(?P<id>[^/]++)/isLoggedIn$#s', $pathinfo, $matches)) {
+                if ('POST' !== $canonicalMethod) {
+                    $allow[] = 'POST';
+                    goto not_isLoggedIn;
+                }
+
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'isLoggedIn')), array (  '_controller' => 'App\\Controller\\UserCtrl::isLoggedIn',));
+            }
+            not_isLoggedIn:
 
             // deconnexion
             if ('/user/deconnexion' === $pathinfo) {
@@ -253,6 +231,17 @@ class srcDevDebugProjectContainerUrlMatcher extends Symfony\Bundle\FrameworkBund
                 return array (  '_controller' => 'App\\Controller\\UserCtrl::logout',  '_route' => 'deconnexion',);
             }
             not_deconnexion:
+
+            // profil
+            if (preg_match('#^/user/(?P<id>[^/]++)$#s', $pathinfo, $matches)) {
+                if ('GET' !== $canonicalMethod) {
+                    $allow[] = 'GET';
+                    goto not_profil;
+                }
+
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'profil')), array (  '_controller' => 'App\\Controller\\UserCtrl::getProfil',));
+            }
+            not_profil:
 
             // getlisteVideoByUserId
             if (preg_match('#^/user/(?P<id>[^/]++)/video/list$#s', $pathinfo, $matches)) {

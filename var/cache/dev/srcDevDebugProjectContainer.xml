@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
   <parameters>
-    <parameter key="kernel.root_dir">D:\Cours\Dev\yasp\src</parameter>
-    <parameter key="kernel.project_dir">D:\Cours\Dev\yasp</parameter>
+    <parameter key="kernel.root_dir">C:\Users\Alexa\Documents\#Cnam\projet\yasp\src</parameter>
+    <parameter key="kernel.project_dir">C:\Users\Alexa\Documents\#Cnam\projet\yasp</parameter>
     <parameter key="kernel.environment">dev</parameter>
     <parameter key="kernel.debug">true</parameter>
     <parameter key="kernel.name">src</parameter>
-    <parameter key="kernel.cache_dir">D:\Cours\Dev\yasp\var\cache\dev</parameter>
-    <parameter key="kernel.logs_dir">D:\Cours\Dev\yasp\var\log</parameter>
+    <parameter key="kernel.cache_dir">C:\Users\Alexa\Documents\#Cnam\projet\yasp\var\cache\dev</parameter>
+    <parameter key="kernel.logs_dir">C:\Users\Alexa\Documents\#Cnam\projet\yasp\var\log</parameter>
     <parameter key="kernel.bundles" type="collection">
       <parameter key="FrameworkBundle">Symfony\Bundle\FrameworkBundle\FrameworkBundle</parameter>
       <parameter key="MakerBundle">Symfony\Bundle\MakerBundle\MakerBundle</parameter>
@@ -17,39 +17,44 @@
       <parameter key="WebServerBundle">Symfony\Bundle\WebServerBundle\WebServerBundle</parameter>
       <parameter key="SensioFrameworkExtraBundle">Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle</parameter>
       <parameter key="TwigBundle">Symfony\Bundle\TwigBundle\TwigBundle</parameter>
+      <parameter key="MonologBundle">Symfony\Bundle\MonologBundle\MonologBundle</parameter>
     </parameter>
     <parameter key="kernel.bundles_metadata" type="collection">
       <parameter key="FrameworkBundle" type="collection">
-        <parameter key="path">D:\Cours\Dev\yasp\vendor\symfony\framework-bundle</parameter>
+        <parameter key="path">C:\Users\Alexa\Documents\#Cnam\projet\yasp\vendor\symfony\framework-bundle</parameter>
         <parameter key="namespace">Symfony\Bundle\FrameworkBundle</parameter>
       </parameter>
       <parameter key="MakerBundle" type="collection">
-        <parameter key="path">D:\Cours\Dev\yasp\vendor\symfony\maker-bundle\src</parameter>
+        <parameter key="path">C:\Users\Alexa\Documents\#Cnam\projet\yasp\vendor\symfony\maker-bundle\src</parameter>
         <parameter key="namespace">Symfony\Bundle\MakerBundle</parameter>
       </parameter>
       <parameter key="DoctrineCacheBundle" type="collection">
-        <parameter key="path">D:\Cours\Dev\yasp\vendor\doctrine\doctrine-cache-bundle</parameter>
+        <parameter key="path">C:\Users\Alexa\Documents\#Cnam\projet\yasp\vendor\doctrine\doctrine-cache-bundle</parameter>
         <parameter key="namespace">Doctrine\Bundle\DoctrineCacheBundle</parameter>
       </parameter>
       <parameter key="DoctrineBundle" type="collection">
-        <parameter key="path">D:\Cours\Dev\yasp\vendor\doctrine\doctrine-bundle</parameter>
+        <parameter key="path">C:\Users\Alexa\Documents\#Cnam\projet\yasp\vendor\doctrine\doctrine-bundle</parameter>
         <parameter key="namespace">Doctrine\Bundle\DoctrineBundle</parameter>
       </parameter>
       <parameter key="DoctrineMigrationsBundle" type="collection">
-        <parameter key="path">D:\Cours\Dev\yasp\vendor\doctrine\doctrine-migrations-bundle</parameter>
+        <parameter key="path">C:\Users\Alexa\Documents\#Cnam\projet\yasp\vendor\doctrine\doctrine-migrations-bundle</parameter>
         <parameter key="namespace">Doctrine\Bundle\MigrationsBundle</parameter>
       </parameter>
       <parameter key="WebServerBundle" type="collection">
-        <parameter key="path">D:\Cours\Dev\yasp\vendor\symfony\web-server-bundle</parameter>
+        <parameter key="path">C:\Users\Alexa\Documents\#Cnam\projet\yasp\vendor\symfony\web-server-bundle</parameter>
         <parameter key="namespace">Symfony\Bundle\WebServerBundle</parameter>
       </parameter>
       <parameter key="SensioFrameworkExtraBundle" type="collection">
-        <parameter key="path">D:\Cours\Dev\yasp\vendor\sensio\framework-extra-bundle</parameter>
+        <parameter key="path">C:\Users\Alexa\Documents\#Cnam\projet\yasp\vendor\sensio\framework-extra-bundle</parameter>
         <parameter key="namespace">Sensio\Bundle\FrameworkExtraBundle</parameter>
       </parameter>
       <parameter key="TwigBundle" type="collection">
-        <parameter key="path">D:\Cours\Dev\yasp\vendor\symfony\twig-bundle</parameter>
+        <parameter key="path">C:\Users\Alexa\Documents\#Cnam\projet\yasp\vendor\symfony\twig-bundle</parameter>
         <parameter key="namespace">Symfony\Bundle\TwigBundle</parameter>
+      </parameter>
+      <parameter key="MonologBundle" type="collection">
+        <parameter key="path">C:\Users\Alexa\Documents\#Cnam\projet\yasp\vendor\symfony\monolog-bundle</parameter>
+        <parameter key="namespace">Symfony\Bundle\MonologBundle</parameter>
       </parameter>
     </parameter>
     <parameter key="kernel.charset">UTF-8</parameter>
@@ -71,13 +76,13 @@
       <parameter key="cookie_httponly">true</parameter>
       <parameter key="gc_probability">1</parameter>
     </parameter>
-    <parameter key="session.save_path">D:\Cours\Dev\yasp\var\cache\dev/sessions</parameter>
+    <parameter key="session.save_path">C:\Users\Alexa\Documents\#Cnam\projet\yasp\var\cache\dev/sessions</parameter>
     <parameter key="session.metadata.update_threshold">0</parameter>
     <parameter key="asset.request_context.base_path"></parameter>
     <parameter key="asset.request_context.secure">false</parameter>
     <parameter key="data_collector.templates" type="collection"/>
     <parameter key="debug.error_handler.throw_at">-1</parameter>
-    <parameter key="debug.container.dump">D:\Cours\Dev\yasp\var\cache\dev/srcDevDebugProjectContainer.xml</parameter>
+    <parameter key="debug.container.dump">C:\Users\Alexa\Documents\#Cnam\projet\yasp\var\cache\dev/srcDevDebugProjectContainer.xml</parameter>
     <parameter key="router.request_context.host">localhost</parameter>
     <parameter key="router.request_context.scheme">http</parameter>
     <parameter key="router.request_context.base_url"></parameter>
@@ -192,9 +197,9 @@
     <parameter key="doctrine.orm.second_level_cache.cache_configuration.class">Doctrine\ORM\Cache\CacheConfiguration</parameter>
     <parameter key="doctrine.orm.second_level_cache.regions_configuration.class">Doctrine\ORM\Cache\RegionsConfiguration</parameter>
     <parameter key="doctrine.orm.auto_generate_proxy_classes">true</parameter>
-    <parameter key="doctrine.orm.proxy_dir">D:\Cours\Dev\yasp\var\cache\dev/doctrine/orm/Proxies</parameter>
+    <parameter key="doctrine.orm.proxy_dir">C:\Users\Alexa\Documents\#Cnam\projet\yasp\var\cache\dev/doctrine/orm/Proxies</parameter>
     <parameter key="doctrine.orm.proxy_namespace">Proxies</parameter>
-    <parameter key="doctrine_migrations.dir_name">D:\Cours\Dev\yasp/src/Migrations</parameter>
+    <parameter key="doctrine_migrations.dir_name">C:\Users\Alexa\Documents\#Cnam\projet\yasp/src/Migrations</parameter>
     <parameter key="doctrine_migrations.namespace">DoctrineMigrations</parameter>
     <parameter key="doctrine_migrations.table_name">migration_versions</parameter>
     <parameter key="doctrine_migrations.name">Application Migrations</parameter>
@@ -204,7 +209,25 @@
     <parameter key="twig.form.resources" type="collection">
       <parameter>form_div_layout.html.twig</parameter>
     </parameter>
-    <parameter key="twig.default_path">D:\Cours\Dev\yasp/templates</parameter>
+    <parameter key="twig.default_path">C:\Users\Alexa\Documents\#Cnam\projet\yasp/templates</parameter>
+    <parameter key="monolog.use_microseconds">true</parameter>
+    <parameter key="monolog.swift_mailer.handlers" type="collection"/>
+    <parameter key="monolog.handlers_to_channels" type="collection">
+      <parameter key="monolog.handler.console" type="collection">
+        <parameter key="type">exclusive</parameter>
+        <parameter key="elements" type="collection">
+          <parameter>event</parameter>
+          <parameter>doctrine</parameter>
+          <parameter>console</parameter>
+        </parameter>
+      </parameter>
+      <parameter key="monolog.handler.main" type="collection">
+        <parameter key="type">exclusive</parameter>
+        <parameter key="elements" type="collection">
+          <parameter>event</parameter>
+        </parameter>
+      </parameter>
+    </parameter>
     <parameter key="console.command.ids" type="collection">
       <parameter>console.command.public_alias.doctrine_cache.contains_command</parameter>
       <parameter>console.command.public_alias.doctrine_cache.delete_command</parameter>
@@ -245,7 +268,7 @@
       <tag name="monolog.logger" channel="request"/>
       <argument type="service" id="service_container"/>
       <argument type="service" id="controller_name_converter"/>
-      <argument type="service" id="logger" on-invalid="ignore"/>
+      <argument type="service" id="monolog.logger.request" on-invalid="ignore"/>
     </service>
     <service id="argument_metadata_factory" class="Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadataFactory" public="false"/>
     <service id="argument_resolver" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver" public="false">
@@ -270,7 +293,7 @@
     </service>
     <service id="argument_resolver.service" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\ServiceValueResolver" public="false">
       <tag name="controller.argument_value_resolver" priority="-50"/>
-      <argument type="service" id="service_locator.Vat6H.i"/>
+      <argument type="service" id="service_locator.AOPdORR"/>
     </service>
     <service id="argument_resolver.default" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\DefaultValueResolver" public="false">
       <tag name="controller.argument_value_resolver" priority="-100"/>
@@ -395,14 +418,6 @@
         <argument>2048</argument>
       </call>
       <call method="addListener">
-        <argument>console.command</argument>
-        <argument type="collection">
-          <argument type="service" id="debug.debug_handlers_listener"/>
-          <argument>configure</argument>
-        </argument>
-        <argument>2048</argument>
-      </call>
-      <call method="addListener">
         <argument>kernel.request</argument>
         <argument type="collection">
           <argument type="service" id="router_listener"/>
@@ -498,6 +513,22 @@
         </argument>
         <argument>-128</argument>
       </call>
+      <call method="addListener">
+        <argument>console.command</argument>
+        <argument type="collection">
+          <argument type="service" id="monolog.handler.console"/>
+          <argument>onCommand</argument>
+        </argument>
+        <argument>255</argument>
+      </call>
+      <call method="addListener">
+        <argument>console.terminate</argument>
+        <argument type="collection">
+          <argument type="service" id="monolog.handler.console"/>
+          <argument>onTerminate</argument>
+        </argument>
+        <argument>-255</argument>
+      </call>
     </service>
     <service id="http_kernel" class="Symfony\Component\HttpKernel\HttpKernel" public="true">
       <tag name="container.hot_path"/>
@@ -517,9 +548,9 @@
     <service id="filesystem" class="Symfony\Component\Filesystem\Filesystem" public="true"/>
     <service id="file_locator" class="Symfony\Component\HttpKernel\Config\FileLocator" public="false">
       <argument type="service" id="kernel"/>
-      <argument>D:\Cours\Dev\yasp\src/Resources</argument>
+      <argument>C:\Users\Alexa\Documents\#Cnam\projet\yasp\src/Resources</argument>
       <argument type="collection">
-        <argument>D:\Cours\Dev\yasp\src</argument>
+        <argument>C:\Users\Alexa\Documents\#Cnam\projet\yasp\src</argument>
       </argument>
     </service>
     <service id="uri_signer" class="Symfony\Component\HttpKernel\UriSigner" public="false">
@@ -551,7 +582,7 @@
     <service id="console.error_listener" class="Symfony\Component\Console\EventListener\ErrorListener" public="false">
       <tag name="kernel.event_subscriber"/>
       <tag name="monolog.logger" channel="console"/>
-      <argument type="service" id="logger" on-invalid="null"/>
+      <argument type="service" id="monolog.logger.console" on-invalid="null"/>
     </service>
     <service id="console.command.about" class="Symfony\Bundle\FrameworkBundle\Command\AboutCommand" public="false">
       <tag name="console.command" command="about"/>
@@ -648,47 +679,47 @@
     </service>
     <service id="cache.app" class="Symfony\Component\Cache\Adapter\FilesystemAdapter" public="true">
       <tag name="cache.pool"/>
-      <argument>B1x7ktZPmy</argument>
+      <argument>djSWPKbiyC</argument>
       <argument>0</argument>
-      <argument>D:\Cours\Dev\yasp\var\cache\dev/pools</argument>
+      <argument>C:\Users\Alexa\Documents\#Cnam\projet\yasp\var\cache\dev/pools</argument>
       <call method="setLogger">
-        <argument type="service" id="logger" on-invalid="ignore"/>
+        <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
       </call>
     </service>
     <service id="cache.system" class="Symfony\Component\Cache\Adapter\AdapterInterface" public="true">
       <tag name="cache.pool"/>
-      <argument>J62LHgq5rO</argument>
+      <argument>69CjlarssQ</argument>
       <argument>0</argument>
       <argument>%container.build_id%</argument>
-      <argument>D:\Cours\Dev\yasp\var\cache\dev/pools</argument>
-      <argument type="service" id="logger" on-invalid="ignore"/>
+      <argument>C:\Users\Alexa\Documents\#Cnam\projet\yasp\var\cache\dev/pools</argument>
+      <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
     </service>
     <service id="cache.validator" class="Symfony\Component\Cache\Adapter\AdapterInterface" public="false">
       <tag name="cache.pool"/>
-      <argument>eGRp2pwsKH</argument>
+      <argument>-k674C17D5</argument>
       <argument>0</argument>
       <argument>%container.build_id%</argument>
-      <argument>D:\Cours\Dev\yasp\var\cache\dev/pools</argument>
-      <argument type="service" id="logger" on-invalid="ignore"/>
+      <argument>C:\Users\Alexa\Documents\#Cnam\projet\yasp\var\cache\dev/pools</argument>
+      <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
     </service>
     <service id="cache.serializer" class="Symfony\Component\Cache\Adapter\AdapterInterface" public="false">
       <tag name="cache.pool"/>
-      <argument>n5ItabZxFw</argument>
+      <argument>rnzVlFFvpD</argument>
       <argument>0</argument>
       <argument>%container.build_id%</argument>
-      <argument>D:\Cours\Dev\yasp\var\cache\dev/pools</argument>
-      <argument type="service" id="logger" on-invalid="ignore"/>
+      <argument>C:\Users\Alexa\Documents\#Cnam\projet\yasp\var\cache\dev/pools</argument>
+      <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
     </service>
     <service id="cache.annotations" class="Symfony\Component\Cache\Adapter\AdapterInterface" public="false">
       <tag name="cache.pool"/>
-      <argument>eD4aVdmjFL</argument>
+      <argument>oGWJS9NWPm</argument>
       <argument>0</argument>
       <argument>%container.build_id%</argument>
-      <argument>D:\Cours\Dev\yasp\var\cache\dev/pools</argument>
-      <argument type="service" id="logger" on-invalid="ignore"/>
+      <argument>C:\Users\Alexa\Documents\#Cnam\projet\yasp\var\cache\dev/pools</argument>
+      <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
     </service>
     <service id="cache.adapter.system" class="Symfony\Component\Cache\Adapter\AdapterInterface" public="false" abstract="true">
@@ -697,8 +728,8 @@
       <argument></argument>
       <argument>0</argument>
       <argument>%container.build_id%</argument>
-      <argument>D:\Cours\Dev\yasp\var\cache\dev/pools</argument>
-      <argument type="service" id="logger" on-invalid="ignore"/>
+      <argument>C:\Users\Alexa\Documents\#Cnam\projet\yasp\var\cache\dev/pools</argument>
+      <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
     </service>
     <service id="cache.adapter.apcu" class="Symfony\Component\Cache\Adapter\ApcuAdapter" public="false" abstract="true">
@@ -708,7 +739,7 @@
       <argument>0</argument>
       <argument>%container.build_id%</argument>
       <call method="setLogger">
-        <argument type="service" id="logger" on-invalid="ignore"/>
+        <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
       </call>
     </service>
     <service id="cache.adapter.doctrine" class="Symfony\Component\Cache\Adapter\DoctrineAdapter" public="false" abstract="true">
@@ -718,7 +749,7 @@
       <argument></argument>
       <argument>0</argument>
       <call method="setLogger">
-        <argument type="service" id="logger" on-invalid="ignore"/>
+        <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
       </call>
     </service>
     <service id="cache.adapter.filesystem" class="Symfony\Component\Cache\Adapter\FilesystemAdapter" public="false" abstract="true">
@@ -726,9 +757,9 @@
       <tag name="monolog.logger" channel="cache"/>
       <argument></argument>
       <argument>0</argument>
-      <argument>D:\Cours\Dev\yasp\var\cache\dev/pools</argument>
+      <argument>C:\Users\Alexa\Documents\#Cnam\projet\yasp\var\cache\dev/pools</argument>
       <call method="setLogger">
-        <argument type="service" id="logger" on-invalid="ignore"/>
+        <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
       </call>
     </service>
     <service id="cache.adapter.psr6" class="Symfony\Component\Cache\Adapter\ProxyAdapter" public="false" abstract="true">
@@ -744,7 +775,7 @@
       <argument></argument>
       <argument>0</argument>
       <call method="setLogger">
-        <argument type="service" id="logger" on-invalid="ignore"/>
+        <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
       </call>
     </service>
     <service id="cache.adapter.memcached" class="Symfony\Component\Cache\Adapter\MemcachedAdapter" public="false" abstract="true">
@@ -754,7 +785,7 @@
       <argument></argument>
       <argument>0</argument>
       <call method="setLogger">
-        <argument type="service" id="logger" on-invalid="ignore"/>
+        <argument type="service" id="monolog.logger.cache" on-invalid="ignore"/>
       </call>
     </service>
     <service id="cache.default_clearer" class="Symfony\Component\HttpKernel\CacheClearer\Psr6CacheClearer" public="false">
@@ -783,14 +814,14 @@
         <argument key="cache.annotations" type="service" id="cache.annotations" on-invalid="ignore_uninitialized"/>
       </argument>
     </service>
-    <service id="2_ServiceLocator~njMA7PU" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
+    <service id="2_ServiceLocator~1U2vvtf" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="session" type="service" id="session" on-invalid="ignore"/>
       </argument>
     </service>
-    <service id="1_NativeFileSessionHandler~njMA7PU" class="Symfony\Component\HttpFoundation\Session\Storage\Handler\NativeFileSessionHandler" public="false">
-      <argument>D:\Cours\Dev\yasp\var\cache\dev/sessions</argument>
+    <service id="1_NativeFileSessionHandler~1U2vvtf" class="Symfony\Component\HttpFoundation\Session\Storage\Handler\NativeFileSessionHandler" public="false">
+      <argument>C:\Users\Alexa\Documents\#Cnam\projet\yasp\var\cache\dev/sessions</argument>
     </service>
     <service id="session" class="Symfony\Component\HttpFoundation\Session\Session" public="true">
       <argument type="service" id="session.storage.native"/>
@@ -813,17 +844,17 @@
     <service id="session.flash_bag" class="Symfony\Component\HttpFoundation\Session\Flash\FlashBag" public="false"/>
     <service id="session.attribute_bag" class="Symfony\Component\HttpFoundation\Session\Attribute\AttributeBag" public="false"/>
     <service id="session.storage.mock_file" class="Symfony\Component\HttpFoundation\Session\Storage\MockFileSessionStorage" public="false">
-      <argument>D:\Cours\Dev\yasp\var\cache\dev/sessions</argument>
+      <argument>C:\Users\Alexa\Documents\#Cnam\projet\yasp\var\cache\dev/sessions</argument>
       <argument>MOCKSESSID</argument>
       <argument type="service" id="session.storage.metadata_bag"/>
     </service>
     <service id="session.handler.native_file" class="Symfony\Component\HttpFoundation\Session\Storage\Handler\StrictSessionHandler" public="false">
-      <argument type="service" id="1_NativeFileSessionHandler~njMA7PU"/>
+      <argument type="service" id="1_NativeFileSessionHandler~1U2vvtf"/>
     </service>
     <service id="session_listener" class="Symfony\Component\HttpKernel\EventListener\SessionListener" public="false">
       <tag name="kernel.event_subscriber"/>
       <tag name="container.hot_path"/>
-      <argument type="service" id="2_ServiceLocator~njMA7PU"/>
+      <argument type="service" id="2_ServiceLocator~1U2vvtf"/>
     </service>
     <service id="session.save_listener" class="Symfony\Component\HttpKernel\EventListener\SaveSessionListener" public="false">
       <tag name="kernel.event_subscriber"/>
@@ -883,7 +914,7 @@
       <tag name="monolog.logger" channel="php"/>
       <tag name="container.hot_path"/>
       <argument>null</argument>
-      <argument type="service" id="logger" on-invalid="null"/>
+      <argument type="service" id="monolog.logger.php" on-invalid="null"/>
       <argument>-1</argument>
       <argument>-1</argument>
       <argument>true</argument>
@@ -893,6 +924,7 @@
     <service id="debug.file_link_formatter" class="Symfony\Component\HttpKernel\Debug\FileLinkFormatter" public="false">
       <argument>null</argument>
     </service>
+    <service id="debug.log_processor" class="Symfony\Bridge\Monolog\Processor\DebugProcessor" public="false"/>
     <service id="routing.resolver" class="Symfony\Component\Config\Loader\LoaderResolver" public="false">
       <call method="addLoader">
         <argument type="service" id="routing.loader.xml"/>
@@ -963,7 +995,7 @@
       <argument type="service" id="service_container"/>
       <argument>kernel:loadRoutes</argument>
       <argument type="collection">
-        <argument key="cache_dir">D:\Cours\Dev\yasp\var\cache\dev</argument>
+        <argument key="cache_dir">C:\Users\Alexa\Documents\#Cnam\projet\yasp\var\cache\dev</argument>
         <argument key="debug">true</argument>
         <argument key="generator_class">Symfony\Component\Routing\Generator\UrlGenerator</argument>
         <argument key="generator_base_class">Symfony\Component\Routing\Generator\UrlGenerator</argument>
@@ -1003,8 +1035,8 @@
       <argument type="service" id="router.default"/>
       <argument type="service" id="request_stack"/>
       <argument type="service" id="router.request_context" on-invalid="ignore"/>
-      <argument type="service" id="logger" on-invalid="ignore"/>
-      <argument>D:\Cours\Dev\yasp</argument>
+      <argument type="service" id="monolog.logger.request" on-invalid="ignore"/>
+      <argument>C:\Users\Alexa\Documents\#Cnam\projet\yasp</argument>
       <argument>true</argument>
     </service>
     <service id="Symfony\Bundle\FrameworkBundle\Controller\RedirectController" class="Symfony\Bundle\FrameworkBundle\Controller\RedirectController" public="true">
@@ -1030,12 +1062,12 @@
       <argument type="service" id="file_locator"/>
       <argument type="service" id="routing.loader.annotation"/>
     </service>
-    <service id="2_PhpArrayAdapter~xRXtYwM" class="Symfony\Component\Cache\Adapter\PhpArrayAdapter" public="false">
-      <argument>D:\Cours\Dev\yasp\var\cache\dev/annotations.php</argument>
+    <service id="2_PhpArrayAdapter~nysSZIp" class="Symfony\Component\Cache\Adapter\PhpArrayAdapter" public="false">
+      <argument>C:\Users\Alexa\Documents\#Cnam\projet\yasp\var\cache\dev/annotations.php</argument>
       <argument type="service" id="cache.annotations"/>
       <factory class="Symfony\Component\Cache\Adapter\PhpArrayAdapter" method="create"/>
     </service>
-    <service id="1_ArrayCache~xRXtYwM" class="Doctrine\Common\Cache\ArrayCache" public="false"/>
+    <service id="1_ArrayCache~nysSZIp" class="Doctrine\Common\Cache\ArrayCache" public="false"/>
     <service id="annotations.reader" class="Doctrine\Common\Annotations\AnnotationReader" public="false">
       <call method="addGlobalIgnoredName">
         <argument>required</argument>
@@ -1053,16 +1085,16 @@
     <service id="annotations.cache_warmer" class="Symfony\Bundle\FrameworkBundle\CacheWarmer\AnnotationsCacheWarmer" public="false">
       <tag name="kernel.cache_warmer"/>
       <argument type="service" id="annotations.reader"/>
-      <argument>D:\Cours\Dev\yasp\var\cache\dev/annotations.php</argument>
+      <argument>C:\Users\Alexa\Documents\#Cnam\projet\yasp\var\cache\dev/annotations.php</argument>
       <argument type="service" id="cache.annotations"/>
       <argument>#^Symfony\\(?:Component\\HttpKernel\\|Bundle\\FrameworkBundle\\Controller\\(?!AbstractController$|Controller$))#</argument>
     </service>
     <service id="annotations.cache" class="Symfony\Component\Cache\DoctrineProvider" public="false">
-      <argument type="service" id="2_PhpArrayAdapter~xRXtYwM"/>
+      <argument type="service" id="2_PhpArrayAdapter~nysSZIp"/>
     </service>
     <service id="maker.file_manager" class="Symfony\Bundle\MakerBundle\FileManager" public="false">
       <argument type="service" id="filesystem"/>
-      <argument>D:\Cours\Dev\yasp</argument>
+      <argument>C:\Users\Alexa\Documents\#Cnam\projet\yasp</argument>
     </service>
     <service id="maker.generator" class="Symfony\Bundle\MakerBundle\Generator" public="false">
       <argument type="service" id="maker.file_manager"/>
@@ -1149,7 +1181,7 @@
     <service id="doctrine.dbal.logger.profiling" class="Doctrine\DBAL\Logging\DebugStack" public="false" abstract="true"/>
     <service id="doctrine.dbal.logger" class="Symfony\Bridge\Doctrine\Logger\DbalLogger" public="false">
       <tag name="monolog.logger" channel="doctrine"/>
-      <argument type="service" id="logger" on-invalid="null"/>
+      <argument type="service" id="monolog.logger.doctrine" on-invalid="null"/>
       <argument>null</argument>
     </service>
     <service id="data_collector.doctrine" class="Doctrine\Bundle\DoctrineBundle\DataCollector\DoctrineDataCollector" public="false">
@@ -1229,7 +1261,7 @@
     </service>
     <service id="doctrine.dbal.default_connection" class="Doctrine\DBAL\Connection" public="true">
       <argument type="collection">
-        <argument key="driver">php_pdo.dll</argument>
+        <argument key="driver">pdo_mysql</argument>
         <argument key="charset">utf8mb4</argument>
         <argument key="url">%env(resolve:DATABASE_URL)%</argument>
         <argument key="host">localhost</argument>
@@ -1399,7 +1431,7 @@
         <argument type="service" id="doctrine.orm.default_metadata_driver"/>
       </call>
       <call method="setProxyDir">
-        <argument>D:\Cours\Dev\yasp\var\cache\dev/doctrine/orm/Proxies</argument>
+        <argument>C:\Users\Alexa\Documents\#Cnam\projet\yasp\var\cache\dev/doctrine/orm/Proxies</argument>
       </call>
       <call method="setProxyNamespace">
         <argument>Proxies</argument>
@@ -1429,7 +1461,7 @@
     <service id="doctrine.orm.default_annotation_metadata_driver" class="Doctrine\ORM\Mapping\Driver\AnnotationDriver" public="false">
       <argument type="service" id="annotations.cached_reader"/>
       <argument type="collection">
-        <argument>D:\Cours\Dev\yasp\src\Entity</argument>
+        <argument>C:\Users\Alexa\Documents\#Cnam\projet\yasp\src\Entity</argument>
       </argument>
     </service>
     <service id="doctrine.orm.default_metadata_driver" class="Doctrine\Common\Persistence\Mapping\Driver\MappingDriverChain" public="false">
@@ -1440,17 +1472,17 @@
     </service>
     <service id="doctrine_cache.providers.doctrine.orm.default_metadata_cache" class="Doctrine\Common\Cache\ArrayCache">
       <call method="setNamespace">
-        <argument>sf_orm_default_6fa4033c601ed4d59b10642fd52e9a4f7f2f0c2788c9251878684b28d70cff53</argument>
+        <argument>sf_orm_default_8d51e034b0becedd0a18395d5b34c42ef0cde7f65b8d0c2b2f9c838a3902e886</argument>
       </call>
     </service>
     <service id="doctrine_cache.providers.doctrine.orm.default_result_cache" class="Doctrine\Common\Cache\ArrayCache">
       <call method="setNamespace">
-        <argument>sf_orm_default_6fa4033c601ed4d59b10642fd52e9a4f7f2f0c2788c9251878684b28d70cff53</argument>
+        <argument>sf_orm_default_8d51e034b0becedd0a18395d5b34c42ef0cde7f65b8d0c2b2f9c838a3902e886</argument>
       </call>
     </service>
     <service id="doctrine_cache.providers.doctrine.orm.default_query_cache" class="Doctrine\Common\Cache\ArrayCache">
       <call method="setNamespace">
-        <argument>sf_orm_default_6fa4033c601ed4d59b10642fd52e9a4f7f2f0c2788c9251878684b28d70cff53</argument>
+        <argument>sf_orm_default_8d51e034b0becedd0a18395d5b34c42ef0cde7f65b8d0c2b2f9c838a3902e886</argument>
       </call>
     </service>
     <service id="doctrine.orm.default_entity_listener_resolver" class="Doctrine\Bundle\DoctrineBundle\Mapping\ContainerAwareEntityListenerResolver">
@@ -1492,7 +1524,7 @@
     </service>
     <service id="web_server.command.server_run" class="Symfony\Bundle\WebServerBundle\Command\ServerRunCommand" public="false">
       <tag name="console.command" command="server:run"/>
-      <argument>D:\Cours\Dev\yasp/public</argument>
+      <argument>C:\Users\Alexa\Documents\#Cnam\projet\yasp/public</argument>
       <argument>dev</argument>
       <call method="setName">
         <argument>server:run</argument>
@@ -1500,7 +1532,7 @@
     </service>
     <service id="web_server.command.server_start" class="Symfony\Bundle\WebServerBundle\Command\ServerStartCommand" public="false">
       <tag name="console.command" command="server:start"/>
-      <argument>D:\Cours\Dev\yasp/public</argument>
+      <argument>C:\Users\Alexa\Documents\#Cnam\projet\yasp/public</argument>
       <argument>dev</argument>
       <call method="setName">
         <argument>server:start</argument>
@@ -1516,6 +1548,12 @@
       <tag name="console.command" command="server:status"/>
       <call method="setName">
         <argument>server:status</argument>
+      </call>
+    </service>
+    <service id="web_server.command.server_log" class="Symfony\Bundle\WebServerBundle\Command\ServerLogCommand" public="false">
+      <tag name="console.command" command="server:log"/>
+      <call method="setName">
+        <argument>server:log</argument>
       </call>
     </service>
     <service id="sensio_framework_extra.controller.listener" class="Sensio\Bundle\FrameworkExtraBundle\EventListener\ControllerListener" public="false">
@@ -1590,7 +1628,7 @@
       <argument type="service" id="twig.loader.native_filesystem"/>
       <argument type="collection">
         <argument key="paths" type="collection">
-          <argument key="D:\Cours\Dev\yasp/templates">null</argument>
+          <argument key="C:\Users\Alexa\Documents\#Cnam\projet\yasp/templates">null</argument>
         </argument>
         <argument key="debug">true</argument>
         <argument key="strict_variables">true</argument>
@@ -1599,9 +1637,9 @@
           <argument>form_div_layout.html.twig</argument>
         </argument>
         <argument key="autoescape">name</argument>
-        <argument key="cache">D:\Cours\Dev\yasp\var\cache\dev/twig</argument>
+        <argument key="cache">C:\Users\Alexa\Documents\#Cnam\projet\yasp\var\cache\dev/twig</argument>
         <argument key="charset">UTF-8</argument>
-        <argument key="default_path">D:\Cours\Dev\yasp/templates</argument>
+        <argument key="default_path">C:\Users\Alexa\Documents\#Cnam\projet\yasp/templates</argument>
         <argument key="date" type="collection">
           <argument key="format">F j, Y H:i</argument>
           <argument key="interval_format">%d days</argument>
@@ -1670,14 +1708,14 @@
       <argument type="service" id="service_locator.WXS0TxV.twig.cache_warmer"/>
       <argument>null</argument>
       <argument type="collection">
-        <argument key="D:\Cours\Dev\yasp/templates">null</argument>
+        <argument key="C:\Users\Alexa\Documents\#Cnam\projet\yasp/templates">null</argument>
       </argument>
     </service>
     <service id="twig.template_iterator" class="Symfony\Bundle\TwigBundle\TemplateIterator" public="false">
       <argument type="service" id="kernel"/>
-      <argument>D:\Cours\Dev\yasp\src</argument>
+      <argument>C:\Users\Alexa\Documents\#Cnam\projet\yasp\src</argument>
       <argument type="collection">
-        <argument key="D:\Cours\Dev\yasp/templates">null</argument>
+        <argument key="C:\Users\Alexa\Documents\#Cnam\projet\yasp/templates">null</argument>
       </argument>
     </service>
     <service id="twig.template_cache_warmer" class="Symfony\Bundle\TwigBundle\CacheWarmer\TemplateCacheWarmer" public="false">
@@ -1690,44 +1728,44 @@
     <service id="twig.loader.native_filesystem" class="Twig\Loader\FilesystemLoader" public="false">
       <tag name="twig.loader"/>
       <argument type="collection"/>
-      <argument>D:\Cours\Dev\yasp</argument>
+      <argument>C:\Users\Alexa\Documents\#Cnam\projet\yasp</argument>
       <call method="addPath">
-        <argument>D:\Cours\Dev\yasp/templates</argument>
+        <argument>C:\Users\Alexa\Documents\#Cnam\projet\yasp/templates</argument>
       </call>
       <call method="addPath">
-        <argument>D:\Cours\Dev\yasp\vendor\symfony\framework-bundle/Resources/views</argument>
+        <argument>C:\Users\Alexa\Documents\#Cnam\projet\yasp\vendor\symfony\framework-bundle/Resources/views</argument>
         <argument>Framework</argument>
       </call>
       <call method="addPath">
-        <argument>D:\Cours\Dev\yasp\vendor\symfony\framework-bundle/Resources/views</argument>
+        <argument>C:\Users\Alexa\Documents\#Cnam\projet\yasp\vendor\symfony\framework-bundle/Resources/views</argument>
         <argument>!Framework</argument>
       </call>
       <call method="addPath">
-        <argument>D:\Cours\Dev\yasp\vendor\symfony\maker-bundle\src/Resources/views</argument>
+        <argument>C:\Users\Alexa\Documents\#Cnam\projet\yasp\vendor\symfony\maker-bundle\src/Resources/views</argument>
         <argument>Maker</argument>
       </call>
       <call method="addPath">
-        <argument>D:\Cours\Dev\yasp\vendor\symfony\maker-bundle\src/Resources/views</argument>
+        <argument>C:\Users\Alexa\Documents\#Cnam\projet\yasp\vendor\symfony\maker-bundle\src/Resources/views</argument>
         <argument>!Maker</argument>
       </call>
       <call method="addPath">
-        <argument>D:\Cours\Dev\yasp\vendor\doctrine\doctrine-bundle/Resources/views</argument>
+        <argument>C:\Users\Alexa\Documents\#Cnam\projet\yasp\vendor\doctrine\doctrine-bundle/Resources/views</argument>
         <argument>Doctrine</argument>
       </call>
       <call method="addPath">
-        <argument>D:\Cours\Dev\yasp\vendor\doctrine\doctrine-bundle/Resources/views</argument>
+        <argument>C:\Users\Alexa\Documents\#Cnam\projet\yasp\vendor\doctrine\doctrine-bundle/Resources/views</argument>
         <argument>!Doctrine</argument>
       </call>
       <call method="addPath">
-        <argument>D:\Cours\Dev\yasp\vendor\symfony\twig-bundle/Resources/views</argument>
+        <argument>C:\Users\Alexa\Documents\#Cnam\projet\yasp\vendor\symfony\twig-bundle/Resources/views</argument>
         <argument>Twig</argument>
       </call>
       <call method="addPath">
-        <argument>D:\Cours\Dev\yasp\vendor\symfony\twig-bundle/Resources/views</argument>
+        <argument>C:\Users\Alexa\Documents\#Cnam\projet\yasp\vendor\symfony\twig-bundle/Resources/views</argument>
         <argument>!Twig</argument>
       </call>
       <call method="addPath">
-        <argument>D:\Cours\Dev\yasp/templates</argument>
+        <argument>C:\Users\Alexa\Documents\#Cnam\projet\yasp/templates</argument>
       </call>
     </service>
     <service id="twig.loader.chain" class="Twig\Loader\ChainLoader" public="false"/>
@@ -1753,7 +1791,7 @@
     <service id="twig.extension.code" class="Symfony\Bridge\Twig\Extension\CodeExtension" public="false">
       <tag name="twig.extension"/>
       <argument type="service" id="debug.file_link_formatter" on-invalid="ignore"/>
-      <argument>D:\Cours\Dev\yasp\src</argument>
+      <argument>C:\Users\Alexa\Documents\#Cnam\projet\yasp\src</argument>
       <argument>UTF-8</argument>
     </service>
     <service id="twig.extension.routing" class="Symfony\Bridge\Twig\Extension\RoutingExtension" public="false">
@@ -1786,7 +1824,7 @@
       <tag name="kernel.event_subscriber"/>
       <tag name="monolog.logger" channel="request"/>
       <argument>twig.controller.exception:showAction</argument>
-      <argument type="service" id="logger" on-invalid="null"/>
+      <argument type="service" id="monolog.logger.request" on-invalid="null"/>
     </service>
     <service id="twig.controller.exception" class="Symfony\Bundle\TwigBundle\Controller\ExceptionController" public="true">
       <argument type="service" id="twig"/>
@@ -1810,7 +1848,7 @@
     <service id="twig.command.debug" class="Symfony\Bridge\Twig\Command\DebugCommand" public="false">
       <tag name="console.command" command="debug:twig"/>
       <argument type="service" id="twig"/>
-      <argument>D:\Cours\Dev\yasp</argument>
+      <argument>C:\Users\Alexa\Documents\#Cnam\projet\yasp</argument>
       <call method="setName">
         <argument>debug:twig</argument>
       </call>
@@ -1821,6 +1859,51 @@
       <call method="setName">
         <argument>lint:twig</argument>
       </call>
+    </service>
+    <service id="monolog.logger" class="Symfony\Bridge\Monolog\Logger" public="false">
+      <argument>app</argument>
+      <call method="useMicrosecondTimestamps">
+        <argument>true</argument>
+      </call>
+      <call method="pushHandler">
+        <argument type="service" id="monolog.handler.console"/>
+      </call>
+      <call method="pushHandler">
+        <argument type="service" id="monolog.handler.main"/>
+      </call>
+    </service>
+    <service id="monolog.logger_prototype" class="Symfony\Bridge\Monolog\Logger" abstract="true">
+      <argument></argument>
+    </service>
+    <service id="monolog.activation_strategy.not_found" class="Symfony\Bridge\Monolog\Handler\FingersCrossed\NotFoundActivationStrategy"/>
+    <service id="monolog.handler.fingers_crossed.error_level_activation_strategy" class="Monolog\Handler\FingersCrossed\ErrorLevelActivationStrategy"/>
+    <service id="monolog.formatter.chrome_php" class="Monolog\Formatter\ChromePHPFormatter" public="false"/>
+    <service id="monolog.formatter.gelf_message" class="Monolog\Formatter\GelfMessageFormatter" public="false"/>
+    <service id="monolog.formatter.html" class="Monolog\Formatter\HtmlFormatter" public="false"/>
+    <service id="monolog.formatter.json" class="Monolog\Formatter\JsonFormatter" public="false"/>
+    <service id="monolog.formatter.line" class="Monolog\Formatter\LineFormatter" public="false"/>
+    <service id="monolog.formatter.loggly" class="Monolog\Formatter\LogglyFormatter" public="false"/>
+    <service id="monolog.formatter.normalizer" class="Monolog\Formatter\NormalizerFormatter" public="false"/>
+    <service id="monolog.formatter.scalar" class="Monolog\Formatter\ScalarFormatter" public="false"/>
+    <service id="monolog.formatter.wildfire" class="Monolog\Formatter\WildfireFormatter" public="false"/>
+    <service id="monolog.formatter.logstash" class="Monolog\Formatter\LogstashFormatter" public="false">
+      <argument>app</argument>
+    </service>
+    <service id="monolog.processor.psr_log_message" class="Monolog\Processor\PsrLogMessageProcessor" public="false"/>
+    <service id="monolog.handler.main" class="Monolog\Handler\StreamHandler">
+      <argument>C:\Users\Alexa\Documents\#Cnam\projet\yasp\var\log/dev.log</argument>
+      <argument>100</argument>
+      <argument>true</argument>
+      <argument>null</argument>
+      <call method="pushProcessor">
+        <argument type="service" id="monolog.processor.psr_log_message"/>
+      </call>
+    </service>
+    <service id="monolog.handler.console" class="Symfony\Bridge\Monolog\Handler\ConsoleHandler">
+      <tag name="kernel.event_subscriber"/>
+      <argument>null</argument>
+      <argument>true</argument>
+      <argument type="collection"/>
     </service>
     <service id="instanceof.Symfony\Bundle\FrameworkBundle\Controller\Controller.0.App\Controller\AbonnementCtrl" class="App\Controller\AbonnementCtrl" public="false" autowire="true" abstract="true"/>
     <service id="abstract.instanceof.App\Controller\AbonnementCtrl" class="App\Controller\AbonnementCtrl" public="false" autowire="true" autoconfigure="true" abstract="true"/>
@@ -1932,12 +2015,21 @@
       <tag name="container.service_locator"/>
       <argument type="collection"/>
     </service>
-    <service id="service_locator.Vat6H.i" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
+    <service id="service_locator.c5UiW4i" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
       <tag name="container.service_locator"/>
-      <argument type="collection"/>
+      <argument type="collection">
+        <argument key="logger" type="service" id="monolog.logger" on-invalid="ignore"/>
+      </argument>
+    </service>
+    <service id="service_locator.AOPdORR" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="App\Controller\UserCtrl:register" type="service" id="service_locator.c5UiW4i"/>
+        <argument key="App\Controller\UserCtrl::register" type="service" id="service_locator.c5UiW4i"/>
+      </argument>
     </service>
     <service id="console.command_loader" class="Symfony\Component\Console\CommandLoader\ContainerCommandLoader" public="true">
-      <argument type="service" id="service_locator.OT1AOSt"/>
+      <argument type="service" id="service_locator._lm.j.l"/>
       <argument type="collection">
         <argument key="about">console.command.about</argument>
         <argument key="assets:install">console.command.assets_install</argument>
@@ -1977,6 +2069,7 @@
         <argument key="server:start">web_server.command.server_start</argument>
         <argument key="server:stop">web_server.command.server_stop</argument>
         <argument key="server:status">web_server.command.server_status</argument>
+        <argument key="server:log">web_server.command.server_log</argument>
         <argument key="debug:twig">twig.command.debug</argument>
         <argument key="lint:twig">twig.command.lint</argument>
         <argument key="make:auth">maker.auto_command.make_auth</argument>
@@ -1993,7 +2086,7 @@
         <argument key="make:voter">maker.auto_command.make_voter</argument>
       </argument>
     </service>
-    <service id="service_locator.OT1AOSt" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
+    <service id="service_locator._lm.j.l" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="console.command.about" type="service" id="console.command.about"/>
@@ -2044,6 +2137,7 @@
         <argument key="maker.auto_command.make_voter" type="service" id="maker.auto_command.make_voter"/>
         <argument key="twig.command.debug" type="service" id="twig.command.debug"/>
         <argument key="twig.command.lint" type="service" id="twig.command.lint"/>
+        <argument key="web_server.command.server_log" type="service" id="web_server.command.server_log"/>
         <argument key="web_server.command.server_run" type="service" id="web_server.command.server_run"/>
         <argument key="web_server.command.server_start" type="service" id="web_server.command.server_start"/>
         <argument key="web_server.command.server_status" type="service" id="web_server.command.server_status"/>
@@ -2060,7 +2154,46 @@
       <tag name="container.service_locator"/>
       <argument type="collection"/>
     </service>
-    <service id="logger" class="Symfony\Component\HttpKernel\Log\Logger" public="false"/>
+    <service id="monolog.logger.request" class="Symfony\Bridge\Monolog\Logger">
+      <argument>request</argument>
+      <call method="pushHandler">
+        <argument type="service" id="monolog.handler.console"/>
+      </call>
+      <call method="pushHandler">
+        <argument type="service" id="monolog.handler.main"/>
+      </call>
+    </service>
+    <service id="monolog.logger.console" class="Symfony\Bridge\Monolog\Logger">
+      <argument>console</argument>
+      <call method="pushHandler">
+        <argument type="service" id="monolog.handler.main"/>
+      </call>
+    </service>
+    <service id="monolog.logger.cache" class="Symfony\Bridge\Monolog\Logger">
+      <argument>cache</argument>
+      <call method="pushHandler">
+        <argument type="service" id="monolog.handler.console"/>
+      </call>
+      <call method="pushHandler">
+        <argument type="service" id="monolog.handler.main"/>
+      </call>
+    </service>
+    <service id="monolog.logger.php" class="Symfony\Bridge\Monolog\Logger">
+      <argument>php</argument>
+      <call method="pushHandler">
+        <argument type="service" id="monolog.handler.console"/>
+      </call>
+      <call method="pushHandler">
+        <argument type="service" id="monolog.handler.main"/>
+      </call>
+    </service>
+    <service id="monolog.logger.doctrine" class="Symfony\Bridge\Monolog\Logger">
+      <argument>doctrine</argument>
+      <call method="pushHandler">
+        <argument type="service" id="monolog.handler.main"/>
+      </call>
+    </service>
+    <service id="monolog.handler.null_internal" class="Monolog\Handler\NullHandler"/>
     <service id="service_locator.gvlXfzv" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
       <tag name="container.service_locator"/>
       <argument type="collection">
@@ -2151,6 +2284,8 @@
     <service id="doctrine.orm.default_entity_manager.event_manager" alias="doctrine.dbal.default_connection.event_manager" public="false"/>
     <service id="Twig_Environment" alias="twig" public="false"/>
     <service id="Twig\Environment" alias="twig" public="false"/>
+    <service id="logger" alias="monolog.logger"/>
+    <service id="Psr\Log\LoggerInterface" alias="monolog.logger" public="false"/>
     <service id="console.command.public_alias.doctrine_cache.contains_command" alias="doctrine_cache.contains_command" public="true"/>
     <service id="console.command.public_alias.doctrine_cache.delete_command" alias="doctrine_cache.delete_command" public="true"/>
     <service id="console.command.public_alias.doctrine_cache.flush_command" alias="doctrine_cache.flush_command" public="true"/>
@@ -2164,7 +2299,6 @@
     <service id="console.command.public_alias.doctrine_migrations.version_command" alias="doctrine_migrations.version_command" public="true"/>
     <service id="twig.loader.filesystem" alias="twig.loader.native_filesystem" public="false"/>
     <service id="twig.loader" alias="twig.loader.native_filesystem"/>
-    <service id="Psr\Log\LoggerInterface" alias="logger" public="false"/>
-    <service id="service_locator.FaDxC1e" alias="2_ServiceLocator~njMA7PU" public="false"/>
+    <service id="service_locator.FaDxC1e" alias="2_ServiceLocator~1U2vvtf" public="false"/>
   </services>
 </container>

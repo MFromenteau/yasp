@@ -97,47 +97,47 @@
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
+              <form id="signupForm" action="/user/register" method="post">
               <div class="modal-body">
-                <form action="/user/register" method="post">
                   <div class="row">
                     <div class="col">
                       <label for="email">Email</label>
-                      <input id="email" type="email" class="form-control" placeholder="Email">
+                      <input id="email" name="email" type="email" class="form-control" placeholder="Email">
                     </div>
                     <div class="col">
                       <label for="confEmail">Confirm Email</label>
-                      <input id="confEmail" type="email" class="form-control" placeholder="Confirm Email">
+                      <input id="confEmail" name="confemail" type="email" class="form-control" placeholder="Confirm Email">
                     </div>
                   </div>
                   <hr />
                   <div class="row">
                     <div class="col">
                       <label for="firstname">First Name</label>
-                      <input id="firstname" type="text" class="form-control" placeholder="First name">
+                      <input id="firstname" name="firstname" type="text" class="form-control" placeholder="First name">
                     </div>
                     <div class="col">
                       <label for="lastname">Last Name</label>
-                      <input id="lastname" type="text" class="form-control" placeholder="Last name">
+                      <input id="lastname" name="lastname" type="text" class="form-control" placeholder="Last name">
                     </div>
                   </div>
                   <hr />
                   <div class="row">
                     <div class="col">
                       <label for="password">Password</label>
-                      <input id="password" type="password" class="form-control" aria-describedby="passwordHelpInline" placeholder="Password">
+                      <input id="password" name="password" type="password" class="form-control" aria-describedby="passwordHelpInline" placeholder="Password">
                       <small id="passwordHelpInline" class="form-text text-muted">
                         Must be 8-20 characters long.
                       </small>
                     </div>
                     <div class="col">
                       <label for="confPassword">Confirm Password</label>
-                      <input id="confPassword" type="password" class="form-control" placeholder="Confirm Password">
+                      <input id="confPassword" name="confpassword" type="password" class="form-control" placeholder="Confirm Password">
                     </div>
                   </div>
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                  <button  type="submit" class="btn btn-primary">Enter new world</button>
+                  <button  type="submit" form="signupForm" class="btn btn-primary">Enter new world</button>
                 </div>
               </form>
             </div>

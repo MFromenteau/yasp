@@ -16,9 +16,8 @@ class VideoCtrl extends Controller
 	 * @Method({"GET"})
 	 */
 	public function getThemeByVideoId(){
-
-
 	}
+
 	/**
 	 * @Route("/video/{id}", name="getVideoById")
 	 */
