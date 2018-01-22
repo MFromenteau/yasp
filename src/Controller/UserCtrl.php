@@ -68,7 +68,8 @@ class UserCtrl extends Controller
 
         //file_put_contents( 'logs/debugobj' . date('_M_D_H,m,s',time()  ).'.log', var_export( $usr, true));
 
-        return new Response('User créé, id :'.$usr->getIdutilisateur());
+//        return new Response('User créé, id :'.$usr->getIdutilisateur());
+        return  $this->redirect($this->generateUrl('homepage'));
 	}
 	
 	/**
