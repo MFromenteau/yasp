@@ -16,7 +16,6 @@ class User
      * @var string
      *
      * @ORM\Column(name="email", type="string", length=50, nullable=false)
-     * @ORM\Id
      */
     private $email;
 
@@ -47,8 +46,9 @@ class User
     /**
      * @var int
      *
-     * @ORM\Column(name="idUtilisateur", type="integer", nullable=false, options={"autoincrement":true})
+     * @ORM\Column(name="idUtilisateur", type="integer", options={"autoincrement":true})
      * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\Id
      */
     private $idutilisateur;
 
