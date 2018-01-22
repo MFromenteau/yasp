@@ -10,48 +10,58 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AbonnementCtrl extends Controller
 {
-	/**
-	 * @Route("/abonnement/user/{id}", name="abonnement")
-	 * @Method({"GET"})
-	 */
+    /**
+     * @Route("/abonnement/user/{id}", name="abonnement")
+     * @Method({"GET"})
+     * @param $id
+     */
 	public function getAbo($id){
 
 			//www.yasp.fr/abbonnement/user/67890
 	}
-	/**
-	 * @Route("/abonnement/historique{id}", name="historique_abo")
-	 * @Method({"GET"})
-	 */
+
+    /**
+     * @Route("/abonnement/user/{id}/historique", name="historique_abo")
+     * @Method({"GET"})
+     * @param $id
+     */
 	public function getHistoAbo($id){
 
-			//www.yasp.fr/abbonnement/historique/67890
+			//www.yasp.fr/abbonnement/user/67890/historique
 	}
-	/**
-	 * @Route("/abonnement/renouvellement{id}", name="renouvellement_abo")
-	 * @Method({"POST"})
-	 */
+
+    /**
+     * @Route("/abonnement/user/{id}/renouvellement", name="renouvellement_abo")
+     * @Method({"POST"})
+     * @param $id
+     */
 
 	public function renouvelle($id){
 		
 
-			//www.yasp.fr/abbonnement/renouvellement
+			//www.yasp.fr/abbonnement/user/67890/renouvellement
 	}
-		/**
-	 * @Route("/abonnement/souscription/{id}", name="souscription")
-	 * @Method({"POST"})
-	 */
-	public function souscrit($id){
-		$codeAbo = mysqli_real_escape_string($request->request->get('codeAbo'));
 
-			//www.yasp.fr/abbonnement/souscription/67890
+    /**
+     * @Route("/abonnement/user/{id}/souscription", name="souscription")
+     * @Method({"POST"})
+     * @param $id
+     * @param Request $request
+     */
+	public function souscrit($id, Request $request){
+		$codeAbo = $request->request->get('codeAbo');
+
+			//www.yasp.fr/abbonnement/user/67890/souscription
 	}
-		/**
-	 * @Route("/abonnement/annulation{id}", name="annulation_abo")
-	 * @Method({"POST"})
-	 */
+
+    /**
+     * @Route("/abonnement/user/{id}/annulation", name="annulation_abo")
+     * @Method({"POST"})
+     * @param $id
+     */
 	public function annule($id){
 
-			//www.yasp.fr/abbonnement/annulation/67890
+			//www.yasp.fr/abbonnement/user/67890/annulation
 	}
 }
 

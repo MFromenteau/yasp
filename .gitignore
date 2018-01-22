@@ -1,5 +1,8 @@
 .env
 /public/bundles/
-/var/vendor/
+/var/
+/vendor/
 .web-server-pid
-.idea
+.idea/php.xml
+.idea/dataSources.local.xml
+.idea/dataSources/
