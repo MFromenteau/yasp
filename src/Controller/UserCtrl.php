@@ -20,8 +20,8 @@ class UserCtrl extends Controller
 	public function register(LoggerInterface $logger,Request $request){
         $request = Request::createFromGlobals();
         $logger->info("!! request : ");
-        file_put_contents( 'debug' . date('_M_D_H,m,s',time()  ).'.log', var_export( $request, true));
-        $logger->info(var_dump($request->request));
+        file_put_contents( 'logs/debug' . date('_M_D_H,m,s',time()  ).'.log', var_export( $request, true));
+       // $logger->info(var_dump($request->request));
 
         $email = $request->request->get('email');
 		$confemail = $request->request->get('confemail');
@@ -44,7 +44,7 @@ class UserCtrl extends Controller
         $usr->setEmail($email);
         $usr->setPrenom($firstname);
         $usr->setNom($lastname);
-
+        $usr->setPsw($password);
 
         if( $em->getRepository(User::class)
             ->findBy([
@@ -62,6 +62,11 @@ class UserCtrl extends Controller
         ){
             return new Response('User déjà présent avec cet email.');
         }
+
+        $em->persist($usr);
+        $em->flush();
+
+        file_put_contents( 'logs/debugobj' . date('_M_D_H,m,s',time()  ).'.log', var_export( $usr, true));
 
         return new Response('User créé, id :'.$usr->getIdutilisateur());
 	}

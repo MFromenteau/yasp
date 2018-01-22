@@ -45,18 +45,10 @@ class User
     }
 
     /**
-     * @param int $idutilisateur
-     */
-    public function setIdutilisateur(int $idutilisateur): void
-    {
-        $this->idutilisateur = $idutilisateur;
-    }
-
-    /**
      * @var int
      *
      * @ORM\Column(name="idUtilisateur", type="integer", nullable=false, options={"autoincrement":true})
-     * @ORM\GeneratedValue(strategy="SEQUENCE")
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $idutilisateur;
 
@@ -105,7 +97,6 @@ class User
     {
         $this->nom = $nom;
     }
-
     /**
      * @return string
      */
