@@ -38,6 +38,13 @@ class Video
     /**
      * @var string
      *
+     * @ORM\Column(name="description", type="text", length=65535, nullable=false)
+     */
+    private $description;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="url", type="text", length=65535, nullable=false)
      */
     private $url;
@@ -112,6 +119,24 @@ class Video
     {
         $this->titre = $titre;
     }
+
+    /**
+     * @return string
+     */
+    public function getDescription(): string
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param string $description
+     */
+    public function setDescription(string $description): void
+    {
+        $this->description = $description;
+    }
+
+
 
     /**
      * @return string
