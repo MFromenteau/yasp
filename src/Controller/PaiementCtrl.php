@@ -9,63 +9,75 @@ use Symfony\Component\HttpFoundation\Request;
 
 class PaiementCtrl extends Controller
 {
-	/**
-	 * @Route("/paiement/emis/{id}", name="emis")
-	 * @Method({"GET"})
-	 */
+    /**
+     * @Route("/paiement/user/{id}/emis", name="emis")
+     * @Method({"GET"})
+     * @param $id
+     */
 	public function getPaiementEmis($id){
 
-			//www.yasp.fr/paiement/emis/67890
+			//www.yasp.fr/paiement/user/67890/emis
 	}
-	/**
-	 * @Route("/paiement/effectuer/{id}", name="effectuer")
-	 * @Method({"POST"})
-	 */
-	public function effectuerPaiement($id){
-		$somme = mysqli_real_escape_string($request->request->get('somme'));
-		$desc = mysqli_real_escape_string($request->request->get('desc'));
 
-			//www.yasp.fr/paiement/effectuer/67890
+    /**
+     * @Route("/paiement/user/{id}/effectuer", name="effectuer")
+     * @Method({"POST"})
+     * @param $id
+     * @param Request $request
+     */
+	public function effectuerPaiement($id, Request $request){
+		$somme = $request->request->get('somme');
+		$desc = $request->request->get('desc');
+
+			//www.yasp.fr/paiement/user/67890/effectuer
 	}
 		/**
-	 * @Route("/paiement/effectuer/{id}", name="effectuerGet")
+	 * @Route("/paiement/user/{id}/effectuer", name="effectuerGet")
 	 * @Method({"GET"})
 	 */
 	public function effectuerPaiementGet(){
-			//www.yasp.fr/paiement/effectuer/67890
+			//www.yasp.fr/paiement/user/67890/effectuer
 	}
-	/**
-	 * @Route("/paiement/creer/{id}", name="creation")
-	 * @Method({"POST"})
-	 */
-	public function createPaiement($id){
-		$somme = mysqli_real_escape_string($request->request->get('somme'));
-		$desc = mysqli_real_escape_string($request->request->get('desc'));
 
-			//www.yasp.fr/paiement/creer/67890
+    /**
+     * @Route("/paiement/user/{id}/creer", name="creation")
+     * @Method({"POST"})
+     * @param $id
+     * @param Request $request
+     */
+	public function createPaiement($id, Request $request){
+		$somme = $request->request->get('somme');
+		$desc = $request->request->get('desc');
+
+			//www.yasp.fr/paiement/user/67890/creer
 	}
-		/**
-	 * @Route("/paiement/creer/{id}", name="creationGET")
-	 * @Method({"GET"})
-	 */
+
+    /**
+     * @Route("/paiement/user/{id}/creer", name="creationGET")
+     * @Method({"GET"})
+     * @param $id
+     */
 	public function createPaiementGET($id){
-			//www.yasp.fr/paiement/creer/67890
+			//www.yasp.fr/paiement/user/67890/creer
 	}
-		/**
-	 * @Route("/paiement/remboursement/{id}", name="remboursement")
-	 * @Method({"POST"})
-	 */
-	public function refund($id){
-		$paiement = mysqli_real_escape_string($request->request->get('paiement'));
 
-			//www.yasp.fr/paiement/remboursement/67890
+    /**
+     * @Route("/paiement/user/{id}/remboursement", name="remboursement")
+     * @Method({"POST"})
+     * @param $id
+     * @param Request $request
+     */
+	public function refund($id, Request $request){
+		$paiement = $request->request->get('paiement');
+
+			//www.yasp.fr/paiement/user/67890/remboursement
 	}
 			/**
-	 * @Route("/paiement/remboursement/{id}", name="remboursementGet")
+	 * @Route("/paiement/user/{id}/remboursement", name="remboursementGet")
 	 * @Method({"GET"})
 	 */
 	public function refundGet(){
-			//www.yasp.fr/paiement/remboursement/67890
+			//www.yasp.fr/paiement/user/67890/remboursement
 	}
 }
 
