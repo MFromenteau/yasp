@@ -6,6 +6,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use App\Entity\Video;
 
 class VideoCtrl extends Controller
 {
@@ -20,10 +21,17 @@ class VideoCtrl extends Controller
 	}
 	/**
 	 * @Route("/video/{id}", name="getVideoById")
-	 * @Method({"GET"})
 	 */
 	public function getVideoById($id){
+        $video = $this->getDoctrine()
+            ->getRepository(Video::class)
+            ->find($id);
 
+        if (!$video) {
+            return $this->render('all/404.html.twig');
+        }
+
+        return $this->render('all/video.html.twig');
 
 	}
 	/**

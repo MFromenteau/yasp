@@ -1229,7 +1229,7 @@
     </service>
     <service id="doctrine.dbal.default_connection" class="Doctrine\DBAL\Connection" public="true">
       <argument type="collection">
-        <argument key="driver">pdo_mysql</argument>
+        <argument key="driver">php_pdo.dll</argument>
         <argument key="charset">utf8mb4</argument>
         <argument key="url">%env(resolve:DATABASE_URL)%</argument>
         <argument key="host">localhost</argument>

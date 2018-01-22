@@ -254,150 +254,125 @@ class srcDevDebugProjectContainerUrlMatcher extends Symfony\Bundle\FrameworkBund
             }
             not_deconnexion:
 
-        }
-
-        // theme
-        if ('/video/theme' === $pathinfo) {
-            if ('GET' !== $canonicalMethod) {
-                $allow[] = 'GET';
-                goto not_theme;
-            }
-
-            return array (  '_controller' => 'App\\Controller\\VideoCtrl::getVideoByTheme',  '_route' => 'theme',);
-        }
-        not_theme:
-
-        // recherche
-        if (preg_match('#^/(?P<id>[^/]++)/video$#s', $pathinfo, $matches)) {
-            if ('GET' !== $canonicalMethod) {
-                $allow[] = 'GET';
-                goto not_recherche;
-            }
-
-            return $this->mergeDefaults(array_replace($matches, array('_route' => 'recherche')), array (  '_controller' => 'App\\Controller\\VideoCtrl::getVideoById',));
-        }
-        not_recherche:
-
-        if (0 === strpos($pathinfo, '/video')) {
-            if (0 === strpos($pathinfo, '/video/upload')) {
-                // upload
-                if ('/video/upload/' === $pathinfo) {
-                    if ('POST' !== $canonicalMethod) {
-                        $allow[] = 'POST';
-                        goto not_upload;
-                    }
-
-                    return array (  '_controller' => 'App\\Controller\\VideoCtrl::upload',  '_route' => 'upload',);
-                }
-                not_upload:
-
-                // uploadGET
-                if ('/video/upload' === $trimmedPathinfo) {
-                    if ('GET' !== $canonicalMethod) {
-                        $allow[] = 'GET';
-                        goto not_uploadGET;
-                    }
-
-                    $ret = array (  '_controller' => 'App\\Controller\\VideoCtrl::uploadGet',  '_route' => 'uploadGET',);
-                    if (substr($pathinfo, -1) !== '/') {
-                        return array_replace($ret, $this->redirect($rawPathinfo.'/', 'uploadGET'));
-                    }
-
-                    return $ret;
-                }
-                not_uploadGET:
-
-            }
-
-            // liste
-            if (preg_match('#^/video/(?P<id>[^/]++)/liste$#s', $pathinfo, $matches)) {
+            // getlisteVideoByUserId
+            if (preg_match('#^/user/(?P<id>[^/]++)/video/list$#s', $pathinfo, $matches)) {
                 if ('GET' !== $canonicalMethod) {
                     $allow[] = 'GET';
-                    goto not_liste;
+                    goto not_getlisteVideoByUserId;
                 }
 
-                return $this->mergeDefaults(array_replace($matches, array('_route' => 'liste')), array (  '_controller' => 'App\\Controller\\VideoCtrl::getAllVideoByIdUser',));
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'getlisteVideoByUserId')), array (  '_controller' => 'App\\Controller\\VideoCtrl::getAllVideoByIdUser',));
             }
-            not_liste:
+            not_getlisteVideoByUserId:
 
-            // nouveau
-            if (preg_match('#^/video/(?P<id_Video>[^/]++)/nouveau$#s', $pathinfo, $matches)) {
+            // getAllCommentByUserId
+            if (preg_match('#^/user/(?P<id>[^/]++)/comment/list$#s', $pathinfo, $matches)) {
                 if ('GET' !== $canonicalMethod) {
                     $allow[] = 'GET';
-                    goto not_nouveau;
+                    goto not_getAllCommentByUserId;
                 }
 
-                return $this->mergeDefaults(array_replace($matches, array('_route' => 'nouveau')), array (  '_controller' => 'App\\Controller\\VideoCtrl::createCommentGet',));
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'getAllCommentByUserId')), array (  '_controller' => 'App\\Controller\\VideoCtrl::getAllCommentByUserId',));
             }
-            not_nouveau:
+            not_getAllCommentByUserId:
 
-            // supression
-            if (preg_match('#^/video/(?P<id_Video>[^/]++)/supression$#s', $pathinfo, $matches)) {
+        }
+
+        elseif (0 === strpos($pathinfo, '/video')) {
+            // getThemeByVideoId
+            if (preg_match('#^/video/(?P<id>[^/]++)/theme$#s', $pathinfo, $matches)) {
                 if ('GET' !== $canonicalMethod) {
                     $allow[] = 'GET';
-                    goto not_supression;
+                    goto not_getThemeByVideoId;
                 }
 
-                return $this->mergeDefaults(array_replace($matches, array('_route' => 'supression')), array (  '_controller' => 'App\\Controller\\VideoCtrl::deleteCommentGet',));
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'getThemeByVideoId')), array (  '_controller' => 'App\\Controller\\VideoCtrl::getThemeByVideoId',));
             }
-            not_supression:
+            not_getThemeByVideoId:
 
-            // edit
-            if (preg_match('#^/video/(?P<id_Video>[^/]++)/edit$#s', $pathinfo, $matches)) {
+            // getVideoById
+            if (preg_match('#^/video/(?P<id>[^/]++)$#s', $pathinfo, $matches)) {
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'getVideoById')), array (  '_controller' => 'App\\Controller\\VideoCtrl::getVideoById',));
+            }
+
+            // uploadVideo
+            if ('/video/upload/' === $pathinfo) {
                 if ('POST' !== $canonicalMethod) {
                     $allow[] = 'POST';
-                    goto not_edit;
+                    goto not_uploadVideo;
                 }
 
-                return $this->mergeDefaults(array_replace($matches, array('_route' => 'edit')), array (  '_controller' => 'App\\Controller\\VideoCtrl::modifyComment',));
+                return array (  '_controller' => 'App\\Controller\\VideoCtrl::uploadVideo',  '_route' => 'uploadVideo',);
             }
-            not_edit:
+            not_uploadVideo:
 
-            // commentaire_by_user
-            if (preg_match('#^/video/(?P<id>[^/]++)/com_by_user$#s', $pathinfo, $matches)) {
+            // newComment
+            if (preg_match('#^/video/(?P<id>[^/]++)/new/comment$#s', $pathinfo, $matches)) {
+                if ('POST' !== $canonicalMethod) {
+                    $allow[] = 'POST';
+                    goto not_newComment;
+                }
+
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'newComment')), array (  '_controller' => 'App\\Controller\\VideoCtrl::createCommentByIdVideo',));
+            }
+            not_newComment:
+
+            // deleteComment
+            if (preg_match('#^/video/(?P<id>[^/]++)/delete/comment$#s', $pathinfo, $matches)) {
+                if ('POST' !== $canonicalMethod) {
+                    $allow[] = 'POST';
+                    goto not_deleteComment;
+                }
+
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'deleteComment')), array (  '_controller' => 'App\\Controller\\VideoCtrl::deleteCommentByIdVideo',));
+            }
+            not_deleteComment:
+
+            // editComment
+            if (preg_match('#^/video/(?P<id>[^/]++)/edit/comment$#s', $pathinfo, $matches)) {
+                if ('POST' !== $canonicalMethod) {
+                    $allow[] = 'POST';
+                    goto not_editComment;
+                }
+
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'editComment')), array (  '_controller' => 'App\\Controller\\VideoCtrl::editComment',));
+            }
+            not_editComment:
+
+            // getAllCommentByVideoId
+            if (preg_match('#^/video/(?P<id>[^/]++)/comment/list$#s', $pathinfo, $matches)) {
                 if ('GET' !== $canonicalMethod) {
                     $allow[] = 'GET';
-                    goto not_commentaire_by_user;
+                    goto not_getAllCommentByVideoId;
                 }
 
-                return $this->mergeDefaults(array_replace($matches, array('_route' => 'commentaire_by_user')), array (  '_controller' => 'App\\Controller\\VideoCtrl::GetCommentByUser',));
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'getAllCommentByVideoId')), array (  '_controller' => 'App\\Controller\\VideoCtrl::getAllCommentByVideoId',));
             }
-            not_commentaire_by_user:
+            not_getAllCommentByVideoId:
 
-            // commentaire_by_video
-            if ('/video/{$id_Video}/com_by_video' === $pathinfo) {
-                if ('GET' !== $canonicalMethod) {
-                    $allow[] = 'GET';
-                    goto not_commentaire_by_video;
+            // buyVideoById
+            if (preg_match('#^/video/(?P<id>[^/]++)/buy$#s', $pathinfo, $matches)) {
+                if ('POST' !== $canonicalMethod) {
+                    $allow[] = 'POST';
+                    goto not_buyVideoById;
                 }
 
-                return array (  '_controller' => 'App\\Controller\\VideoCtrl::GetCommentByVid',  '_route' => 'commentaire_by_video',);
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'buyVideoById')), array (  '_controller' => 'App\\Controller\\VideoCtrl::buyVideoById',));
             }
-            not_commentaire_by_video:
-
-            // achat
-            if ('/video/{$id_Video}/achat' === $pathinfo) {
-                if ('GET' !== $canonicalMethod) {
-                    $allow[] = 'GET';
-                    goto not_achat;
-                }
-
-                return array (  '_controller' => 'App\\Controller\\VideoCtrl::acheterGet',  '_route' => 'achat',);
-            }
-            not_achat:
-
-            // commentaire_by_id
-            if (0 === strpos($pathinfo, '/video/com_by_id') && preg_match('#^/video/com_by_id/(?P<id>[^/]++)$#s', $pathinfo, $matches)) {
-                if ('GET' !== $canonicalMethod) {
-                    $allow[] = 'GET';
-                    goto not_commentaire_by_id;
-                }
-
-                return $this->mergeDefaults(array_replace($matches, array('_route' => 'commentaire_by_id')), array (  '_controller' => 'App\\Controller\\VideoCtrl::GetCommentById',));
-            }
-            not_commentaire_by_id:
+            not_buyVideoById:
 
         }
+
+        // getCommentById
+        if (0 === strpos($pathinfo, '/comment') && preg_match('#^/comment/(?P<id>[^/]++)$#s', $pathinfo, $matches)) {
+            if ('GET' !== $canonicalMethod) {
+                $allow[] = 'GET';
+                goto not_getCommentById;
+            }
+
+            return $this->mergeDefaults(array_replace($matches, array('_route' => 'getCommentById')), array (  '_controller' => 'App\\Controller\\VideoCtrl::getCommentById',));
+        }
+        not_getCommentById:
 
         // _twig_error_test
         if (0 === strpos($pathinfo, '/_error') && preg_match('#^/_error/(?P<code>\\d+)(?:\\.(?P<_format>[^/]++))?$#s', $pathinfo, $matches)) {
