@@ -9,7 +9,8 @@ use Doctrine\ORM\Query\Expr;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use App\Entity\User;
-use Psr\Log\LoggerInterface;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Doctrine\ORM\Query\ResultSetMapping;
 
 class UserCtrl extends Controller
 {
@@ -17,9 +18,7 @@ class UserCtrl extends Controller
 	 * @Route("user/register", name="enregistrement")
 	 * @Method({"POST"})
 	 */
-	public function register(LoggerInterface $logger,Request $request){
-        $request = Request::createFromGlobals();
-        $logger->info("!! request : ");
+	public function register(Request $request){
         //file_put_contents( 'debug' . date('_M_D_H,m,s',time()  ).'.log', var_export( $request, true));
        // $logger->info(var_dump($request->request));
 
@@ -44,7 +43,7 @@ class UserCtrl extends Controller
         $usr->setEmail($email);
         $usr->setPrenom($firstname);
         $usr->setNom($lastname);
-        $usr->setPsw($password);
+        $usr->setPsw(crypt ($password,$_ENV["SALT"]));
 
         if( $em->getRepository(User::class)
             ->findBy([
@@ -73,24 +72,53 @@ class UserCtrl extends Controller
 	}
 	
 	/**
-	 * @Route("/user/login", name="loginPost")
+	 * @Route("/user/login", name="login")
 	 * @Method({"POST"})
 	 */
-	public function loginPost(){
-        $request = Request::createFromGlobals();
+	public function login(Request $request){
 		$email = $request->request->get('email');
-		$password = $request->request->get('password');
-			//www.yasp.fr/user/login
+		$password = crypt($request->request->get('password'),$_ENV["SALT"]);
+
+        $em = $this->getDoctrine()->getManager();
+        $usr = $em->getRepository(User::class)
+            ->findOneBy([
+                'email' => $email
+            ]);
+
+        if(!$usr){
+            return new Response('User not found');
+        }
+
+        if ($usr->getPsw() != $password){
+            return new Response('Wrong password');
+        }
+        $session = new Session();
+        $session->start();
+        $session->set("usr",$usr);
+
+        return new Response('You are logged-in');
 	}
 	/**
-	 * @Route("/user/{id}/isLoggedIn", name="isLoggedIn")
-	 * @Method({"POST"})
+	 * @Route("/user/profile/{id}")
+	 * @Method({"GET"})
 	 */
-	public function isLoggedIn($id){
-        $request = Request::createFromGlobals();
-		$id = $request->request->get('iduser');
+	public function profile($id){
+	    $session = new Session();
+        $session->start();
 
-			//www.yasp.fr/user/67890/connecte
+        if(!$session->get("usr")){
+            return new Response('You must login.');
+        }
+
+        $em = $this->getDoctrine()->getManager();
+        $rsm = new ResultSetMapping();
+
+        //$query = $em->createNativeQuery('Select * from Video v, Paiement p where v.idVideo = p.idVideo and p.idRecipient = userId', $rsm);
+        $query = $em->createNativeQuery('Select * from Video v', $rsm);
+        $query->setParameter('userId',$id);
+        $userVideo=  $query->getResult();
+        file_put_contents("sqlTxt.txt",var_dump($userVideo));
+        return $this->render('all/profile.html.twig', ['videos' => $userVideo, "count"=>count($userVideo)]);
 	}
 	/**
 	 * @Route("/user/deconnexion", name="deconnexion")

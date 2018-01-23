@@ -67,20 +67,20 @@
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
-              <form>
+              <form action="/user/login" method="post">
                 <div class="modal-body">
                   <div class="form-group">
                     <label for="exampleInputEmail1">Email address</label>
-                    <input type="email" class="form-control" id="emailLogin" placeholder="Enter email">
+                    <input type="email" name="email" class="form-control" id="emailLogin" placeholder="Enter email">
                   </div>
                   <div class="form-group">
                     <label for="exampleInputPassword1">Password</label>
-                    <input type="password" class="form-control" id="passwordLogin" placeholder="Password">
+                    <input type="password" name="password" class="form-control" id="passwordLogin" placeholder="Password">
                   </div>
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                  <button type="button" class="btn btn-primary">Login</button>
+                  <button type="submit" class="btn btn-primary">Login</button>
                 </div>
               </form>
             </div>
