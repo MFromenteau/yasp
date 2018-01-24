@@ -27,6 +27,12 @@
               <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
             </form>
 
+              {% if usr and usr.idutilisateur %}
+                  <p>{{   usr.prenom }}{{ usr.nom }}</p>
+              <a href="/user/logout"><button type="button" class="btn btn-outline-danger" >
+                      Log Out
+                  </button></a>
+              {% else %}
             <div class="navbar-form navbar-right btn-group">
               <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#signinModal">
                 Sign in
@@ -34,6 +40,8 @@
               <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#signupModal">
                 Sign up
               </button>
+                {% endif %}
+
               <!--  Une fois connecté affiché =>
               <button type="button" class="btn btn-info">Profil</button>
               <button type="button" class="btn btn-danger">Disconnect</button>

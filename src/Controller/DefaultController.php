@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,6 +15,8 @@ class DefaultController extends Controller
      */
     public function indexAction(Request $request)
     {
+        $session = new Session();
+        $session->start();
         // replace this example code with whatever you need
         // $data = array(array('titre' => 'video 1', "description" => "bla bla bla video 1"), array('titre' => 'video 2', "description" => "bla bla bla video 2"), array('titre' => 'video 2', "description" => "bla bla bla video 2"), array('titre' => 'video 2', "description" => "bla bla bla video 2"), array('titre' => 'video 2', "description" => "bla bla bla video 2"));
 
@@ -34,8 +37,10 @@ class DefaultController extends Controller
             ->setMaxResults(3)// Add this line if you want to give a limit to the records (if all the ids exists then you would like to give a limit)
             ->getQuery()
             ->getResult();
-
-        return $this->render('all/index.html.twig', ['videos' => $random_video]);
+       // var_dump($session,true);
+        $usr = $session->get('usr');
+        var_export($usr,false);
+        return $this->render('all/index.html.twig', ['videos' => $random_video,"usr"=>$usr]);
     }
 
 }

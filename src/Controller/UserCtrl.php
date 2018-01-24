@@ -13,10 +13,13 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\ORM\Query\Expr;
 
+/**
+ * @Route("/user")
+ */
 class UserCtrl extends Controller
 {
 	/**
-	 * @Route("user/register", name="enregistrement")
+	 * @Route("/register", name="enregistrement")
 	 * @Method({"POST"})
 	 */
 	public function register(Request $request){
@@ -73,10 +76,12 @@ class UserCtrl extends Controller
 	}
 	
 	/**
-	 * @Route("/user/login", name="login")
+	 * @Route("/login", name="login")
 	 * @Method({"POST"})
 	 */
 	public function login(Request $request){
+        $session = new Session();
+        $session->start();
 		$email = $request->request->get('email');
 		$password = crypt($request->request->get('password'),$_ENV["SALT"]);
 
@@ -93,14 +98,12 @@ class UserCtrl extends Controller
         if ($usr->getPsw() != $password){
             return new Response('Wrong password');
         }
-        $session = new Session();
-        $session->start();
         $session->set("usr",$usr);
 
-        return new Response('You are logged-in');
+        return  $this->redirect($this->generateUrl('homepage'));
 	}
 	/**
-	 * @Route("/user/profile/{id}")
+	 * @Route("/profile/{id}")
 	 * @Method({"GET"})
 	 */
 	public function profile($id){
@@ -123,22 +126,19 @@ class UserCtrl extends Controller
             ->andWhere("p.idvideo = v.idvideo");
 
         $userVideo=  $qb->getQuery()->getResult();
-        return $this->render('all/profile.html.twig', ['videos' => $userVideo, "count"=>count($userVideo)]);
+        $usr = $session.get('usr');
+        return $this->render('all/profile.html.twig', ["usr"=>$usr,'videos' => $userVideo, "count"=>count($userVideo)]);
 	}
 	/**
-	 * @Route("/user/logout", name="deconnexion")
+	 * @Route("/logout", name="deconnexion")
 	 * @Method({"GET"})
 	 */
 	public function logout(){
         $session = new Session();
+        $session->start();
         $session->invalidate();
-	}
-	/**
-	 * @Route("/user/{id}", name="profil")
-	 * @Method({"GET"})
-	 */
-	public function getProfil($id){
-	 		//www.yasp.fr/user/67890/profil
+
+        return  $this->redirect($this->generateUrl('homepage'));
 	}
 }
 
