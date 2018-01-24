@@ -28,6 +28,9 @@ class VideoCtrl extends Controller
      * ou 404 si video absente
      */
 	public function getVideoById($id){
+        $session = new Session();
+        $session->start();
+
         $video = $this->getDoctrine()
             ->getRepository(Video::class)
             ->find($id);
@@ -42,7 +45,8 @@ class VideoCtrl extends Controller
                 'idvideo' => $id
             ]);
 
-        return $this->render('all/video.html.twig',array('video' => $video,'commentaries' => $commentaries));
+        $usr = $session->get('usr');
+        return $this->render('all/video.html.twig',array("usr"=>$usr,'video' => $video,'commentaries' => $commentaries));
 
 	}
 
