@@ -5,12 +5,13 @@ namespace App\Controller;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Doctrine\ORM\Query\Expr;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use App\Entity\User;
 use Symfony\Component\HttpFoundation\Session\Session;
+
 use Doctrine\ORM\Query\ResultSetMapping;
+use Doctrine\ORM\Query\Expr;
 
 class UserCtrl extends Controller
 {
@@ -67,7 +68,7 @@ class UserCtrl extends Controller
 
         //file_put_contents( 'logs/debugobj' . date('_M_D_H,m,s',time()  ).'.log', var_export( $usr, true));
 
-//        return new Response('User créé, id :'.$usr->getIdutilisateur());
+//        return new Response('User créé, id :'.$usr->getIdUtilisateur());
         return  $this->redirect($this->generateUrl('homepage'));
 	}
 	
@@ -111,22 +112,26 @@ class UserCtrl extends Controller
         }
 
         $em = $this->getDoctrine()->getManager();
-        $rsm = new ResultSetMapping();
+        $qb = $em->createQueryBuilder();;
 
         //$query = $em->createNativeQuery('Select * from Video v, Paiement p where v.idVideo = p.idVideo and p.idRecipient = userId', $rsm);
-        $query = $em->createNativeQuery('Select * from Video v', $rsm);
-        $query->setParameter('userId',$id);
-        $userVideo=  $query->getResult();
-        file_put_contents("sqlTxt.txt",var_dump($userVideo));
+        $qb->select('v')
+            ->from('App\Entity\User', 'u')
+            ->from('App\Entity\Video', 'v')
+            ->from('App\Entity\Paiement', 'p')
+            ->where("u.idutilisateur = p.idrecipient")
+            ->andWhere("p.idvideo = v.idvideo");
+
+        $userVideo=  $qb->getQuery()->getResult();
         return $this->render('all/profile.html.twig', ['videos' => $userVideo, "count"=>count($userVideo)]);
 	}
 	/**
-	 * @Route("/user/deconnexion", name="deconnexion")
-	 * @Method({"POST"})
+	 * @Route("/user/logout", name="deconnexion")
+	 * @Method({"GET"})
 	 */
 	public function logout(){
-
-			//www.yasp.fr/user/deconnexion
+        $session = new Session();
+        $session->invalidate();
 	}
 	/**
 	 * @Route("/user/{id}", name="profil")
