@@ -71,7 +71,7 @@ class UserCtrl extends Controller
 
         //file_put_contents( 'logs/debugobj' . date('_M_D_H,m,s',time()  ).'.log', var_export( $usr, true));
 
-//        return new Response('User créé, id :'.$usr->getIdUtilisateur());
+//        return new Response('User créé, id :'.$usr->getIdUtilisateur())
         return  $this->redirect($this->generateUrl('homepage'));
 	}
 	
@@ -98,6 +98,7 @@ class UserCtrl extends Controller
         if ($usr->getPsw() != $password){
             return new Response('Wrong password');
         }
+        $usr->setPsw("nope");
         $session->set("usr",$usr);
 
         return  $this->redirect($this->generateUrl('homepage'));

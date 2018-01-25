@@ -40,7 +40,7 @@ class DefaultController extends Controller
        // var_dump($session,true);
         $usr = $session->get('usr');
         var_export($usr,false);
-        return $this->render('all/index.html.twig', ['videos' => $random_video,"usr"=>$usr]);
+        return $this->render('all/index.html.twig', ['videos' => $random_video,"session"=>$session]);
     }
 
 }

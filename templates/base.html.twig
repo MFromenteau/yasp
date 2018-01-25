@@ -29,8 +29,8 @@
               <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
             </form>
 
-              {% if usr and usr.idutilisateur %}
-              <a href="/user/profile"><p>{{   usr.prenom }}{{ usr.nom }}</p></a>
+              {% if session.get("usr") and session.get("usr").idutilisateur %}
+              <a href="/user/profile"><p>{{   session.get("usr").prenom }}{{ session.get("usr").nom }}</p></a>
               <a href="/user/logout"><button type="button" class="btn btn-outline-danger" >
                       Log Out
                   </button></a>
@@ -41,8 +41,7 @@
               </button>
               <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#signupModal">
                 Sign up
-              </button>
-                {% endif %}
+              </button>{% endif %}
 
               <!--  Une fois connecté affiché =>
               <button type="button" class="btn btn-info">Profil</button>
@@ -55,6 +54,7 @@
 
         <div class="container">
             <div class="jumbotron">
+                {% if message is defined %} <p>{{ message }}</p>{% endif %}
                 {% block body %}{% endblock %}
             </div>
         </div>
