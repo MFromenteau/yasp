@@ -14,7 +14,7 @@
           <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
-          <a class="navbar-brand" href="#">YASP !</a>
+          <a class="navbar-brand" href="/">YASP !</a>
 
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="nav navbar-nav mr-auto navbar-left">
@@ -24,22 +24,25 @@
                 {% block links %}{% endblock %}
             </ul>
 
-            <form class="form-inline my-2 my-lg-0" role="search" style="padding-right: 10px;">
-              <input class="form-control mr-sm-2" type="text" placeholder="Search">
-              <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
-            </form>
+
 
               {% if session.get("usr") and session.get("usr").idutilisateur %}
               <ul class="nav navbar-nav navbar-right">
-                  <li style="margin: 0 5px 0 0;">
-                      <a href="/user/profile">
+                  <li class="nav-item">
+                      <form class="form-inline my-2 my-lg-0 nav-link" role="search" style="padding-right: 10px;">
+                          <input class="form-control mr-sm-2" type="text" placeholder="Search">
+                          <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
+                      </form>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link" href="/user/profile">
                           <div class="profileAvatar">
                               <img src="https://steamuserimages-a.akamaihd.net/ugc/868480752636433334/1D2881C5C9B3AD28A1D8852903A8F9E1FF45C2C8/">
                           </div>
                       </a>
                   </li>
-                  <li>
-                      <a href="/user/logout"><button type="button" class="btn btn-outline-danger" >Log Out</button></a>
+                  <li class="nav-item">
+                      <a class="nav-link" href="/user/logout"><button type="button" class="btn btn-outline-danger" >Log Out</button></a>
                   </li>
               </ul>
               {% else %}
