@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block links %}
+    <a class="nav-link" href="/user/profile">Achat<span class="sr-only">(current)</span></a>
+    <a class="nav-link" href="/user/library">Bibliothèque<span class="sr-only">(current)</span></a>
+{% endblock %}
+
+{% block body %}
+    <h1>Profil de {{usr.prenom }}{{ usr.nom }}</h1>
+
+    {% block main %}{% endblock %}
+
+{% endblock %}
+
+{% block stylesheets %}
+    <style>
+
+        .blurry:hover{
+            -webkit-transition: 0.1s -webkit-filter linear;
+            -webkit-filter:blur(1px);
+        }
+
+
+    </style>
+{% endblock %}
+
+{% block javascripts %}
+
+{% endblock %}
