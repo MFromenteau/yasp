@@ -1,5 +1,6 @@
 <?php
 
+
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -7,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Commentaire
  *
- * @ORM\Table(name="Commentaire", indexes={@ORM\Index(name="idVideo", columns={"idVideo"})})
+ * @ORM\Table(name="Commentaire", indexes={@ORM\Index(name="idVideo", columns={"idVideo"}), @ORM\Index(name="idUtilisateur", columns={"idUtilisateur"})})
  * @ORM\Entity
  */
 class Commentaire
@@ -20,23 +21,6 @@ class Commentaire
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $idcommentaire;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="message", type="text", nullable=false)
-     */
-    private $message;
-
-    /**
-     * @var \Video
-     *
-     * @ORM\ManyToOne(targetEntity="Video")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="idVideo", referencedColumnName="idVideo")
-     * })
-     */
-    private $idvideo;
 
     /**
      * @return int
@@ -71,6 +55,22 @@ class Commentaire
     }
 
     /**
+     * @return int
+     */
+    public function getIdutilisateur(): int
+    {
+        return $this->idutilisateur;
+    }
+
+    /**
+     * @param int $idutilisateur
+     */
+    public function setIdutilisateur(int $idutilisateur): void
+    {
+        $this->idutilisateur = $idutilisateur;
+    }
+
+    /**
      * @return Video
      */
     public function getIdvideo(): Video
@@ -85,6 +85,30 @@ class Commentaire
     {
         $this->idvideo = $idvideo;
     }
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="message", type="text", length=65535, nullable=false)
+     */
+    private $message;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="idUtilisateur", type="integer", nullable=false)
+     */
+    private $idutilisateur;
+
+    /**
+     * @var \Video
+     *
+     * @ORM\ManyToOne(targetEntity="Video")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="idVideo", referencedColumnName="idVideo")
+     * })
+     */
+    private $idvideo;
 
 
 }

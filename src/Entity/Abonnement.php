@@ -1,5 +1,6 @@
 <?php
 
+
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -20,27 +21,6 @@ class Abonnement
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $idabonnement;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="nom", type="text", length=65535, nullable=false)
-     */
-    private $nom;
-
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="duree", type="float", precision=10, scale=0, nullable=false)
-     */
-    private $duree;
-
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="prix", type="float", precision=10, scale=0, nullable=false)
-     */
-    private $prix;
 
     /**
      * @return int
@@ -105,6 +85,27 @@ class Abonnement
     {
         $this->prix = $prix;
     }
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="nom", type="string", length=50, nullable=false)
+     */
+    private $nom;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="duree", type="float", precision=10, scale=0, nullable=false)
+     */
+    private $duree;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="prix", type="float", precision=10, scale=0, nullable=false)
+     */
+    private $prix;
 
 
 }

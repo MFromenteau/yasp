@@ -1,5 +1,6 @@
 <?php
 
+
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -7,17 +8,35 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * User
  *
- * @ORM\Table(name="User")
+ * @ORM\Table(name="User", uniqueConstraints={@ORM\UniqueConstraint(name="email", columns={"email"})}, indexes={@ORM\Index(name="User_idUtilisateur_index", columns={"idUtilisateur"})})
  * @ORM\Entity
  */
 class User
 {
     /**
-     * @var string
+     * @var int
      *
-     * @ORM\Column(name="email", type="string", length=50, nullable=false)
+     * @ORM\Column(name="idUtilisateur", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $email;
+    private $idutilisateur;
+
+    /**
+     * @return int
+     */
+    public function getIdutilisateur(): int
+    {
+        return $this->idutilisateur;
+    }
+
+    /**
+     * @param int $idutilisateur
+     */
+    public function setIdutilisateur(int $idutilisateur): void
+    {
+        $this->idutilisateur = $idutilisateur;
+    }
 
     /**
      * @return string
@@ -36,30 +55,6 @@ class User
     }
 
     /**
-     * @return int
-     */
-    public function getIdutilisateur(): int
-    {
-        return $this->idutilisateur;
-    }
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="idUtilisateur", type="integer", options={"autoincrement":true})
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     * @ORM\Id
-     */
-    private $idutilisateur;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="prenom", type="text", length=65535, nullable=false)
-     */
-    private $prenom;
-
-    /**
      * @return string
      */
     public function getPrenom(): string
@@ -76,13 +71,6 @@ class User
     }
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="nom", type="text", length=65535, nullable=false)
-     */
-    private $nom;
-
-    /**
      * @return string
      */
     public function getNom(): string
@@ -97,6 +85,7 @@ class User
     {
         $this->nom = $nom;
     }
+
     /**
      * @return string
      */
@@ -116,7 +105,28 @@ class User
     /**
      * @var string
      *
-     * @ORM\Column(name="psw", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="email", type="string", length=50, nullable=false)
+     */
+    private $email;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="prenom", type="string", length=50, nullable=false)
+     */
+    private $prenom;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="nom", type="string", length=50, nullable=false)
+     */
+    private $nom;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="psw", type="string", length=255, nullable=false)
      */
     private $psw;
 

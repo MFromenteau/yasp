@@ -1,5 +1,6 @@
 <?php
 
+
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -22,33 +23,6 @@ class Abonnementhistorique
     private $idabonnementhistorique;
 
     /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="debut", type="date", nullable=false)
-     */
-    private $debut;
-
-    /**
-     * @var \Abonnement
-     *
-     * @ORM\ManyToOne(targetEntity="Abonnement")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="idAbonnement", referencedColumnName="idAbonnement")
-     * })
-     */
-    private $idabonnement;
-
-    /**
-     * @var \User
-     *
-     * @ORM\ManyToOne(targetEntity="User")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="idUtilisateur", referencedColumnName="idUtilisateur")
-     * })
-     */
-    private $idutilisateur;
-
-    /**
      * @return int
      */
     public function getIdabonnementhistorique(): int
@@ -67,17 +41,17 @@ class Abonnementhistorique
     /**
      * @return DateTime
      */
-    public function getDebut(): DateTime
+    public function getCreatedat(): DateTime
     {
-        return $this->debut;
+        return $this->createdat;
     }
 
     /**
-     * @param DateTime $debut
+     * @param DateTime $createdat
      */
-    public function setDebut(DateTime $debut): void
+    public function setCreatedat(DateTime $createdat): void
     {
-        $this->debut = $debut;
+        $this->createdat = $createdat;
     }
 
     /**
@@ -111,6 +85,33 @@ class Abonnementhistorique
     {
         $this->idutilisateur = $idutilisateur;
     }
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="createdAt", type="date", nullable=false)
+     */
+    private $createdat;
+
+    /**
+     * @var \Abonnement
+     *
+     * @ORM\ManyToOne(targetEntity="Abonnement")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="idAbonnement", referencedColumnName="idAbonnement")
+     * })
+     */
+    private $idabonnement;
+
+    /**
+     * @var \User
+     *
+     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="idUtilisateur", referencedColumnName="idUtilisateur")
+     * })
+     */
+    private $idutilisateur;
 
 
 }

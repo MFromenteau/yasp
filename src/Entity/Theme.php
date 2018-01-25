@@ -1,5 +1,6 @@
 <?php
 
+
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -7,54 +8,30 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Theme
  *
- * @ORM\Table(name="Theme")
+ * @ORM\Table(name="Theme", uniqueConstraints={@ORM\UniqueConstraint(name="label", columns={"label"})})
  * @ORM\Entity
  */
 class Theme
 {
     /**
-     * @var int
+     * @var string
      *
-     * @ORM\Column(name="label", type="integer", nullable=false)
+     * @ORM\Column(name="label", type="string", length=30, nullable=false)
      */
     private $label;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="idTheme", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @return string
      */
-    private $idtheme;
-
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     *
-     * @ORM\ManyToMany(targetEntity="Video", mappedBy="idtheme")
-     */
-    private $idvideo;
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->idvideo = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-
-    /**
-     * @return int
-     */
-    public function getLabel(): int
+    public function getLabel(): string
     {
         return $this->label;
     }
 
     /**
-     * @param int $label
+     * @param string $label
      */
-    public function setLabel(int $label): void
+    public function setLabel(string $label): void
     {
         $this->label = $label;
     }
@@ -91,6 +68,28 @@ class Theme
         $this->idvideo = $idvideo;
     }
 
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="idTheme", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $idtheme;
 
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\ManyToMany(targetEntity="Video", mappedBy="idtheme")
+     */
+    private $idvideo;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->idvideo = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
 }

@@ -1,5 +1,6 @@
 <?php
 
+
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -7,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Video
  *
- * @ORM\Table(name="Video")
+ * @ORM\Table(name="Video", uniqueConstraints={@ORM\UniqueConstraint(name="titre", columns={"titre"})})
  * @ORM\Entity
  */
 class Video
@@ -20,57 +21,6 @@ class Video
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $idvideo;
-
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="prix", type="float", precision=10, scale=0, nullable=false)
-     */
-    private $prix;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="titre", type="text", length=65535, nullable=false)
-     */
-    private $titre;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="description", type="text", length=65535, nullable=false)
-     */
-    private $description;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="url", type="text", length=65535, nullable=false)
-     */
-    private $url;
-
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     *
-     * @ORM\ManyToMany(targetEntity="Theme", inversedBy="idvideo")
-     * @ORM\JoinTable(name="taglist",
-     *   joinColumns={
-     *     @ORM\JoinColumn(name="idVideo", referencedColumnName="idVideo")
-     *   },
-     *   inverseJoinColumns={
-     *     @ORM\JoinColumn(name="idTheme", referencedColumnName="idTheme")
-     *   }
-     * )
-     */
-    private $idtheme;
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->idtheme = new \Doctrine\Common\Collections\ArrayCollection();
-    }
 
     /**
      * @return int
@@ -123,20 +73,18 @@ class Video
     /**
      * @return string
      */
-    public function getDescription(): string
+    public function getPath(): string
     {
-        return $this->description;
+        return $this->path;
     }
 
     /**
-     * @param string $description
+     * @param string $path
      */
-    public function setDescription(string $description): void
+    public function setPath(string $path): void
     {
-        $this->description = $description;
+        $this->path = $path;
     }
-
-
 
     /**
      * @return string
@@ -155,6 +103,22 @@ class Video
     }
 
     /**
+     * @return string
+     */
+    public function getDescription(): string
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param string $description
+     */
+    public function setDescription(string $description): void
+    {
+        $this->description = $description;
+    }
+
+    /**
      * @return \Doctrine\Common\Collections\Collection
      */
     public function getIdtheme(): \Doctrine\Common\Collections\Collection
@@ -170,5 +134,62 @@ class Video
         $this->idtheme = $idtheme;
     }
 
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="prix", type="float", precision=10, scale=0, nullable=false)
+     */
+    private $prix;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="titre", type="string", length=50, nullable=false)
+     */
+    private $titre;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="path", type="text", length=65535, nullable=false, options={"comment"="SOIT PATH SOIT URL"})
+     */
+    private $path;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="url", type="text", length=65535, nullable=false, options={"comment"="SOIT PATH SOIT URL"})
+     */
+    private $url;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="description", type="text", length=65535, nullable=false)
+     */
+    private $description;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\ManyToMany(targetEntity="Theme", inversedBy="idvideo")
+     * @ORM\JoinTable(name="taglist",
+     *   joinColumns={
+     *     @ORM\JoinColumn(name="idVideo", referencedColumnName="idVideo")
+     *   },
+     *   inverseJoinColumns={
+     *     @ORM\JoinColumn(name="idTheme", referencedColumnName="idTheme")
+     *   }
+     * )
+     */
+    private $idtheme;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->idtheme = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
 }
