@@ -124,9 +124,9 @@ class UserCtrl extends Controller
             ->where("u.idutilisateur = p.idrecipient")
             ->andWhere("u.idutilisateur = ".$session->get("usr")->getIdutilisateur());
 
-        $achat=  $qb->getQuery()->getResult();
+        $orders=  $qb->getQuery()->getResult();
         $usr = $session->get('usr');
-        return $this->render('all/user/achat.html.twig', ["usr"=>$usr,'videos' => $achat, "count"=>count($achat)]);
+        return $this->render('all/user/achat.html.twig', ["usr"=>$usr,'orders' => $orders]);
     }
     /**
      * @Route("/library")
