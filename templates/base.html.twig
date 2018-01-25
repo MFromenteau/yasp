@@ -6,6 +6,7 @@
         {% block stylesheets %}{% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+        <link href="https://fonts.googleapis.com/css?family=Arimo" rel="stylesheet">
         <script src="https://use.fontawesome.com/849aa90f1f.js"></script>
     </head>
     <body>
@@ -19,8 +20,8 @@
             <ul class="nav navbar-nav mr-auto navbar-left">
               <li class="nav-item active">
                 <a class="nav-link" href="/">Home<span class="sr-only">(current)</span></a>
-                  {% block links %}{% endblock %}
               </li>
+                {% block links %}{% endblock %}
             </ul>
 
             <form class="form-inline my-2 my-lg-0" role="search" style="padding-right: 10px;">
@@ -155,6 +156,7 @@
 
         <style>
           body{
+              font-family: 'Arimo', sans-serif;
               background-color: #f2f4f7 !important;
           }
           .jumbotron{

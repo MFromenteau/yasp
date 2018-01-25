@@ -124,9 +124,9 @@ class UserCtrl extends Controller
             ->where("u.idutilisateur = p.idrecipient")
             ->andWhere("u.idutilisateur = ".$session->get("usr")->getIdutilisateur());
 
-        $achat=  $qb->getQuery()->getResult();
+
         $usr = $session->get('usr');
-        return $this->render('all/user/achat.html.twig', ["usr"=>$usr,'videos' => $achat, "count"=>count($achat)]);
+        return $this->render('all/user/profile.html.twig', ["usr"=>$usr]);
     }
     /**
      * @Route("/library")
@@ -155,6 +155,32 @@ class UserCtrl extends Controller
         $userVideo=  $qb->getQuery()->getResult();
         $usr = $session->get('usr');
         return $this->render('all/user/library.html.twig', ["usr"=>$usr,'videos' => $userVideo, "count"=>count($userVideo)]);
+    }
+    /**
+     * @Route("/orders")
+     * @Method({"GET"})
+     */
+    public function orders(){
+        $session = new Session();
+        $session->start();
+
+        if(!$session->get("usr")){
+            return new Response('You must login.');
+        }
+
+        $em = $this->getDoctrine()->getManager();
+        $qb = $em->createQueryBuilder();;
+
+        //$query = $em->createNativeQuery('Select * from Video v, Paiement p where v.idVideo = p.idVideo and p.idRecipient = userId', $rsm);
+        $qb->select('p')
+            ->from('App\Entity\User', 'u')
+            ->from('App\Entity\Paiement', 'p')
+            ->where("u.idutilisateur = p.idrecipient")
+            ->andWhere("u.idutilisateur = ".$session->get("usr")->getIdutilisateur());
+
+        $achat=  $qb->getQuery()->getResult();
+        $usr = $session->get('usr');
+        return $this->render('all/user/Orders.html.twig', ["usr"=>$usr,'videos' => $achat, "count"=>count($achat)]);
     }
 	/**
 	 * @Route("/logout", name="deconnexion")
