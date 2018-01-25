@@ -29,11 +29,19 @@
               <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
             </form>
 
-              {% if session.get("usr") and session.get("usr").idutilisateur %}
-              <a href="/user/profile"><p>{{   session.get("usr").prenom }}{{ session.get("usr").nom }}</p></a>
-              <a href="/user/logout"><button type="button" class="btn btn-outline-danger" >
-                      Log Out
-                  </button></a>
+              {% if usr and usr.idutilisateur %}
+              <ul class="nav navbar-nav navbar-right">
+                  <li style="margin: 0 5px 0 0;">
+                      <a href="/user/profile">
+                          <div class="profileAvatar">
+                              <img src="https://steamuserimages-a.akamaihd.net/ugc/868480752636433334/1D2881C5C9B3AD28A1D8852903A8F9E1FF45C2C8/">
+                          </div>
+                      </a>
+                  </li>
+                  <li>
+                      <a href="/user/logout"><button type="button" class="btn btn-outline-danger" >Log Out</button></a>
+                  </li>
+              </ul>
               {% else %}
             <div class="navbar-form navbar-right btn-group">
               <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#signinModal">
@@ -41,12 +49,8 @@
               </button>
               <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#signupModal">
                 Sign up
-              </button>{% endif %}
-
-              <!--  Une fois connecté affiché =>
-              <button type="button" class="btn btn-info">Profil</button>
-              <button type="button" class="btn btn-danger">Disconnect</button>
-              -->
+              </button>
+                {% endif %}
             </div>
           </div>
 
@@ -54,7 +58,6 @@
 
         <div class="container">
             <div class="jumbotron">
-                {% if message is defined %} <p>{{ message }}</p>{% endif %}
                 {% block body %}{% endblock %}
             </div>
         </div>
@@ -161,6 +164,24 @@
           }
           .jumbotron{
               background-color: #11ffee00 !important;
+          }
+          .profileAvatar {
+              width: 40px;
+              height: 40px;
+              border-radius: 50%;
+              box-shadow:
+                      inset 0 0 0 2px rgba(255,255,255,0.6),
+                      0 1px 1px rgba(0,0,0,0.1);
+              background-color: transparent !important;
+              z-index: 999;
+          }
+          .profileAvatar img {
+              border-radius: inherit;
+              width: inherit;
+              height: inherit;
+              display: block;
+              position: relative;
+              z-index: 998;
           }
         </style>
 
