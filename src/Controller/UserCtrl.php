@@ -127,7 +127,7 @@ class UserCtrl extends Controller
 
 
         $usr = $session->get('usr');
-        return $this->render('all/user/profile.html.twig', ["usr"=>$usr]);
+        return $this->render('all/user/profile.html.twig', ["session"=>$session]);
     }
     /**
      * @Route("/library")
@@ -155,7 +155,7 @@ class UserCtrl extends Controller
 
         $userVideo=  $qb->getQuery()->getResult();
         $usr = $session->get('usr');
-        return $this->render('all/user/library.html.twig', ["usr"=>$usr,'videos' => $userVideo, "count"=>count($userVideo)]);
+        return $this->render('all/user/library.html.twig', ["session"=>$session,'videos' => $userVideo, "count"=>count($userVideo)]);
     }
     /**
      * @Route("/orders")
@@ -181,7 +181,7 @@ class UserCtrl extends Controller
 
         $achat=  $qb->getQuery()->getResult();
         $usr = $session->get('usr');
-        return $this->render('all/user/Orders.html.twig', ["usr"=>$usr,'videos' => $achat, "count"=>count($achat)]);
+        return $this->render('all/user/Orders.html.twig', ["session"=>$session,'videos' => $achat, "count"=>count($achat)]);
     }
 	/**
 	 * @Route("/logout", name="deconnexion")
