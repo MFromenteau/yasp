@@ -71,7 +71,7 @@ class UserCtrl extends Controller
 
         //file_put_contents( 'logs/debugobj' . date('_M_D_H,m,s',time()  ).'.log', var_export( $usr, true));
 
-//        return new Response('User créé, id :'.$usr->getIdUtilisateur());
+//        return new Response('User créé, id :'.$usr->getIdUtilisateur())
         return  $this->redirect($this->generateUrl('homepage'));
 	}
 	
@@ -98,6 +98,7 @@ class UserCtrl extends Controller
         if ($usr->getPsw() != $password){
             return new Response('Wrong password');
         }
+        $usr->setPsw("nope");
         $session->set("usr",$usr);
 
         return  $this->redirect($this->generateUrl('homepage'));
@@ -126,7 +127,7 @@ class UserCtrl extends Controller
 
 
         $usr = $session->get('usr');
-        return $this->render('all/user/profile.html.twig', ["usr"=>$usr]);
+        return $this->render('all/user/profile.html.twig', ["session"=>$session]);
     }
     /**
      * @Route("/library")
@@ -154,7 +155,7 @@ class UserCtrl extends Controller
 
         $userVideo=  $qb->getQuery()->getResult();
         $usr = $session->get('usr');
-        return $this->render('all/user/library.html.twig', ["usr"=>$usr,'videos' => $userVideo, "count"=>count($userVideo)]);
+        return $this->render('all/user/library.html.twig', ["session"=>$session,'videos' => $userVideo, "count"=>count($userVideo)]);
     }
     /**
      * @Route("/orders")
@@ -180,7 +181,7 @@ class UserCtrl extends Controller
 
         $achat=  $qb->getQuery()->getResult();
         $usr = $session->get('usr');
-        return $this->render('all/user/Orders.html.twig', ["usr"=>$usr,'videos' => $achat, "count"=>count($achat)]);
+        return $this->render('all/user/Orders.html.twig', ["session"=>$session,'videos' => $achat, "count"=>count($achat)]);
     }
 	/**
 	 * @Route("/logout", name="deconnexion")
