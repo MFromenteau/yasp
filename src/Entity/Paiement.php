@@ -4,6 +4,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use DateTime;
 
 /**
  * Paiement
@@ -87,33 +88,33 @@ class Paiement
     }
 
     /**
-     * @return User
+     * @return \User
      */
-    public function getIdrecipient(): User
+    public function getIdrecipient(): \User
     {
         return $this->idrecipient;
     }
 
     /**
-     * @param User $idrecipient
+     * @param \User $idrecipient
      */
-    public function setIdrecipient(User $idrecipient): void
+    public function setIdrecipient(\User $idrecipient): void
     {
         $this->idrecipient = $idrecipient;
     }
 
     /**
-     * @return Video
+     * @return \Video
      */
-    public function getIdvideo(): Video
+    public function getIdvideo(): \Video
     {
         return $this->idvideo;
     }
 
     /**
-     * @param Video $idvideo
+     * @param \Video $idvideo
      */
-    public function setIdvideo(Video $idvideo): void
+    public function setIdvideo(\Video $idvideo): void
     {
         $this->idvideo = $idvideo;
     }
