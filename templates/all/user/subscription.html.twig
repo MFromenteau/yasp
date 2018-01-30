@@ -3,8 +3,8 @@
 {% block main %}
     <h2>Orders</h2>
     <ul>
-    {% for o in orders %}
-        <li>{{ o.createdAt.format("d/m") }} - {{ o.somme }} - {{ o.description }}</li>
+    {% for abo in abohisto %}
+        <li>{{abo.abonnementhistorique->createdat.format("d/m/Y")}}</li>
     {% endfor %}
     </ul>
 {% endblock %}

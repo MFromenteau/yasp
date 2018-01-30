@@ -26,7 +26,7 @@
 
 
 
-              {% if session.get("usr") and session.get("usr").idutilisateur %}
+              {% if session is defined and session.get("usr") is defined and session.get("usr").idutilisateur is defined %}
               <ul class="nav navbar-nav navbar-right">
                   <li class="nav-item">
                       <form class="form-inline my-2 my-lg-0 nav-link" role="search" style="padding-right: 10px;">
@@ -87,11 +87,13 @@
                 <div class="modal-body">
                   <div class="form-group">
                     <label for="exampleInputEmail1">Email address</label>
-                    <input type="email" name="email" class="form-control" id="emailLogin" placeholder="Enter email">
+                    <input type="email" name="email" class="form-control" id="emailLogin" placeholder="Enter email"/>
+                      <p id="mailError" hidden="true">Invalid Mail</p>
                   </div>
                   <div class="form-group">
                     <label for="exampleInputPassword1">Password</label>
-                    <input type="password" name="password" class="form-control" id="passwordLogin" placeholder="Password">
+                    <input type="password" name="password" class="form-control" id="passwordLogin" placeholder="Password"/>
+                    <p id="passwordError" hidden="true">Invalid Password</p>
                   </div>
                 </div>
                 <div class="modal-footer">
@@ -118,7 +120,8 @@
                   <div class="row">
                     <div class="col">
                       <label for="email">Email</label>
-                      <input id="email" name="email" type="email" class="form-control" placeholder="Email">
+                      <input id="email" name="email" type="email" class="form-control" id="emailRegister" placeholder="Email">
+                        <p id="regMailError" hidden="true">Invalid Mail</p>
                     </div>
                     <div class="col">
                       <label for="confEmail">Confirm Email</label>
@@ -140,7 +143,8 @@
                   <div class="row">
                     <div class="col">
                       <label for="password">Password</label>
-                      <input id="password" name="password" type="password" class="form-control" aria-describedby="passwordHelpInline" placeholder="Password">
+                      <input id="password" name="password" type="password" class="form-control" aria-describedby="passwordHelpInline" id= "passwordRegister" placeholder="Password">
+                        <p id="regPasswordError" hidden="true">Invalid Password</p>
                       <small id="passwordHelpInline" class="form-text text-muted">
                         Must be 8-20 characters long.
                       </small>
@@ -193,5 +197,7 @@
         <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+        <script src="Verification.js"></script>
+
     </body>
 </html>

@@ -18,6 +18,16 @@ use Doctrine\ORM\Query\Expr;
  */
 class UserCtrl extends Controller
 {
+
+    public function isLoggedIn($session){
+
+        if(!$session->get("usr")){
+            return $this->render('all/message.html.twig', ["message"=>"You must login to access this page"]);
+        }
+
+        return "OK";
+    }
+
 	/**
 	 * @Route("/register", name="enregistrement")
 	 * @Method({"POST"})
@@ -103,6 +113,19 @@ class UserCtrl extends Controller
 
         return  $this->redirect($this->generateUrl('homepage'));
 	}
+
+    /**
+     * @Route("/logout", name="deconnexion")
+     * @Method({"GET"})
+     */
+    public function logout(){
+        $session = new Session();
+        $session->start();
+        $session->invalidate();
+
+        return  $this->redirect($this->generateUrl('homepage'));
+    }
+
     /**
      * @Route("/profile")
      * @Method({"GET"})
@@ -111,24 +134,11 @@ class UserCtrl extends Controller
         $session = new Session();
         $session->start();
 
-        if(!$session->get("usr")){
-            return new Response('You must login.');
-        }
+        if(UserCtrl::isLoggedIn($session) != "OK"){return UserCtrl::isLoggedIn($session);}
 
-        $em = $this->getDoctrine()->getManager();
-        $qb = $em->createQueryBuilder();;
-
-        //$query = $em->createNativeQuery('Select * from Video v, Paiement p where v.idVideo = p.idVideo and p.idRecipient = userId', $rsm);
-        $qb->select('p')
-            ->from('App\Entity\User', 'u')
-            ->from('App\Entity\Paiement', 'p')
-            ->where("u.idutilisateur = p.idrecipient")
-            ->andWhere("u.idutilisateur = ".$session->get("usr")->getIdutilisateur());
-
-
-        $usr = $session->get('usr');
         return $this->render('all/user/profile.html.twig', ["session"=>$session]);
     }
+
     /**
      * @Route("/library")
      * @Method({"GET"})
@@ -137,9 +147,7 @@ class UserCtrl extends Controller
         $session = new Session();
         $session->start();
 
-        if(!$session->get("usr")){
-            return new Response('You must login.');
-        }
+        if(UserCtrl::isLoggedIn($session) != "OK"){return UserCtrl::isLoggedIn($session);}
 
         $em = $this->getDoctrine()->getManager();
         $qb = $em->createQueryBuilder();;
@@ -157,6 +165,7 @@ class UserCtrl extends Controller
         $usr = $session->get('usr');
         return $this->render('all/user/library.html.twig', ["session"=>$session,'videos' => $userVideo, "count"=>count($userVideo)]);
     }
+
     /**
      * @Route("/orders")
      * @Method({"GET"})
@@ -165,12 +174,10 @@ class UserCtrl extends Controller
         $session = new Session();
         $session->start();
 
-        if(!$session->get("usr")){
-            return new Response('You must login.');
-        }
+        if(UserCtrl::isLoggedIn($session) != "OK"){return UserCtrl::isLoggedIn($session);}
 
         $em = $this->getDoctrine()->getManager();
-        $qb = $em->createQueryBuilder();;
+        $qb = $em->createQueryBuilder();
 
         //$query = $em->createNativeQuery('Select * from Video v, Paiement p where v.idVideo = p.idVideo and p.idRecipient = userId', $rsm);
         $qb->select('p')
@@ -179,20 +186,36 @@ class UserCtrl extends Controller
             ->where("u.idutilisateur = p.idrecipient")
             ->andWhere("u.idutilisateur = ".$session->get("usr")->getIdutilisateur());
 
+
+
         $achat=  $qb->getQuery()->getResult();
         $usr = $session->get('usr');
-        return $this->render('all/user/Orders.html.twig', ["session"=>$session,'videos' => $achat, "count"=>count($achat)]);
+        return $this->render('all/user/Orders.html.twig', ["session"=>$session,'orders' => $achat, "count"=>count($achat)]);
     }
-	/**
-	 * @Route("/logout", name="deconnexion")
-	 * @Method({"GET"})
-	 */
-	public function logout(){
+
+    /**
+     * @Route("/subscription")
+     * @Method({"GET"})
+     */
+    public function subscription() {
         $session = new Session();
         $session->start();
-        $session->invalidate();
 
-        return  $this->redirect($this->generateUrl('homepage'));
-	}
+        if(UserCtrl::isLoggedIn($session) != "OK"){return UserCtrl::isLoggedIn($session);}
+
+        //Preparing the tool to build a dql->sql query
+        $em = $this->getDoctrine()->getManager();
+        $qb = $em->createQueryBuilder();
+
+        $qb->select('ah', 'ajah')
+            ->from('App\Entity\Abonnement', 'a')
+            ->from('App\Entity\Abonnementhistorique', 'ah')
+            ->join("ah.idabonnement","ajah")
+            ->where("ah.idutilisateur = ".$session->get("usr")->getIdutilisateur());
+
+        $abo=  $qb->getQuery()->getResult();
+        file_put_contents("abo.txt",var_export($abo,true));
+        return $this->render('all/user/subscription.html.twig', ["session"=>$session,'abohisto' => $abo]);
+    }
 }
 

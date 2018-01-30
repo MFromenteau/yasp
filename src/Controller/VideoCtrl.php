@@ -130,8 +130,28 @@ class VideoCtrl extends Controller
      * @param $id
      */
 	public function getAllCommentByVideoId($id){
+        $session = new Session();
+        $session->start();
 
-	}
+        $em = $this->getDoctrine()->getManager();
+        $qb = $em->createQueryBuilder();
+
+        $qb->select('v')
+            ->addSelect('c')
+            ->addSelect('u')
+            ->addSelect('i')
+            ->join('e.comments', 'c')
+            ->join('c.user', 'u')
+            ->join('u.infos', 'i')
+            ->from('App\Entity\User', 'u')
+            ->from('App\Entity\Video', 'v')
+            ->from('App\Entity\Paiement', 'p')
+            ->where("u.idutilisateur = p.idrecipient")
+            ->andWhere("p.idvideo = v.idvideo")
+            ->andWhere("u.idutilisateur = ".$session->get("usr")->getIdutilisateur());
+
+        return $session;
+    }
 
     /**
      * @Route("/comment/{id}", name="getCommentById")
