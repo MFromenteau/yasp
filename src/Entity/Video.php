@@ -192,4 +192,28 @@ class Video
         $this->idtheme = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="createdAt", type="datetime", nullable=false)
+     */
+    private $createdat;
+
+    /**
+     * @return \DateTime
+     */
+    public function getCreatedat()
+    {
+        return $this->createdat;
+    }
+
+    /**
+     * @param \DateTime $createdat
+     */
+    public function setCreatedat($createdat)
+    {
+        $this->createdat = $createdat;
+    }
+
+
 }
