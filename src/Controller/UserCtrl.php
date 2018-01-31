@@ -21,7 +21,7 @@ class UserCtrl extends Controller
 
     public static function isLoggedIn($session,$ctrl){
 
-        if(!$session->get("usr")){
+        if(!$session || !$session->get("usr")){
             return $ctrl->render('all/message.html.twig', ["message"=>"You must login to access this page"]);
         }
 
@@ -150,7 +150,7 @@ class UserCtrl extends Controller
         if(UserCtrl::isLoggedIn($session,$this) != "OK"){return UserCtrl::isLoggedIn($session,$this);}
 
         $em = $this->getDoctrine()->getManager();
-        $qb = $em->createQueryBuilder();;
+        $qb = $em->createQueryBuilder();
 
         //$query = $em->createNativeQuery('Select * from Video v, Paiement p where v.idVideo = p.idVideo and p.idRecipient = userId', $rsm);
         $qb->select('v')

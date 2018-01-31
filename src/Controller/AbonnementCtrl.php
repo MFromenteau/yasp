@@ -15,38 +15,38 @@ use Symfony\Component\HttpFoundation\Session\Session;
 class AbonnementCtrl extends Controller
 {
     /**
-     * @Route("/", name="subpage")
+     * @Route("/subscribe", name="subpage")
      * @Method({"GET"})
-     *
-     *
      */
-    public function chosePage(){
+    public function selectionPage(){
         //This is the page allowing to select the desired subsciption
         $session = new Session();
         $session->start();
 
-        if(UserCtrl::isLoggedIn($session,$this)){return UserCtrl::IsLoggedIn($session,$this);}
+        if(UserCtrl::isLoggedIn($session,$this) != "OK"){return UserCtrl::IsLoggedIn($session,$this);}
 
-        return $this->render("all/abonnement/chose.html.twig");
-        //www.yasp.fr/abbonnement/user/67890/souscription
+        $em = $this->getDoctrine()->getManager();
+        $qb = $em->createQueryBuilder();
+        $qb->select('a')
+            ->from("App\Entity\Abonnement",'a');
+        $a = $qb->getQuery()->getResult();
+
+        return $this->render("all/abonnement/abonnement.html.twig",['abos'=>$a,'session'=>$session]);
     }
 
     /**
-     * @Route("/subscription/subscribe", name="souscription")
-     * @Method({"GET"})
-     * @param $id
-     * @param Request $request
+     * @Route("/subscribe/{idAbo}", name="souscription")
+     * @Method({"POST"})
      */
-    public function souscrit($id, Request $request){
+    public function souscrit($idAbo,Request $request){
         $codeAbo = $request->request->get('codeAbo');
 
         //www.yasp.fr/abbonnement/user/67890/souscription
     }
 
     /**
-     * @Route("/abonnement/user/{id}/annulation", name="annulation_abo")
+     * @Route("/unsubscribe", name="annulation_abo")
      * @Method({"POST"})
-     * @param $id
      */
 	public function annule($id){
 
