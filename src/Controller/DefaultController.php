@@ -37,9 +37,7 @@ class DefaultController extends Controller
             ->setMaxResults(3)// Add this line if you want to give a limit to the records (if all the ids exists then you would like to give a limit)
             ->getQuery()
             ->getResult();
-       // var_dump($session,true);
-        $usr = $session->get('usr');
-        var_export($usr,false);
+
         return $this->render('all/index.html.twig', ['videos' => $random_video,"session"=>$session]);
     }
 

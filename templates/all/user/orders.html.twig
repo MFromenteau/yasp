@@ -1,7 +1,7 @@
 {% extends '/all/user/profil_base.html.twig' %}
 
 {% block main %}
-    <h2>Orders</h2>
+    <h2>Your Orders</h2>
     <ul>
     {% for o in orders %}
         <li>{{ o.createdAt.format("d/m") }} - {{ o.somme }} - {{ o.description }}</li>
