@@ -1,11 +1,58 @@
 {% extends '/all/user/profil_base.html.twig' %}
 
 {% block main %}
-    <h2>Orders</h2>
+    {% if currAbo != null %}
+        <h2>Your current subscription</h2>
+        <p>{{currAbo.createdAt.format("d/m/Y")}} - {{currAbo.idAbonnement.nom}} - {{currAbo.idAbonnement.prix}}€</p>
+
+        {% if trial %}<a href="/sub/unsubscribe" class="btn btn-outline-danger" >Cancel Subscription</a>
+        {% endif %}
+    {% else %}
+        <p>You don't have any current subscription yet</p>
+        <a href="/sub/subscribe" class="btn btn-outline-warning" >Cancel Subscription</a>
+    {% endif %}
+    <h2>Your past subscriptions</h2>
     <ul>
     {% for abo in abohisto %}
-        <li>{{abo.abonnementhistorique->createdat.format("d/m/Y")}}</li>
+        <li><p>{{abo.createdAt.format("d/m/Y")}} - {{abo.idAbonnement.nom}} - {{abo.idAbonnement.prix}}€</p></li>
     {% endfor %}
+        <!-- abonnement will take this form, to access to its attribute it's simply abo.[atribute]:
+        array (
+  0 =>
+  App\Entity\Abonnementhistorique::__set_state(array(
+     'idabonnementhistorique' => 1,
+     'createdat' =>
+    DateTime::__set_state(array(
+       'date' => '2018-01-28 00:00:00.000000',
+       'timezone_type' => 3,
+       'timezone' => 'UTC',
+    )),
+     'idabonnement' =>
+    App\Entity\Abonnement::__set_state(array(
+       'idabonnement' => 2,
+       'nom' => 'Weekly',
+       'duree' => 7.0,
+       'prix' => 30.0,
+    )),
+     'idutilisateur' =>
+    Proxies\__CG__\App\Entity\User::__set_state(array(
+       '__initializer__' =>
+      Closure::__set_state(array(
+      )),
+       '__cloner__' =>
+      Closure::__set_state(array(
+      )),
+       '__isInitialized__' => false,
+       'idutilisateur' => 9,
+       'email' => NULL,
+       'prenom' => NULL,
+       'nom' => NULL,
+       'psw' => NULL,
+       'urlAvatar' => NULL,
+    )),
+  )),
+)
+        -->
     </ul>
 {% endblock %}
 

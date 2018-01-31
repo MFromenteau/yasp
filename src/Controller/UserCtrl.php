@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use App\Entity\User;
 use Symfony\Component\HttpFoundation\Session\Session;
-
+use DateTime;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\ORM\Query\Expr;
 
@@ -102,11 +102,11 @@ class UserCtrl extends Controller
             ]);
 
         if(!$usr){
-            return new Response('User not found');
+            return $this->render('all/message.html.twig',['message'=>'User not found']);
         }
 
         if ($usr->getPsw() != $password){
-            return new Response('Wrong password');
+            return $this->render('all/message.html.twig',['message'=>'Wrong password']);
         }
         $usr->setPsw("nope");
         $session->set("usr",$usr);
@@ -214,8 +214,34 @@ class UserCtrl extends Controller
             ->where("ah.idutilisateur = ".$session->get("usr")->getIdutilisateur());
 
         $abo=  $qb->getQuery()->getResult();
-        file_put_contents("abo.txt",var_export($abo,true));
-        return $this->render('all/user/subscription.html.twig', ["session"=>$session,'abohisto' => $abo]);
+        $currAbo = null;
+        $trial = false;
+
+        $qb = $em->createQueryBuilder();
+        $qb->select('a')
+            ->from('App\Entity\Abonnement', 'a')
+            ->where('a.nom LIKE \'%trial%\'')
+            ->andWhere('a.nom LIKE \'%Trial%\'');
+        $trials=  $qb->getQuery()->getResult();
+
+        foreach ($abo as $val){
+           $endDate = date_create($val->getCreatedat()->format('d-m-Y'))->add(date_interval_create_from_date_string($val->getIdabonnement()->getDuree().' days'));
+           if( date_create()  <= $endDate){
+                $currAbo = $val;
+                //Hard coded
+                if(in_array($currAbo->getIdabonnement(),$trials )){
+                    $trial = true;
+                }
+           }
+        }
+
+        unset($abo[array_search($currAbo,$abo)]);
+
+        return $this->render('all/user/subscription.html.twig',
+            ["session"=>$session,
+                'abohisto' => $abo,
+                'currAbo'=>$currAbo,
+                'trial'=>$trial]);
     }
 }
 
