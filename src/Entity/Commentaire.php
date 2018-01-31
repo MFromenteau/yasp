@@ -71,17 +71,17 @@ class Commentaire
     }
 
     /**
-     * @return Video
+     * @return int
      */
-    public function getIdvideo(): Video
+    public function getIdvideo(): int
     {
         return $this->idvideo;
     }
 
     /**
-     * @param Video $idvideo
+     * @param int $idvideo
      */
-    public function setIdvideo(Video $idvideo): void
+    public function setIdvideo(int $idvideo): void
     {
         $this->idvideo = $idvideo;
     }
@@ -101,12 +101,9 @@ class Commentaire
     private $idutilisateur;
 
     /**
-     * @var \Video
+     * @var int
      *
-     * @ORM\ManyToOne(targetEntity="Video")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="idVideo", referencedColumnName="idVideo")
-     * })
+     * @ORM\Column(name="idVideo", type="integer", nullable=false)
      */
     private $idvideo;
 
