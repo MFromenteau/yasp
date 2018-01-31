@@ -19,10 +19,10 @@ use Doctrine\ORM\Query\Expr;
 class UserCtrl extends Controller
 {
 
-    public function isLoggedIn($session){
+    public static function isLoggedIn($session,$ctrl){
 
         if(!$session->get("usr")){
-            return $this->render('all/message.html.twig', ["message"=>"You must login to access this page"]);
+            return $ctrl->render('all/message.html.twig', ["message"=>"You must login to access this page"]);
         }
 
         return "OK";
@@ -134,7 +134,7 @@ class UserCtrl extends Controller
         $session = new Session();
         $session->start();
 
-        if(UserCtrl::isLoggedIn($session) != "OK"){return UserCtrl::isLoggedIn($session);}
+        if(UserCtrl::isLoggedIn($session,$this) != "OK"){return UserCtrl::isLoggedIn($session,$this);}
 
         return $this->render('all/user/profile.html.twig', ["session"=>$session]);
     }
@@ -147,7 +147,7 @@ class UserCtrl extends Controller
         $session = new Session();
         $session->start();
 
-        if(UserCtrl::isLoggedIn($session) != "OK"){return UserCtrl::isLoggedIn($session);}
+        if(UserCtrl::isLoggedIn($session,$this) != "OK"){return UserCtrl::isLoggedIn($session,$this);}
 
         $em = $this->getDoctrine()->getManager();
         $qb = $em->createQueryBuilder();;
@@ -174,7 +174,7 @@ class UserCtrl extends Controller
         $session = new Session();
         $session->start();
 
-        if(UserCtrl::isLoggedIn($session) != "OK"){return UserCtrl::isLoggedIn($session);}
+        if(UserCtrl::isLoggedIn($session,$this) != "OK"){return UserCtrl::isLoggedIn($session,$this);}
 
         $em = $this->getDoctrine()->getManager();
         $qb = $em->createQueryBuilder();
@@ -201,7 +201,7 @@ class UserCtrl extends Controller
         $session = new Session();
         $session->start();
 
-        if(UserCtrl::isLoggedIn($session) != "OK"){return UserCtrl::isLoggedIn($session);}
+        if(UserCtrl::isLoggedIn($session,$this) != "OK"){return UserCtrl::isLoggedIn($session,$this);}
 
         //Preparing the tool to build a dql->sql query
         $em = $this->getDoctrine()->getManager();

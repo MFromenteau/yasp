@@ -7,52 +7,41 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
 
+/**
+ * @Route("/subscription")
+ */
 class AbonnementCtrl extends Controller
 {
     /**
-     * @Route("/abonnement/user/{id}", name="abonnement")
+     * @Route("/", name="subpage")
      * @Method({"GET"})
-     * @param $id
+     *
+     *
      */
-	public function getAbo($id){
+    public function chosePage(){
+        //This is the page allowing to select the desired subsciption
+        $session = new Session();
+        $session->start();
 
-			//www.yasp.fr/abbonnement/user/67890
-	}
+        if(UserCtrl::isLoggedIn($session,$this)){return UserCtrl::IsLoggedIn($session,$this);}
+
+        return $this->render("all/abonnement/chose.html.twig");
+        //www.yasp.fr/abbonnement/user/67890/souscription
+    }
 
     /**
-     * @Route("/abonnement/user/{id}/historique", name="historique_abo")
+     * @Route("/subscription/subscribe", name="souscription")
      * @Method({"GET"})
-     * @param $id
-     */
-	public function getHistoAbo($id){
-
-			//www.yasp.fr/abbonnement/user/67890/historique
-	}
-
-    /**
-     * @Route("/abonnement/user/{id}/renouvellement", name="renouvellement_abo")
-     * @Method({"POST"})
-     * @param $id
-     */
-
-	public function renouvelle($id){
-		
-
-			//www.yasp.fr/abbonnement/user/67890/renouvellement
-	}
-
-    /**
-     * @Route("/abonnement/user/{id}/souscription", name="souscription")
-     * @Method({"POST"})
      * @param $id
      * @param Request $request
      */
-	public function souscrit($id, Request $request){
-		$codeAbo = $request->request->get('codeAbo');
+    public function souscrit($id, Request $request){
+        $codeAbo = $request->request->get('codeAbo');
 
-			//www.yasp.fr/abbonnement/user/67890/souscription
-	}
+        //www.yasp.fr/abbonnement/user/67890/souscription
+    }
 
     /**
      * @Route("/abonnement/user/{id}/annulation", name="annulation_abo")
