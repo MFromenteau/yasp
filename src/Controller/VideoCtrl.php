@@ -12,6 +12,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Video;
 use App\Entity\Commentaire;
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\Encoder\XmlEncoder;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 class VideoCtrl extends Controller
 {
@@ -93,7 +97,7 @@ class VideoCtrl extends Controller
         $usr = $session->get('usr');
 
         if(!$usr){
-            return $this->render('all/404.html.twig'); // une meilleure gestion de cette erreur devrait être mis en place
+            return $this->render('all/404.html.twig'); // We need a better error handler here
         }
 
         $em = $this->getDoctrine()->getManager();
@@ -108,15 +112,17 @@ class VideoCtrl extends Controller
         $em->persist($comment);
         $em->flush();
 
-        $newIdComment = $comment->getIdcommentaire();
-        $newComment = $this->getDoctrine()
-            ->getRepository(Commentaire::class)
-            ->findBy([
-                'idcommentaire' => $newIdComment
-            ]);
-        // need to be completed and return the comment with the user avatarUrl etc...
-	    return new JsonResponse(array('comment' => $newComment));
+        $encoders = array(new XmlEncoder(), new JsonEncoder());
+        $normalizers = array(new ObjectNormalizer());
+        $serializer = new Serializer($normalizers, $encoders);
 
+        // need to serialize the two entities to array them and get json of that array, so that we can return this big pack to the js
+        $usrJson = $serializer->serialize($usr, 'json');
+        $commentJson = $serializer->serialize($comment, 'json');
+
+        $jsonFinal = ['comment'=>$commentJson,'usr'=>$usrJson];
+
+	    return new JsonResponse($serializer->serialize($jsonFinal, 'json'));
 	}
 
     /**
