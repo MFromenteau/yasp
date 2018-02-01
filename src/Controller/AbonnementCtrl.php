@@ -28,7 +28,8 @@ class AbonnementCtrl extends Controller
         $em = $this->getDoctrine()->getManager();
         $qb = $em->createQueryBuilder();
         $qb->select('a')
-            ->from("App\Entity\Abonnement",'a');
+            ->from("App\Entity\Abonnement",'a')
+            ->orderBy('a.prix', 'ASC');
         $a = $qb->getQuery()->getResult();
 
         return $this->render("all/abonnement/abonnement.html.twig",['abos'=>$a,'session'=>$session]);

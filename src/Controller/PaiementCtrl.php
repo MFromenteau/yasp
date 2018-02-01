@@ -10,24 +10,19 @@ use Symfony\Component\HttpFoundation\Request;
 class PaiementCtrl extends Controller
 {
     /**
-     * @Route("/paiement/user/{id}/emis", name="emis")
-     * @Method({"GET"})
-     * @param $id
-     */
-	public function getPaiementEmis($id){
-
-			//www.yasp.fr/paiement/user/67890/emis
-	}
-
-    /**
-     * @Route("/paiement/user/{id}/effectuer", name="effectuer")
+     * @Route("/paiement/create", name="effectuer")
      * @Method({"POST"})
-     * @param $id
      * @param Request $request
      */
 	public function effectuerPaiement($id, Request $request){
-		$somme = $request->request->get('somme');
-		$desc = $request->request->get('desc');
+	    /*
+	     * This function need several MANDATORY PARAMETER in it's request :
+	     * @param successUrlCallback url to be redirected to when the payment is made, MUST BE POST
+	     * @param errorUrlCallback url to be redirected to when the payment is made, MUST BE POST
+	     * @param securityToken token to put in the post request to confirm the payment
+	     * @param
+	     */
+		$desc = $request->request->get('');
 
 			//www.yasp.fr/paiement/user/67890/effectuer
 	}

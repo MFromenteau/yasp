@@ -229,7 +229,8 @@ class UserCtrl extends Controller
             ->from('App\Entity\User', 'u')
             ->from('App\Entity\Paiement', 'p')
             ->where("u.idutilisateur = p.idrecipient")
-            ->andWhere("u.idutilisateur = ".$session->get("usr")->getIdutilisateur());
+            ->andWhere("u.idutilisateur = ".$session->get("usr")->getIdutilisateur())
+            ->orderBy('p.createdat', 'DESC');
 
 
 
@@ -256,7 +257,8 @@ class UserCtrl extends Controller
             ->from('App\Entity\Abonnement', 'a')
             ->from('App\Entity\Abonnementhistorique', 'ah')
             ->join("ah.idabonnement","ajah")
-            ->where("ah.idutilisateur = ".$session->get("usr")->getIdutilisateur());
+            ->where("ah.idutilisateur = ".$session->get("usr")->getIdutilisateur())
+            ->orderBy('ah.createdat', 'DESC');;
 
         $abo=  $qb->getQuery()->getResult();
         $currAbo = null;
