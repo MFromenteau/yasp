@@ -8,7 +8,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
-use App\Entity\Abonnement;
 
 /**
  * @Route("/subscription")
@@ -37,21 +36,18 @@ class AbonnementCtrl extends Controller
     }
 
     /**
-     * @Route("/subscription/subscribe", name="souscription")
-     * @Method({"GET"})
-     * @param $id
-     * @param Request $request
+     * @Route("/subscribe/{idAbo}", name="souscription")
+     * @Method({"POST"})
      */
-    public function souscrit($id, Request $request){
+    public function souscrit($idAbo,Request $request){
         $codeAbo = $request->request->get('codeAbo');
 
         //www.yasp.fr/abbonnement/user/67890/souscription
     }
 
     /**
-     * @Route("/abonnement/user/{id}/annulation", name="annulation_abo")
+     * @Route("/unsubscribe", name="annulation_abo")
      * @Method({"POST"})
-     * @param $id
      */
 	public function annule($id){
 

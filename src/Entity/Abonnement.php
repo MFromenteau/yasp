@@ -86,6 +86,21 @@ class Abonnement
         $this->prix = $prix;
     }
 
+    /**
+     * @return string
+     */
+    public function getDesc(): string
+    {
+        return $this->desc ? $this->desc : "";
+    }
+
+    /**
+     * @param string $desc
+     */
+    public function setDesc(string $desc): void
+    {
+        $this->desc = $desc;
+    }
 
     /**
      * @var string
@@ -111,25 +126,9 @@ class Abonnement
     /**
      * @var string
      *
-     * @ORM\Column(name="desc", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="desc", type="text", length=250, nullable=true)
      */
     private $desc;
-
-    /**
-     * @return string
-     */
-    public function getDesc(): string
-    {
-        return $this->desc;
-    }
-
-    /**
-     * @param string $desc
-     */
-    public function setDesc(string $desc): void
-    {
-        $this->desc = $desc;
-    }
 
 
 }
