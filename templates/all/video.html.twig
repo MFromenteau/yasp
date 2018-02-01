@@ -17,18 +17,25 @@
     <hr />
 
     <div class="comments">
+        <p name="bullshit" id="bullshit"></p>
+    {% if session is defined and session.get("usr") is defined and session.get("usr").idutilisateur is defined %}
+
         <div class="comment-wrap">
             <div class="photo">
-                <div class="avatar" style="background-image: url('https://pbs.twimg.com/profile_images/789250023582294016/aiIKUDdn_400x400.jpg')"></div>
+                <div class="avatar" style="background-image: url('{{ session.get("usr").urlAvatar }}')"></div>
             </div>
             <div class="comment-block">
                 <form action="">
-                    <textarea name="" id="" cols="30" rows="3" placeholder="Add comment..."></textarea>
-                    <button type="button" class="btn btn-primary btn-sm" style="float:right;">Post</button>
+                    <textarea name="comment" id="comment" cols="30" rows="3" placeholder="Add comment..."></textarea>
+                    <button name="postComment" id="postComment" type="button" class="btn btn-primary btn-sm" style="float:right;">Post</button>
                 </form>
             </div>
         </div>
-
+    {% else %}
+        <div class="comment-wrap" style="text-align: center;">
+            <p><em><small>You need to be logged in to add a comment.</small></em></p>
+        </div>
+    {% endif %}
         {% for comment in commentaries %}
             <div class="comment-wrap">
                 <div class="photo">
@@ -45,7 +52,25 @@
     </div>
 {% endblock %}
 
+{% block javascripts %}
+    <script type="text/javascript">
+        $(document).ready(() => {
+            $('#postComment').click(()=>{
+                $.ajax({
+                    url : '{{ app.request.uri }}/comment/new',
+                    type : 'POST',
+                    data : {comment: $('#comment').val()},
+                    dataType : 'json',
+                    success: (json, status) => {
+                        // need to be completed
+                    }
+                });
+            });
+        });
 
+
+    </script>
+{% endblock %}
 
 {% block stylesheets %}
     <style>

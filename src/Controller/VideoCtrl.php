@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use Psr\Log\LoggerInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
@@ -78,15 +80,42 @@ class VideoCtrl extends Controller
 	}
 
     /**
-     * @Route("/video/{id}/new/comment", name="newComment")
+     * @Route("/video/{id}/comment/new", name="newComment")
      * @Method({"POST"})
      * @param $id
      * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
      */
 	public function createCommentByIdVideo($id, Request $request){
-		$idUser = $request->request->get('idUser');
-		$text = $request->request->get('text');
+        $session = new Session();
+        $session->start();
+	    $postedComment = $request->request->get('comment');
+        $usr = $session->get('usr');
 
+        if(!$usr){
+            return $this->render('all/404.html.twig'); // une meilleure gestion de cette erreur devrait être mis en place
+        }
+
+        $em = $this->getDoctrine()->getManager();
+
+
+        $comment = new Commentaire();
+        $comment->setIdutilisateur($usr->getIdutilisateur());
+        $comment->setIdvideo($id);
+        $comment->setMessage($postedComment);
+        $comment->setCreatedat(new \DateTime());
+
+        $em->persist($comment);
+        $em->flush();
+
+        $newIdComment = $comment->getIdcommentaire();
+        $newComment = $this->getDoctrine()
+            ->getRepository(Commentaire::class)
+            ->findBy([
+                'idcommentaire' => $newIdComment
+            ]);
+        // need to be completed and return the comment with the user avatarUrl etc...
+	    return new JsonResponse(array('comment' => $newComment));
 
 	}
 
