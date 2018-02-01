@@ -2,21 +2,30 @@
 
 {% block main %}
     <h2>Your Orders</h2>
-    <ul>
-    {% for o in orders %}
-        <li>{{ o.createdAt.format("d/m") }} - {{ o.somme }} - {{ o.description }}</li>
-    {% endfor %}
-    </ul>
+    <table class="table table-hover table-striped table-light">
+        <thead>
+        <tr>
+            <th scope="col">Date</th>
+            <th scope="col">Amount</th>
+            <th scope="col">Description</th>
+            <th scope="col">Video name</th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for o in orders %}
+                <tr>
+                    <th scope="row">{{ o.createdAt.format("d/m/y") }}</th>
+                    <td> {{ o.somme }}</td>
+                    <td>{{ o.description }}</td>
+                    <td>#ToBeContinued</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}
 
 {% block stylesheets %}
     <style>
-
-        .blurry:hover{
-            -webkit-transition: 0.1s -webkit-filter linear;
-            -webkit-filter:blur(1px);
-        }
-
 
     </style>
 {% endblock %}
