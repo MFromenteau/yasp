@@ -1,0 +1,146 @@
+{% extends '/all/abonnement/abonnement_base.html.twig' %}
+
+{% block main %}
+    <div class="row flex-items-xs-middle flex-items-xs-center">
+    {% for sub in subscription %}
+        <!-- Table #1  -->
+        <div class="col-xs-12 col-lg-4">
+            <div class="card text-xs-center">
+                <div class="card-header">
+                    <h3 class="display-2"><span class="currency">€</span>{{ sub.prix }}<span class="period">    /{{ sub.duree }} Days</span></h3>
+                </div>
+                <div class="card-block">
+                    <h4 class="card-title">
+                        {{ sub.nom }}
+                    </h4>
+                    <ul class="list-group">
+                        <li class="list-group-item">{{ sub.desc }}</li>
+                    </ul>
+                    <a href="#ToBeContinued" class="btn btn2 btn-gradient btn-gradient2 mt-2">Choose Plan</a>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+    </div>
+
+
+
+{% endblock %}
+
+{% block stylesheets %}
+    <style>
+
+
+
+        .row {
+            min-height: 100vh;
+        }
+
+
+       .card {
+           border: 0;
+           border-radius: 0px;
+           -webkit-box-shadow: 0 3px 0px 0 rgba(0, 0, 0, .08);
+           box-shadow: 0 3px 0px 0 rgba(0, 0, 0, .08);
+           transition: all .3s ease-in-out;
+           padding: 2.25rem 0;
+           position: relative;
+           will-change: transform;
+       }
+        .card:after {
+             content: '';
+             position: absolute;
+             top: 0;
+             left: 0;
+             width: 0%;
+             height: 5px;
+             background-color: #57e2b2;
+             transition: 0.5s;
+         }
+
+        .card:hover {
+            transform: scale(1.05);
+            -webkit-box-shadow: 0 20px 35px 0 rgba(0, 0, 0, .08);
+            box-shadow: 0 20px 35px 0 rgba(0, 0, 0, .08);
+        }
+        .card:after {
+             width: 100%;
+         }
+
+
+        .card-header {
+              background-color: white;
+              padding-left: 2rem;
+              border-bottom: 0px;
+          }
+
+        .card-title {
+            margin-bottom: 1rem;
+            text-align:center;
+          }
+
+        .card-block {
+              padding-top: 0;
+          }
+
+        .list-group-item {
+              border: 0px;
+              padding: .25rem;
+              color: #808080;
+              font-weight: 300;
+          }
+
+
+
+       .display-2 {
+           font-size: 7rem;
+           letter-spacing: -.5rem;
+           text-align:center;
+       }
+
+        .currency {
+              font-size: 2.75rem;
+              position: relative;
+              font-weight: 300 + 100;
+              top: -45px;
+              letter-spacing: 0px;
+          }
+        .period {
+              font-size: 1rem;
+              color: lighten(#808080, 20%);
+              letter-spacing: 0px;
+          }
+
+
+
+        .btn2 {
+            width: 100%;
+            text-transform: uppercase;
+            text-align:center;
+            font-size: .75rem;
+            font-weight: 300 + 200;
+            color: lighten(#808080, 15%);
+            padding: .75rem 1.25rem;
+            letter-spacing: 1px;
+        }
+
+        .btn-gradient2 {
+            background-color: #f2f2f2;
+            transition: background .3s ease-in-out;
+        }
+
+        .btn-gradient2:hover {
+
+            color: white;
+            background-color: #57e2b2;
+         }
+
+
+
+    </style>
+{% endblock %}
+
+{% block javascripts %}
+
+{% endblock %}

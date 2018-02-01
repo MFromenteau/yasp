@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
+use App\Entity\Abonnement;
 
 /**
  * @Route("/subscription")
@@ -15,20 +16,24 @@ use Symfony\Component\HttpFoundation\Session\Session;
 class AbonnementCtrl extends Controller
 {
     /**
-     * @Route("/", name="subpage")
-     * @Method({"GET"})
+     * @Route("/", name="AllSubscription")
+     * @return \Symfony\Component\HttpFoundation\Response
      *
      *
      */
-    public function chosePage(){
+    public function AllSubscription(){
         //This is the page allowing to select the desired subsciption
         $session = new Session();
         $session->start();
 
-        if(UserCtrl::isLoggedIn($session,$this)){return UserCtrl::IsLoggedIn($session,$this);}
+        if(UserCtrl::isLoggedIn($session,$this) != "OK"){return UserCtrl::isLoggedIn($session,$this);}
 
-        return $this->render("all/abonnement/chose.html.twig");
-        //www.yasp.fr/abbonnement/user/67890/souscription
+        $em = $this->getDoctrine()->getManager();
+        $abo = $em->getRepository(Abonnement::class)
+            ->findAll();
+
+
+        return $this->render("all/abonnement/all_subscription.html.twig",array("session"=>$session,"subscription"=>$abo));
     }
 
     /**

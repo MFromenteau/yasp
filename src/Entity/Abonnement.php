@@ -86,6 +86,7 @@ class Abonnement
         $this->prix = $prix;
     }
 
+
     /**
      * @var string
      *
@@ -106,6 +107,29 @@ class Abonnement
      * @ORM\Column(name="prix", type="float", precision=10, scale=0, nullable=false)
      */
     private $prix;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="desc", type="text", length=65535, nullable=false)
+     */
+    private $desc;
+
+    /**
+     * @return string
+     */
+    public function getDesc(): string
+    {
+        return $this->desc;
+    }
+
+    /**
+     * @param string $desc
+     */
+    public function setDesc(string $desc): void
+    {
+        $this->desc = $desc;
+    }
 
 
 }
