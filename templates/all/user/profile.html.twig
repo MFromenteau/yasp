@@ -3,6 +3,45 @@
 {% block main %}
     <h2>Profile</h2>
     <hr>
+    <form id="editProfileForm" action="/user/profile/edit" method="post">
+        <div class="row">
+            <div class="col">
+                <label for="email">Email</label>
+                <input id="email" name="email" type="email" class="form-control" id="emailRegister" placeholder="Email" value="{{ session.get("usr").email }}">
+                <p id="regMailError" hidden="true">Invalid Mail</p>
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col">
+                <label for="firstname">First Name</label>
+                <input id="firstname" name="firstname" type="text" class="form-control" placeholder="First name" value="{{ session.get("usr").prenom }}">
+            </div>
+            <div class="col">
+                <label for="lastname">Last Name</label>
+                <input id="lastname" name="lastname" type="text" class="form-control" placeholder="Last name" value="{{ session.get("usr").nom }}">
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col">
+                <label for="password">Password</label>
+                <input id="password" name="password" type="password" class="form-control" aria-describedby="passwordHelpInline" id= "passwordRegister" placeholder="Password">
+                <p id="regPasswordError" hidden="true">Invalid Password</p>
+                <small id="passwordHelpInline" class="form-text text-muted">
+                    Must be 8-20 characters long.
+                </small>
+            </div>
+        </div>
+        </div>
+        <div class="modal-footer">
+            <div class="row">
+                <div class="col">
+                    <button  type="submit" form="editProfileForm" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+    </form>
 
 {% endblock %}
 

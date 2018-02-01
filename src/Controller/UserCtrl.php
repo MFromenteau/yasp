@@ -57,6 +57,7 @@ class UserCtrl extends Controller
         $usr->setEmail($email);
         $usr->setPrenom($firstname);
         $usr->setNom($lastname);
+        $usr->setUrlAvatar('https://steamuserimages-a.akamaihd.net/ugc/868480752636433334/1D2881C5C9B3AD28A1D8852903A8F9E1FF45C2C8/');
         $usr->setPsw(crypt ($password,$_ENV["SALT"]));
 
         if( $em->getRepository(User::class)
@@ -127,7 +128,7 @@ class UserCtrl extends Controller
     }
 
     /**
-     * @Route("/profile")
+     * @Route("/profile", name="profile")
      * @Method({"GET"})
      */
     public function profile(){
@@ -137,6 +138,50 @@ class UserCtrl extends Controller
         if(UserCtrl::isLoggedIn($session,$this) != "OK"){return UserCtrl::isLoggedIn($session,$this);}
 
         return $this->render('all/user/profile.html.twig', ["session"=>$session]);
+    }
+
+    /**
+     * @Route("/profile/edit")
+     * @Method({"POST"})
+     */
+    public function profileEdit(Request $request){
+        $session = new Session();
+        $session->start();
+
+        if(UserCtrl::isLoggedIn($session,$this) != "OK"){return UserCtrl::isLoggedIn($session,$this);}
+
+        $email = $request->request->get('email');
+        $firstname = $request->request->get('firstname');
+        $lastname = $request->request->get('lastname');
+        $password = $request->request->get('password');
+
+
+        $em = $this->getDoctrine()->getManager();
+        $user = $em->getRepository(User::class)
+                ->find($session->get("usr")->getIdutilisateur());
+
+        if(!$user){
+            throw $this->createNotFoundException(
+                'No User found for id '.$session->get("usr")->getIdutilisateur()
+            );
+
+        }
+
+        $user->setEmail($email);
+        $user->setPrenom($firstname);
+        $user->setNom($lastname);
+        if($password != ""){
+            $user->setPsw($password);
+        }
+
+        $em->flush();
+
+        // Refresh usr session variable, to get all the changed value
+        $session->remove("usr");
+        $session->set("usr",$user);
+
+
+        return  $this->redirect($this->generateUrl('profile'));
     }
 
     /**
