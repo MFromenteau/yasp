@@ -18,13 +18,11 @@ use Doctrine\ORM\Query\Expr;
  */
 class UserCtrl extends Controller
 {
-
     public static function isLoggedIn($session,$ctrl){
 
         if(!$session || !$session->get("usr")){
             return $ctrl->render('all/message.html.twig', ["message"=>"You must login to access this page"]);
         }
-
         return "OK";
     }
 
@@ -253,17 +251,19 @@ class UserCtrl extends Controller
         $em = $this->getDoctrine()->getManager();
         $qb = $em->createQueryBuilder();
 
+        //gat all purcahsed abonnement
         $qb->select('ah', 'ajah')
             ->from('App\Entity\Abonnement', 'a')
             ->from('App\Entity\Abonnementhistorique', 'ah')
             ->join("ah.idabonnement","ajah")
             ->where("ah.idutilisateur = ".$session->get("usr")->getIdutilisateur())
-            ->orderBy('ah.createdat', 'DESC');;
+            ->orderBy('ah.createdat', 'DESC');
 
         $abo=  $qb->getQuery()->getResult();
         $currAbo = null;
         $trial = false;
 
+        //get trials
         $qb = $em->createQueryBuilder();
         $qb->select('a')
             ->from('App\Entity\Abonnement', 'a')
@@ -272,8 +272,7 @@ class UserCtrl extends Controller
         $trials=  $qb->getQuery()->getResult();
 
         foreach ($abo as $val){
-           $endDate = date_create($val->getCreatedat()->format('d-m-Y'))->add(date_interval_create_from_date_string($val->getIdabonnement()->getDuree().' days'));
-           if( date_create()  <= $endDate){
+           if( AbonnementCtrl::isAboValid($val)){
                 $currAbo = $val;
                 //Hard coded
                 if(in_array($currAbo->getIdabonnement(),$trials )){

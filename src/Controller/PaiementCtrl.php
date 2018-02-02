@@ -6,7 +6,11 @@ use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
 
+    /**
+     * @Route("/payment")
+     */
 class PaiementCtrl extends Controller
 {
     /**
@@ -26,16 +30,20 @@ class PaiementCtrl extends Controller
 
 			//www.yasp.fr/paiement/user/67890/effectuer
 	}
-		/**
-	 * @Route("/paiement/user/{id}/effectuer", name="effectuerGet")
-	 * @Method({"GET"})
-	 */
-	public function effectuerPaiementGet(){
-			//www.yasp.fr/paiement/user/67890/effectuer
+
+    /*
+     * @param Array transac
+     *
+     * @description this function prepare the transaction and
+     * ask the user for confirmation
+     */
+	public static function validatePaiement($order,$render,$session){
+
+        return $render->render("all/paiement/confirmation_summary.html.twig",["session"=>$session,"order"=>$order]);
 	}
 
     /**
-     * @Route("/paiement/user/{id}/creer", name="creation")
+     * @Route("/paiement/respond", name="creation")
      * @Method({"POST"})
      * @param $id
      * @param Request $request
@@ -47,26 +55,6 @@ class PaiementCtrl extends Controller
 			//www.yasp.fr/paiement/user/67890/creer
 	}
 
-    /**
-     * @Route("/paiement/user/{id}/creer", name="creationGET")
-     * @Method({"GET"})
-     * @param $id
-     */
-	public function createPaiementGET($id){
-			//www.yasp.fr/paiement/user/67890/creer
-	}
-
-    /**
-     * @Route("/paiement/user/{id}/remboursement", name="remboursement")
-     * @Method({"POST"})
-     * @param $id
-     * @param Request $request
-     */
-	public function refund($id, Request $request){
-		$paiement = $request->request->get('paiement');
-
-			//www.yasp.fr/paiement/user/67890/remboursement
-	}
 			/**
 	 * @Route("/paiement/user/{id}/remboursement", name="remboursementGet")
 	 * @Method({"GET"})
