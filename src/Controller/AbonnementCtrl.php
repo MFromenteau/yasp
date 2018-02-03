@@ -30,7 +30,7 @@ class AbonnementCtrl extends Controller
         $abo = $em->getRepository(Abonnement::class)
             ->findAll();
 
-        return $this->render("all/abonnement/all_subscription.html.twig",array("session"=>$session,"subscription"=>$abo));
+        return $this->render("all/abonnement/all_subscription.html.twig",array("usr"=>$session->get("usr"),"subscription"=>$abo));
     }
 
     /**
@@ -71,14 +71,17 @@ class AbonnementCtrl extends Controller
                     ->where("mah.idutilisateur = ".$session->get("usr")->getIdutilisateur())->getDql().")"
             );
 
-        file_put_contents("query.txt",var_export($qb->getDql(),true));
         $lastAbo = $qb->getQuery()->getResult()[0];
 
         if(AbonnementCtrl::isAboValid($lastAbo)){
-            return $this->render("all/message.html.twig",["session"=>$session,"message"=>"You already are linked to a subscription plan, please unsubscribe in you profile page if you want to change subscription."]);
+            // User is already subscribed
+            return $this->render("all/message.html.twig",["usr"=>$session->get("usr"),"message"=>"You already are linked to a subscription plan, please unsubscribe in you profile page if you want to change subscription."]);
         }
 
-        return PaiementCtrl::validatePaiement(["abo"=>1,"price"=>0.89],$this,$session);
+        $aboToSub = $em->find("App\Entity\Abonnement",$idAbo);
+
+        return PaiementCtrl::validatePaiement("Subscription to the ".$aboToSub->getNom()." plan"
+            ,$aboToSub->getPrix(),$this,$session);
     }
 
     /**

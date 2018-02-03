@@ -3,16 +3,21 @@
 {% block body %}
     <h1 style="text-align : center;">Confirm your order</h1>
     <hr />
-    {{ order.abo }}
+    <h3>You order contains :</h3>
+    <ul>
+        {% for desc in orderDescList %}
+            <li>{{ desc }}</li>
+        {% endfor %}
+    </ul>
+    <p>Total price : {{ totalPrice }} €</p>
+    <p>Do you agree to this transaction ?</p>
     <form action="/payment/confirmOrder">
-        <input class=".btn .btn-primary" type="submit" value="Yes">
+        <input class="btn btn-primary" type="submit" value="Yes">
     </form>
 
     <form action="/payment/cancelOrder">
-        <input class=".btn .btn-success" type="submit" value="No">
+        <input class="btn btn-success" type="submit" value="No">
     </form>
-    
-
 
 {% endblock %}
 

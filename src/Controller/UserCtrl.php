@@ -135,7 +135,7 @@ class UserCtrl extends Controller
 
         if(UserCtrl::isLoggedIn($session,$this) != "OK"){return UserCtrl::isLoggedIn($session,$this);}
 
-        return $this->render('all/user/profile.html.twig', ["session"=>$session]);
+        return $this->render('all/user/profile.html.twig', ["usr"=>$session->get("usr")]);
     }
 
     /**
@@ -169,13 +169,14 @@ class UserCtrl extends Controller
         $user->setPrenom($firstname);
         $user->setNom($lastname);
         if($password != ""){
-            $user->setPsw($password);
+            $user->setPsw(crypt ($password,$_ENV["SALT"]));
         }
 
         $em->flush();
 
         // Refresh usr session variable, to get all the changed value
         $session->remove("usr");
+        $user->setPsw("nope");
         $session->set("usr",$user);
 
 
@@ -206,7 +207,7 @@ class UserCtrl extends Controller
 
         $userVideo=  $qb->getQuery()->getResult();
         $usr = $session->get('usr');
-        return $this->render('all/user/library.html.twig', ["session"=>$session,'videos' => $userVideo, "count"=>count($userVideo)]);
+        return $this->render('all/user/library.html.twig', ["usr"=>$session->get("usr"),'videos' => $userVideo, "count"=>count($userVideo)]);
     }
 
     /**
@@ -234,7 +235,7 @@ class UserCtrl extends Controller
 
         $achat=  $qb->getQuery()->getResult();
         $usr = $session->get('usr');
-        return $this->render('all/user/Orders.html.twig', ["session"=>$session,'orders' => $achat, "count"=>count($achat)]);
+        return $this->render('all/user/Orders.html.twig', ["usr"=>$session->get("usr"),'orders' => $achat, "count"=>count($achat)]);
     }
 
     /**
@@ -271,20 +272,22 @@ class UserCtrl extends Controller
             ->andWhere('a.nom LIKE \'%Trial%\'');
         $trials=  $qb->getQuery()->getResult();
 
+        //find current Abonnement and if it is trial
         foreach ($abo as $val){
            if( AbonnementCtrl::isAboValid($val)){
                 $currAbo = $val;
-                //Hard coded
                 if(in_array($currAbo->getIdabonnement(),$trials )){
                     $trial = true;
                 }
            }
         }
 
-        unset($abo[array_search($currAbo,$abo)]);
+        //delete the current abonnement from history
+        if($currAbo)
+            unset($abo[array_search($currAbo,$abo)]);
 
         return $this->render('all/user/subscription.html.twig',
-            ["session"=>$session,
+            ["usr"=>$session->get("usr"),
                 'abohisto' => $abo,
                 'currAbo'=>$currAbo,
                 'trial'=>$trial]);

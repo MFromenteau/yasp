@@ -135,20 +135,20 @@ class User
      *
      * @ORM\Column(name="urlAvatar", type="text", nullable=false)
      */
-    private $urlAvatar;
+    private $urlavatar;
 
     /**
      * @return string
      */
-    public function getUrlAvatar()
+    public function getUrlavatar()
     {
-        return $this->urlAvatar;
+        return $this->urlavatar;
     }
 
     /**
      * @param string $urlAvatar
      */
-    public function setUrlAvatar($urlAvatar)
+    public function setUrlavatar($urlAvatar)
     {
         $this->urlAvatar = $urlAvatar;
     }

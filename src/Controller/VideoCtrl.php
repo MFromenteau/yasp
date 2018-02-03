@@ -51,7 +51,7 @@ class VideoCtrl extends Controller
                'idvideo' => $id
             ]);
         $usr = $session->get('usr');
-        return $this->render('all/video.html.twig',array("session"=>$session,'video' => $video,'commentaries' => $commentaries));
+        return $this->render('all/video.html.twig',array("usr"=>$session->get("usr"),'video' => $video,'commentaries' => $commentaries));
 
 	}
 

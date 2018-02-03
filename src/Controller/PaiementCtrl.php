@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
+use App\Order;
 
     /**
      * @Route("/payment")
@@ -37,9 +38,15 @@ class PaiementCtrl extends Controller
      * @description this function prepare the transaction and
      * ask the user for confirmation
      */
-	public static function validatePaiement($order,$render,$session){
+	public static function validatePaiement($desc,$price,$render,$session){
 
-        return $render->render("all/paiement/confirmation_summary.html.twig",["session"=>$session,"order"=>$order]);
+        $order = new Order();
+        $order->addProduct($desc,$price);
+
+        //prepare the paiement in the session
+        $session->set("order",$order);
+
+        return $render->render("all/paiement/confirmation_summary.html.twig",["usr"=>$session->get("usr"),"orderDescList"=>$order->getDescList(),"totalPrice"=>$order->getTotalPrice()]);
 	}
 
     /**

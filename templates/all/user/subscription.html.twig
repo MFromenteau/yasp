@@ -6,7 +6,7 @@
         <p>{{currAbo.createdAt.format("d/m/Y")}} - {{currAbo.idAbonnement.nom}} - {{currAbo.idAbonnement.prix}}€</p>
 
         {% if trial %}<a href="/subscription/unsubscribe" class="btn btn-outline-danger" >Cancel Subscription</a>{% endif %}
-    <!-- TODO UNCOMMENT FOR PRODUCTION {/% else %} -->
+    {% else %}
         <p>You don't have any current subscription yet</p>
         <a href="/subscription/subscribe" class="btn btn-outline-warning" >Subscribe for more advantages !</a>
     {% endif %}

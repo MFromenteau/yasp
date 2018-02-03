@@ -26,7 +26,7 @@
 
 
 
-              {% if session is defined and session.get("usr") is defined and session.get("usr").idutilisateur is defined %}
+              {% if usr is defined and usr.idutilisateur is defined %}
               <ul class="nav navbar-nav navbar-right">
                   <li class="nav-item">
                       <form class="form-inline my-2 my-lg-0 nav-link" role="search" style="padding-right: 10px;">
@@ -37,7 +37,7 @@
                   <li class="nav-item">
                       <a class="nav-link" href="/user/profile">
                           <div class="profileAvatar">
-                              <img src="{{ session.get("usr").urlAvatar }}">
+                              <img src="{{ usr.urlavatar }}">
                           </div>
                       </a>
                   </li>

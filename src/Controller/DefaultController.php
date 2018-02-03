@@ -38,7 +38,7 @@ class DefaultController extends Controller
             ->getQuery()
             ->getResult();
 
-        return $this->render('all/index.html.twig', ['videos' => $random_video,"session"=>$session]);
+        return $this->render('all/index.html.twig', ['videos' => $random_video,"usr"=>$session->get("usr")]);
     }
 
 }
