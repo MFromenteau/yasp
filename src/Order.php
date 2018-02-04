@@ -34,6 +34,16 @@ class Order
     {
         return $this->descList;
     }
+    /**
+     * @return string
+     */
+    public function getDescConc(): array
+    {
+        $res = "";
+        foreach ($this->descList as $d){
+            $res .= $d." & ";
+        }
+    }
 
     /**
      * @return int

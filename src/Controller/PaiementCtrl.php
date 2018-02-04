@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Paiement;
 use App\ORDER_STATUS;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -9,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 use App\Order;
+use DateTime;
 
     /**
      * @Route("/payment")
@@ -50,10 +52,16 @@ class PaiementCtrl extends Controller
             return $this->render('all/message.html.twig',["usr"=>$session->get('usr'),"message"=>"You don't have an order to confirm"]);
 
         //getting the order to confirm
-        $order = $session->get("order");
+        $order =  $session->get("order");
         $order->setStatus(ORDER_STATUS::CONFIRMED);
-        //TODO createdPaiement
 
+        //creating the payement
+        $p = new Paiement();
+        $p->setDescription($order->getDescConcat());
+        $p->setCreatedat(new DateTime("now"));
+        $p->setIdrecipient($session->get('usr'));
+        $p->setSomme($order->getTotalPrice());
+        
         $session->set('order',$order);
         return $this->redirect($session->get('confirmUrl'));
     }
