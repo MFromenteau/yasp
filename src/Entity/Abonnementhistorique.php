@@ -90,7 +90,7 @@ class Abonnementhistorique
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="createdAt", type="date", nullable=false)
+     * @ORM\Column(name="createdAt", type="datetime", nullable=false)
      */
     private $createdat;
 

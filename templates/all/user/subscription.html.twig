@@ -3,9 +3,9 @@
 {% block main %}
     {% if currAbo != null %}
         <h2>Your current subscription</h2>
-        <p>{{currAbo.createdAt.format("d/m/Y")}} - {{currAbo.idAbonnement.nom}} - {{currAbo.idAbonnement.prix}}€</p>
+        <p>{{currAbo.createdAt.format("d/m/Y H:i")}} - {{currAbo.idAbonnement.nom}} - {{currAbo.idAbonnement.prix}}€</p>
 
-        {% if trial %}<a href="/subscription/unsubscribe" class="btn btn-outline-danger" >Cancel Subscription</a>{% endif %}
+        <a href="/subscription/unsubscribe" class="btn btn-outline-danger" >Cancel Subscription</a>
     {% else %}
         <p>You don't have any current subscription yet</p>
         <a href="/subscription/subscribe" class="btn btn-outline-warning" >Subscribe for more advantages !</a>
@@ -13,7 +13,7 @@
     <h2>Your past subscriptions</h2>
     <ul>
     {% for abo in abohisto %}
-        <li><p>{{abo.createdAt.format("d/m/Y")}} - {{abo.idAbonnement.nom}} - {{abo.idAbonnement.prix}}€</p></li>
+        <li><p>{{abo.createdAt.format("d/m/Y H:i")}} - {{abo.idAbonnement.nom}} - {{abo.idAbonnement.prix}}€</p></li>
     {% endfor %}
         <!-- abonnement will take this form, to access to its attribute it's simply abo.[atribute]:
         array (

@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use App\Entity\Abonnement;
+use DateTime;
 /**
  * @Route("/subscription")
  */
@@ -42,22 +43,11 @@ class AbonnementCtrl extends Controller
         if(!$abo)
             return false;
 
-            $endDate = date_create($abo->getCreatedat()->format('d-m-Y'))->add(date_interval_create_from_date_string($abo->getIdabonnement()->getDuree().' days'));
-        return (date_create()  <= $endDate);
+            $endDate = DateTime::createFromFormat('d-m-Y H:i',$abo->getCreatedat()->format('d-m-Y H:i'))->add(date_interval_create_from_date_string($abo->getIdabonnement()->getDuree().' days'));
+        return ((new DateTime())  <= $endDate);
     }
 
-    /**
-     * @Route("/subscribe/{idAbo}", name="souscription")
-     * @Method({"GET"})
-     */
-    public function souscrit($idAbo){
-        //This is the page allowing to select the desired subsciption
-        $session = new Session();
-        $session->start();
-
-        if(UserCtrl::isLoggedIn($session,$this) != "OK"){return UserCtrl::isLoggedIn($session,$this);}
-
-        $em = $this->getDoctrine()->getManager();
+    public static function getLastPurchasedAbonnement($session,$em){
         $qb = $em->createQueryBuilder();
 
         //gat last purcahsed abonnement
@@ -72,15 +62,29 @@ class AbonnementCtrl extends Controller
                     ->where("mah.idutilisateur = ".$session->get("usr")->getIdutilisateur())->getDql().")"
             );
 
-        $res = $qb->getQuery()->getResult();
-        if($res){
-            $lastAbo = $res[0];
-            if(AbonnementCtrl::isAboValid($lastAbo)){
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * @Route("/subscribe/{idAbo}", name="souscription")
+     * @Method({"GET"})
+     */
+    public function souscrit($idAbo){
+        //This is the page allowing to select the desired subsciption
+        $session = new Session();
+        $session->start();
+
+        if(UserCtrl::isLoggedIn($session,$this) != "OK"){return UserCtrl::isLoggedIn($session,$this);}
+
+        $em = $this->getDoctrine()->getManager();
+
+        $res = AbonnementCtrl::getLastPurchasedAbonnement($session,$em);
+        if($res && ($lastAbo = $res[0]) && AbonnementCtrl::isAboValid($lastAbo)){
                 // User is already subscribed
                 return $this->render("all/message.html.twig",["usr"=>$session->get("usr"),"message"=>"You already are linked to a subscription plan, please unsubscribe in you profile page if you want to change subscription."]);
-            }
         }
 
+        //get the abonnement to sub entity
         $aboToSub = $em->getRepository(Abonnement::class)->find($idAbo);
         //setting future subscription
         $session->set('aboToSub',$aboToSub->getIdabonnement());
@@ -109,10 +113,11 @@ class AbonnementCtrl extends Controller
             $this->render("all/message.html.twig",["usr"=>$session->get('usr'),"message"=>"You don't have a subscription validated"]);
 
         $ah = new Abonnementhistorique();
-        $ah->setCreatedat(date_create());
+        $ah->setCreatedat(new DateTime("now"));
         $ah->setIdabonnement($em->getRepository(Abonnement::class)->find($session->get('aboToSub')));
         $ah->setIdutilisateur($session->get('usr'));
 
+        //merge is important so it dosen't try tro recreate(persist) user and abonnement in cascade
         $em->merge($ah);
         $em->flush();
 
@@ -136,11 +141,17 @@ class AbonnementCtrl extends Controller
 
     /**
      * @Route("/unsubscribe", name="annulation_abo")
-     * @Method({"POST"})
+     * @Method({"GET"})
      */
-	public function annule($id){
+	public function annuleSub($id){
+        $session = new Session();
+        $session->start();
 
-			//www.yasp.fr/abbonnement/user/67890/annulation
+        if(UserCtrl::isLoggedIn($session,$this) != "OK"){return UserCtrl::isLoggedIn($session,$this);}
+
+
+
+        //www.yasp.fr/abbonnement/user/67890/annulation
 	}
 }
 
