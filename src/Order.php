@@ -37,12 +37,14 @@ class Order
     /**
      * @return string
      */
-    public function getDescConc(): array
+    public function getDescConcat(): string
     {
         $res = "";
         foreach ($this->descList as $d){
             $res .= $d." & ";
         }
+
+        return $res;
     }
 
     /**

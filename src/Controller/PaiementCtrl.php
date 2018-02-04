@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 use App\Order;
+use App\Entity\Orders;
 use DateTime;
 
     /**
@@ -56,12 +57,18 @@ class PaiementCtrl extends Controller
         $order->setStatus(ORDER_STATUS::CONFIRMED);
 
         //creating the payement
-        $p = new Paiement();
+        $p = new Orders();
         $p->setDescription($order->getDescConcat());
         $p->setCreatedat(new DateTime("now"));
         $p->setIdrecipient($session->get('usr'));
-        $p->setSomme($order->getTotalPrice());
-        
+        $p->setTotalPrice($order->getTotalPrice());
+        $p->setIdOrders(intval($session->get('usr')->getIdutilisateur().date_create()->getTimestamp()));
+
+        $em = $this->getDoctrine()->getManager();
+        $em->merge($p);
+        $em->flush();
+
+        $session->set("trans",$p);
         $session->set('order',$order);
         return $this->redirect($session->get('confirmUrl'));
     }

@@ -4,12 +4,11 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use DateTime;
 
 /**
  * Abonnementhistorique
  *
- * @ORM\Table(name="AbonnementHistorique", indexes={@ORM\Index(name="idAbonnement", columns={"idAbonnement"}), @ORM\Index(name="idUtilisateur", columns={"idUtilisateur"}), @ORM\Index(name="idAbonnement_2", columns={"idAbonnement"})})
+ * @ORM\Table(name="AbonnementHistorique", indexes={@ORM\Index(name="idAbonnement", columns={"idAbonnement"}), @ORM\Index(name="idUtilisateur", columns={"idUtilisateur"}), @ORM\Index(name="idOrders", columns={"idOrders"})})
  * @ORM\Entity
  */
 class Abonnementhistorique
@@ -40,19 +39,35 @@ class Abonnementhistorique
     }
 
     /**
-     * @return DateTime
+     * @return \DateTime
      */
-    public function getCreatedat(): DateTime
+    public function getCreatedat(): \DateTime
     {
         return $this->createdat;
     }
 
     /**
-     * @param DateTime $createdat
+     * @param \DateTime $createdat
      */
-    public function setCreatedat(DateTime $createdat): void
+    public function setCreatedat(\DateTime $createdat): void
     {
         $this->createdat = $createdat;
+    }
+
+    /**
+     * @return Orders
+     */
+    public function getIdOrders(): Orders
+    {
+        return $this->idOrders;
+    }
+
+    /**
+     * @param Orders $idOrders
+     */
+    public function setIdOrders(Orders $idOrders): void
+    {
+        $this->idOrders = $idOrders;
     }
 
     /**
@@ -95,7 +110,17 @@ class Abonnementhistorique
     private $createdat;
 
     /**
-     * @var \Abonnement
+     * @var Orders
+     *
+     * @ORM\ManyToOne(targetEntity="Orders",cascade={"persist"})
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="idOrders", referencedColumnName="idOrders")
+     * })
+     */
+    private $idOrders;
+
+    /**
+     * @var Abonnement
      *
      * @ORM\ManyToOne(targetEntity="Abonnement")
      * @ORM\JoinColumns({
@@ -105,9 +130,9 @@ class Abonnementhistorique
     private $idabonnement;
 
     /**
-     * @var \User
+     * @var User
      *
-     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\ManyToOne(targetEntity="User",cascade={"merge"})
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="idUtilisateur", referencedColumnName="idUtilisateur")
      * })

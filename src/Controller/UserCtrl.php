@@ -200,8 +200,8 @@ class UserCtrl extends Controller
         $qb->select('v')
             ->from('App\Entity\User', 'u')
             ->from('App\Entity\Video', 'v')
-            ->from('App\Entity\Paiement', 'p')
-            ->where("u.idutilisateur = p.idrecipient")
+            ->from('App\Entity\Library', 'p')
+            ->where("u.idutilisateur = p.idowner")
             ->andWhere("p.idvideo = v.idvideo")
             ->andWhere("u.idutilisateur = ".$session->get("usr")->getIdutilisateur());
 
@@ -225,14 +225,11 @@ class UserCtrl extends Controller
 
         //$query = $em->createNativeQuery('Select * from Video v, Paiement p where v.idVideo = p.idVideo and p.idRecipient = userId', $rsm);
         $qb->select('p')
-            ->from('App\Entity\User', 'u')
-            ->from('App\Entity\Paiement', 'p')
-            ->where("u.idutilisateur = p.idrecipient")
-            ->andWhere("u.idutilisateur = ".$session->get("usr")->getIdutilisateur())
+            ->from('App\Entity\Orders', 'p')
+            ->where("p.idrecipient = ".$session->get("usr")->getIdutilisateur())
             ->orderBy('p.createdat', 'DESC');
 
-
-
+        dump($qb->getDql());
         $achat=  $qb->getQuery()->getResult();
         $usr = $session->get('usr');
         return $this->render('all/user/Orders.html.twig', ["usr"=>$session->get("usr"),'orders' => $achat, "count"=>count($achat)]);

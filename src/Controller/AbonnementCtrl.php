@@ -116,8 +116,9 @@ class AbonnementCtrl extends Controller
         $ah->setCreatedat(new DateTime("now"));
         $ah->setIdabonnement($em->getRepository(Abonnement::class)->find($session->get('aboToSub')));
         $ah->setIdutilisateur($session->get('usr'));
+        $ah->setIdOrders($session->get('trans'));
 
-        //merge is important so it dosen't try tro recreate(persist) user and abonnement in cascade
+        //merge is important so it doesn't try tro recreate(persist) user and abonnement in cascade
         $em->merge($ah);
         $em->flush();
 
