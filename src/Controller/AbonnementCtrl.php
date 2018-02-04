@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Abonnementhistorique;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Query\Expr;
 use Symfony\Component\Routing\Annotation\Route;
@@ -71,17 +72,66 @@ class AbonnementCtrl extends Controller
                     ->where("mah.idutilisateur = ".$session->get("usr")->getIdutilisateur())->getDql().")"
             );
 
-        $lastAbo = $qb->getQuery()->getResult()[0];
-
-        if(AbonnementCtrl::isAboValid($lastAbo)){
-            // User is already subscribed
-            return $this->render("all/message.html.twig",["usr"=>$session->get("usr"),"message"=>"You already are linked to a subscription plan, please unsubscribe in you profile page if you want to change subscription."]);
+        $res = $qb->getQuery()->getResult();
+        if($res){
+            $lastAbo = $res[0];
+            if(AbonnementCtrl::isAboValid($lastAbo)){
+                // User is already subscribed
+                return $this->render("all/message.html.twig",["usr"=>$session->get("usr"),"message"=>"You already are linked to a subscription plan, please unsubscribe in you profile page if you want to change subscription."]);
+            }
         }
 
-        $aboToSub = $em->find("App\Entity\Abonnement",$idAbo);
+        $aboToSub = $em->getRepository(Abonnement::class)->find($idAbo);
+        //setting future subscription
+        $session->set('aboToSub',$aboToSub->getIdabonnement());
 
-        return PaiementCtrl::validatePaiement("Subscription to the ".$aboToSub->getNom()." plan"
-            ,$aboToSub->getPrix(),$this,$session);
+        return PaiementCtrl::validatePaiement(
+            "Subscription to the ".$aboToSub->getNom()." plan",
+            $aboToSub->getPrix(),
+            $this->generateUrl("confirmAbo"),
+            $this->generateUrl("cancelAbo"),
+            $this,
+            $session);
+    }
+
+    /**
+     * @Route("/confirmAbo", name="confirmAbo")
+     * @Method({"GET"})
+     */
+    public function confirmAbo(){
+        $session = new Session();
+        $session->start();
+        $em = $this->getDoctrine()->getManager();
+
+        if(UserCtrl::isLoggedIn($session,$this) != "OK"){return UserCtrl::isLoggedIn($session,$this);}
+
+        if( $session->get('abonnementToSub') == null)
+            $this->render("all/message.html.twig",["usr"=>$session->get('usr'),"message"=>"You don't have a subscription validated"]);
+
+        $ah = new Abonnementhistorique();
+        $ah->setCreatedat(date_create());
+        $ah->setIdabonnement($em->getRepository(Abonnement::class)->find($session->get('aboToSub')));
+        $ah->setIdutilisateur($session->get('usr'));
+
+        $em->merge($ah);
+        $em->flush();
+
+        return $this->render("all/message.html.twig",["usr"=>$session->get('usr'),"message"=>"You successfully subscribed"]);
+    }
+
+    /**
+     * @Route("/cancelAbo", name="cancelAbo")
+     * @Method({"GET"})
+     */
+    public function cancelAbo(){
+        $session = new Session();
+        $session->start();
+
+        if(UserCtrl::isLoggedIn($session,$this) != "OK"){return UserCtrl::isLoggedIn($session,$this);}
+
+        $session->set('abonnementToSub',null);
+
+        return $this->render("all/message.html.twig",["usr"=>$session->get('usr'),"message"=>"You canceled your subscription"]);
     }
 
     /**
