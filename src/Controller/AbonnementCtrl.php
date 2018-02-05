@@ -158,9 +158,9 @@ class AbonnementCtrl extends Controller
 
         if(UserCtrl::isLoggedIn($session,$this) != "OK"){return UserCtrl::isLoggedIn($session,$this);}
 
+        
 
-
-        //www.yasp.fr/abbonnement/user/67890/annulation
-	}
+        return $this->render("all/message.html.twig",["usr"=>$session->get('usr'),"message"=>"You successfully unsubscribe"]);
+    }
 }
 
