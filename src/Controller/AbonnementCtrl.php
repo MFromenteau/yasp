@@ -3,16 +3,13 @@
 namespace App\Controller;
 
 use App\Entity\Abonnementhistorique;
-use Doctrine\ORM\Mapping\Entity;
-use Doctrine\ORM\Query\Expr;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use App\Entity\Abonnement;
 use App\Entity\User;
+use App\Order;
 
 use DateTime;
 /**
@@ -91,9 +88,13 @@ class AbonnementCtrl extends Controller
         //setting future subscription
         $session->set('aboToSub',$aboToSub->getIdabonnement());
 
+        //prepare Order
+
+        $order = new Order();
+        $order->addProduct($aboToSub->getDesc(),$aboToSub->getPrix());
+
         return PaiementCtrl::validatePaiement(
-            "Subscription to the ".$aboToSub->getNom()." plan",
-            $aboToSub->getPrix(),
+            $order,
             $this->generateUrl("confirmAbo"),
             $this->generateUrl("cancelAbo"),
             $this,
@@ -111,7 +112,7 @@ class AbonnementCtrl extends Controller
 
         if(UserCtrl::isLoggedIn($session,$this) != "OK"){return UserCtrl::isLoggedIn($session,$this);}
 
-        if( $session->get('abonnementToSub') == null)
+        if( $session->get('aboToSub') == null)
             $this->render("all/message.html.twig",["usr"=>$session->get('usr'),"message"=>"You don't have a subscription validated"]);
 
 
@@ -130,6 +131,10 @@ class AbonnementCtrl extends Controller
         $em->merge($ah);
         $em->flush();
 
+        $session->set('aboToSub',null);
+        $session->set('order',null);
+        $session->set('trans',null);
+
         return $this->render("all/message.html.twig",["usr"=>$session->get('usr'),"message"=>"You successfully subscribed"]);
     }
 
@@ -143,7 +148,7 @@ class AbonnementCtrl extends Controller
 
         if(UserCtrl::isLoggedIn($session,$this) != "OK"){return UserCtrl::isLoggedIn($session,$this);}
 
-        $session->set('abonnementToSub',null);
+        $session->set('aboToSub',null);
 
         return $this->render("all/message.html.twig",["usr"=>$session->get('usr'),"message"=>"You canceled your subscription"]);
     }

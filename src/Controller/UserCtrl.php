@@ -64,7 +64,7 @@ class UserCtrl extends Controller
                 'nom' => $lastname
             ])
         ){
-            return new Response('User déjà présent avec ce nom prénom.');
+            return $this->render('all/message.html.twig',['message'=>'User déjà présent avec ce nom prénom.']);
         }
 
         if( $em->getRepository(User::class)
@@ -72,7 +72,7 @@ class UserCtrl extends Controller
                 'email' => $email
             ])
         ){
-            return new Response('User déjà présent avec cet email.');
+            return $this->render('all/message.html.twig',['message'=>'User déjà présent avec cet email.']);
         }
 
         $em->persist($usr);

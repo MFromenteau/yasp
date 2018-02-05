@@ -2,21 +2,26 @@
 
 namespace App\Controller;
 
-use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Video;
 use App\Entity\Commentaire;
+use App\Order;
+use App\Entity\Library;
+
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
+
+/**
+ * @Route("/video")
+ */
 class VideoCtrl extends Controller
 {
     public static function  getAllVideoByUser($idu,$em){
@@ -46,16 +51,8 @@ class VideoCtrl extends Controller
     }
 
 	//*****PAGES*************/
-
-	/**
-	 * @Route("/video/{id}/theme", name="getThemeByVideoId")
-	 * @Method({"GET"})
-	 */
-	public function getThemeByVideoId(){
-	}
-
     /**
-     * @Route("/video/{idv}", name="getVideoById")
+     * @Route("/{idv}", name="getVideoById")
      * @param $id
      * @return \Symfony\Component\HttpFoundation\Response retourne la vue correspondante à la video
      * ou 404 si video absente
@@ -88,13 +85,12 @@ class VideoCtrl extends Controller
                'idvideo' => $idv
             ]);
 
-        return $this->render('all/video.html.twig',array("usr"=>$session->get("usr"),'video' => $video,'commentaries' => $commentaries));
+        return $this->render('all/video/display.html.twig',array("usr"=>$session->get("usr"),'video' => $video,'commentaries' => $commentaries));
 	}
-
 
 	//*********API*****************/
     /**
-     * @Route("/video/{id}/comment/new", name="newComment")
+     * @Route("/{id}/comment/new", name="newComment")
      * @Method({"POST"})
      * @param $id
      * @param Request $request
@@ -135,43 +131,8 @@ class VideoCtrl extends Controller
 	    return new JsonResponse($serializer->serialize($jsonFinal, 'json'));
 	}
 
-
     /**
-     * @Route("/video/{id}/delete/comment", name="deleteComment")
-     * @Method({"POST"})
-     * @param $id
-     * @param Request $request
-     */
-	public function deleteCommentByIdVideo($id, Request $request){
-		$idComment = $request->request->get('idComment');
-
-			//www.yasp.fr/video/67890/supression
-	}
-
-    /**
-     * @Route("/video/{id}/edit/comment", name="editComment")
-     * @Method({"POST"})
-     * @param $id
-     * @param Request $request
-     */
-	public function editComment($id, Request $request){
-		$idComment = $request->request->get('idComment');
-		$newComment = $request->request->get('newComment');
-
-			//www.yasp.fr/video/67890/edit
-	}
-
-    /**
-     * @Route("/user/{id}/comment/list", name="getAllCommentByUserId")
-     * @Method({"GET"})
-     * @param $id
-     */
-	public function getAllCommentByUserId($id){
-
-	}
-
-    /**
-     * @Route("/video/{id}/comment/list", name="getAllCommentByVideoId")
+     * @Route("/{id}/comment/list", name="getAllCommentByVideoId")
      * @Method({"GET"})
      * @param $id
      */
@@ -201,25 +162,74 @@ class VideoCtrl extends Controller
     }
 
     /**
-     * @Route("/comment/{id}", name="getCommentById")
+     * @Route("/buy/{idv}", name="buyVideoById" , requirements={"idv"="\d+"})
      * @Method({"GET"})
-     * @param $id
      */
-	public function getCommentById($id){
+    public function buyVideoById($idv){
+        $session = new Session();
+        $session->start();
+        $em = $this->getDoctrine()->getManager();
 
 
-	}
+        $video = $this->getDoctrine()
+            ->getRepository(Video::class)
+            ->find($idv);
+
+        //verif
+        if (!$video) {
+            return $this->render('all/404.html.twig');
+        }
+
+       if(VideoCtrl::getLibByUserVid($idv,$session->get('usr')->getIdutilisateur(),$em))
+            return  $this->render("all/message.html.twig",['usr'=>$session->get('usr'),'message'=>'You already bought the video.']);
+
+        if($video->getPrix() == 0) {
+           return  $this->render("all/message.html.twig",['usr'=>$session->get('usr'),'message'=>'This video is free, are you sure you want to buy it ? :p']);
+        }
+
+
+        if(UserCtrl::isLoggedIn($session,$this) != "OK"){return UserCtrl::isLoggedIn($session,$this);}
+
+        $cmd = new Order();
+        $cmd->addProduct($video->getTitre(),$video->getPrix());
+        $session->set('vidToBuy',$video);
+
+        return PaiementCtrl::validatePaiement(
+            $cmd,
+            $this->generateUrl("confirmBuy"),
+            $this->generateUrl("cancelBuy"),
+            $this,
+            $session);
+    }
 
     /**
-     * @Route("/video/{id}/buy", name="buyVideoById")
-     * @Method({"POST"})
-     * @param $id
-     * @param Request $request
+     * @Route("/buy/confirm", name="confirmBuy")
+     * @Method({"GET"})
      */
-	public function buyVideoById($id, Request $request){
-		$idUser = $request->request->get('idUser');
+    public function confirmBuy(){
+        $session = new Session();
+        $session->start();
+        $em = $this->getDoctrine()->getManager();
 
-			//www.yasp.fr/video/acheter/67890
-	}
+        $lib = new Library();
+        $lib->setIdOrders($session->get('trans')->getIdorders());
+        $lib->setIdowner($session->get('usr')->getIdutilisateur());
+        $lib->setIdvideo($session->get('vidToBuy')->getIdvideo());
+        $em->persist($lib);
+        $em->flush();
+
+        $session->set('vidToBuy',null);
+        $session->set('order',null);
+        $session->set('trans',null);
+
+        return $this->render('all/message.html.twig',['usr'=>$session->get('usr'),'message'=>"You successfully bought ".$session->get('vid')->getTitre()]);
+    }
+
+    /**
+     * @Route("/buy/cancel", name="cancelBuy")
+     * @Method({"GET"})
+     */
+    public function cancelBuy(){
+
+    }
 }
-
