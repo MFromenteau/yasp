@@ -126,7 +126,7 @@ class Orders
     /**
      * @var int
      *
-     * @ORM\Column(name="idRecipient", type="int", nullable=false)
+     * @ORM\Column(name="idRecipient", type="integer", nullable=false)
      */
     private $idrecipient;
 

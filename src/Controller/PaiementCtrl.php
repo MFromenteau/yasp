@@ -64,7 +64,7 @@ class PaiementCtrl extends Controller
         $p->setTotalPrice($order->getTotalPrice());
 
         $em = $this->getDoctrine()->getManager();
-        $em->merge($p);
+        $em->persist($p);
         $em->flush();
 
         $session->set("trans",$p);

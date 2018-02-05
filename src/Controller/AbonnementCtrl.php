@@ -119,7 +119,7 @@ class AbonnementCtrl extends Controller
         $ah->setIdOrders($session->get('trans'));
 
         //merge is important so it doesn't try tro recreate(persist) user and abonnement in cascade
-        $em->merge($ah);
+        $em->persist($ah);
         $em->flush();
 
         return $this->render("all/message.html.twig",["usr"=>$session->get('usr'),"message"=>"You successfully subscribed"]);
