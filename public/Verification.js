@@ -4,6 +4,7 @@ var password = document.getElementById("passwordLogin");
 var passwordError = document.getElementById("passwordError");
 var mailError = document.getElementById("MailError");
 var testPassword = /^[a-zA-Z0-9-. _\/]{4,20}$/;
+
 password.addEventListener("keyup", function () {
     if (!testPassword.test(password.value)) {
         passwordError.hidden = false;
