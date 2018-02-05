@@ -7,8 +7,14 @@
 
         <a href="/subscription/unsubscribe" class="btn btn-outline-danger" >Cancel Subscription</a>
     {% else %}
-        <p>You don't have any current subscription yet</p>
-        <a href="/subscription/subscribe" class="btn btn-outline-warning" >Subscribe for more advantages !</a>
+        <row>
+            <div class="col" style="text-align:center;">
+                <p>You don't have any current subscription yet :(</p>
+                <a href="/subscription/subscribe" class="btn btn-outline-warning" >Subscribe for more advantages !</a>
+                <hr />
+            </div>
+        </row>
+
     {% endif %}
     <h2>Your past subscriptions</h2>
     <ul>
