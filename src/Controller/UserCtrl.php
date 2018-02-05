@@ -44,11 +44,11 @@ class UserCtrl extends Controller
 		$em = $this->getDoctrine()->getManager();
 
 		if($email != $confemail){
-    		return new Response('E-mail non identique.');
+            return $this->render('all/message.html.twig',['message'=>'E-mail non identique.']);
 		}
 		
 		if($password != $confpassword){
-    		return new Response('Mot de passe non-identique');
+            return $this->render('all/message.html.twig',['message'=>'Mot de passe non-identique']);
 		}
 
         $usr = new User();
@@ -190,23 +190,11 @@ class UserCtrl extends Controller
     public function library(){
         $session = new Session();
         $session->start();
-
         if(UserCtrl::isLoggedIn($session,$this) != "OK"){return UserCtrl::isLoggedIn($session,$this);}
 
         $em = $this->getDoctrine()->getManager();
-        $qb = $em->createQueryBuilder();
+        $userVideo = VideoCtrl::getAllVideoByUser($session->get('usr')->getIdutilisateur(),$em);
 
-        //$query = $em->createNativeQuery('Select * from Video v, Paiement p where v.idVideo = p.idVideo and p.idRecipient = userId', $rsm);
-        $qb->select('v')
-            ->from('App\Entity\User', 'u')
-            ->from('App\Entity\Video', 'v')
-            ->from('App\Entity\Library', 'p')
-            ->where("u.idutilisateur = p.idowner")
-            ->andWhere("p.idvideo = v.idvideo")
-            ->andWhere("u.idutilisateur = ".$session->get("usr")->getIdutilisateur());
-
-        $userVideo=  $qb->getQuery()->getResult();
-        $usr = $session->get('usr');
         return $this->render('all/user/library.html.twig', ["usr"=>$session->get("usr"),'videos' => $userVideo, "count"=>count($userVideo)]);
     }
 

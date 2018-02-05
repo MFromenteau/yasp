@@ -43,7 +43,7 @@ class Order
     {
         $res = "";
         foreach ($this->descList as $d){
-            $res .= $d." & ";
+            $res .= $d." ";
         }
 
         return $res;

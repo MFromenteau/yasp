@@ -41,4 +41,15 @@ class DefaultController extends Controller
         return $this->render('all/index.html.twig', ['videos' => $random_video,"usr"=>$session->get("usr")]);
     }
 
+    /**
+     * @Route("/legal", name="legal")
+     */
+    public function legalNotice()
+    {
+        $session = new Session();
+        $session->start();
+
+        return $this->render('all/legal.html.twig',['usr'=>$session->get('usr')]);
+    }
+
 }

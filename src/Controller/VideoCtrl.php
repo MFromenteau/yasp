@@ -19,7 +19,34 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 class VideoCtrl extends Controller
 {
-	//$request = Request::createFromGlobals();
+    public static function  getAllVideoByUser($idu,$em){
+        $qb = $em->createQueryBuilder();
+
+        //$query = $em->createNativeQuery('Select * from Video v, Paiement p where v.idVideo = p.idVideo and p.idRecipient = userId', $rsm);
+        $qb->select('v')
+            ->from('App\Entity\User', 'u')
+            ->from('App\Entity\Video', 'v')
+            ->from('App\Entity\Library', 'p')
+            ->where("u.idutilisateur = p.idowner")
+            ->andWhere("p.idvideo = v.idvideo")
+            ->andWhere("u.idutilisateur = ".$idu);
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public static function  getLibByUserVid($idv,$idu,$em){
+        $qb = $em->createQueryBuilder();
+
+        $qb->select('l')
+            ->from('App\Entity\Library', 'l')
+            ->where("l.idowner = ".$idu)
+            ->andWhere("l.idvideo = ".$idv);
+
+        return $qb->getQuery()->getResult();
+    }
+
+	//*****PAGES*************/
+
 	/**
 	 * @Route("/video/{id}/theme", name="getThemeByVideoId")
 	 * @Method({"GET"})
@@ -28,61 +55,44 @@ class VideoCtrl extends Controller
 	}
 
     /**
-     * @Route("/video/{id}", name="getVideoById")
+     * @Route("/video/{idv}", name="getVideoById")
      * @param $id
      * @return \Symfony\Component\HttpFoundation\Response retourne la vue correspondante à la video
      * ou 404 si video absente
      */
-	public function getVideoById($id){
+	public function getVideoById($idv){
         $session = new Session();
         $session->start();
+        $em = $this->getDoctrine()->getManager();
+
 
         $video = $this->getDoctrine()
             ->getRepository(Video::class)
-            ->find($id);
+            ->find($idv);
 
         if (!$video) {
             return $this->render('all/404.html.twig');
         }
 
+        if($video->getPrix() != 0) {
+            if(UserCtrl::isLoggedIn($session,$this) != "OK"){return UserCtrl::isLoggedIn($session,$this);}
+
+            $bought = VideoCtrl::getLibByUserVid($idv, $session->get('usr')->getIdutilisateur(), $em);
+            if (!$bought)
+                return $this->render('all/video/buyRequest.html.twig', ['usr' => $session->get('usr'), 'idv' => $idv]);
+        }
+
         $commentaries = $this->getDoctrine()
             ->getRepository(Commentaire::class)
             ->findBy([
-               'idvideo' => $id
+               'idvideo' => $idv
             ]);
-        $usr = $session->get('usr');
+
         return $this->render('all/video.html.twig',array("usr"=>$session->get("usr"),'video' => $video,'commentaries' => $commentaries));
-
 	}
 
-    /**
-     *Route to upload a new video
-     *
-     * @param SessionInterface $session User session
-     * @param Request $request Page request
-     * @Route("/video/upload/", name="uploadVideo")
-     * @Method({"POST"})
-     */
-	public function uploadVideo(SessionInterface $session, Request $request){
-		$session = new Session();
-		$session->start();
-		$idUser = $session->get("user")->id;
-		$prix = $request->request->get('prix');
-		$titre = $request->request->get('titre');
-		$url = $request->request->get('url');
 
-
-	}
-
-    /**
-     * @Route("/user/{id}/video/list", name="getlisteVideoByUserId")
-     * @Method({"GET"})
-     * @param $id
-     */
-	public function getAllVideoByIdUser($id){
-
-	}
-
+	//*********API*****************/
     /**
      * @Route("/video/{id}/comment/new", name="newComment")
      * @Method({"POST"})
@@ -124,6 +134,7 @@ class VideoCtrl extends Controller
 
 	    return new JsonResponse($serializer->serialize($jsonFinal, 'json'));
 	}
+
 
     /**
      * @Route("/video/{id}/delete/comment", name="deleteComment")
@@ -185,6 +196,7 @@ class VideoCtrl extends Controller
             ->andWhere("p.idvideo = v.idvideo")
             ->andWhere("u.idutilisateur = ".$session->get("usr")->getIdutilisateur());
 
+        $qb->getResult();
         return $session;
     }
 

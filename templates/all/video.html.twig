@@ -18,11 +18,11 @@
 
     <div class="comments">
 
-    {% if session is defined and session.get("usr") is defined and session.get("usr").idutilisateur is defined %}
+    {% if usr is defined %}
 
         <div class="comment-wrap">
             <div class="photo">
-                <div class="avatar" style="background-image: url('{{ session.get("usr").urlAvatar }}')"></div>
+                <div class="avatar" style="background-image: url('{{ usr.urlAvatar }}')"></div>
             </div>
             <div class="comment-block">
                 <form action="">
