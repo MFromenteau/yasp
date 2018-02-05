@@ -130,5 +130,26 @@ class User
      */
     private $psw;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="urlAvatar", type="text", nullable=false)
+     */
+    private $urlavatar;
 
+    /**
+     * @return string
+     */
+    public function getUrlavatar()
+    {
+        return $this->urlavatar;
+    }
+
+    /**
+     * @param string $urlAvatar
+     */
+    public function setUrlavatar($urlAvatar)
+    {
+        $this->urlAvatar = $urlAvatar;
+    }
 }

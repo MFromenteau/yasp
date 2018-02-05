@@ -2,82 +2,90 @@
 
 namespace App\Controller;
 
+use App\Entity\Paiement;
+use App\ORDER_STATUS;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
+use App\Order;
+use App\Entity\Orders;
+use DateTime;
 
+    /**
+     * @Route("/payment")
+     */
 class PaiementCtrl extends Controller
 {
-    /**
-     * @Route("/paiement/user/{id}/emis", name="emis")
-     * @Method({"GET"})
-     * @param $id
+
+    /*
+     * @param Array transac
+     *
+     * @description this function prepare the transaction and
+     * ask the user for confirmation
      */
-	public function getPaiementEmis($id){
+    public static function validatePaiement($desc,$price,$confirmUrl,$cancelUrl,$render,$session){
 
-			//www.yasp.fr/paiement/user/67890/emis
-	}
+        //prepare the paiement in the session
+        $order = new Order();
+        $order->addProduct($desc,$price);
+
+        //Save the details of order in session
+        $session->set("order",$order);
+        $session->set('confirmUrl',$confirmUrl);
+        $session->set('cancelUrl' ,$cancelUrl);
+
+        return $render->render("all/paiement/confirmation_summary.html.twig",["usr"=>$session->get("usr"),"orderDescList"=>$order->getDescList(),"totalPrice"=>$order->getTotalPrice()]);
+    }
 
     /**
-     * @Route("/paiement/user/{id}/effectuer", name="effectuer")
+     * @Route("/confirmOrder", name="confirmOrder")
      * @Method({"POST"})
-     * @param $id
-     * @param Request $request
      */
-	public function effectuerPaiement($id, Request $request){
-		$somme = $request->request->get('somme');
-		$desc = $request->request->get('desc');
+    public function confirmPayment(){
+        $session = new Session();
+        $session->start();
 
-			//www.yasp.fr/paiement/user/67890/effectuer
-	}
-		/**
-	 * @Route("/paiement/user/{id}/effectuer", name="effectuerGet")
-	 * @Method({"GET"})
-	 */
-	public function effectuerPaiementGet(){
-			//www.yasp.fr/paiement/user/67890/effectuer
-	}
+        //verifiacation of order and usr
+        if(UserCtrl::isLoggedIn($session,$this) != "OK"){return UserCtrl::isLoggedIn($session,$this);}
+        if(!$session->get('order'))
+            return $this->render('all/message.html.twig',["usr"=>$session->get('usr'),"message"=>"You don't have an order to confirm"]);
+
+        //getting the order to confirm
+        $order =  $session->get("order");
+        $order->setStatus(ORDER_STATUS::CONFIRMED);
+
+        //creating the payement
+        $p = new Orders();
+        $p->setDescription($order->getDescConcat());
+        $p->setCreatedat(new DateTime("now"));
+        $p->setIdrecipient($session->get('usr'));
+        $p->setTotalPrice($order->getTotalPrice());
+        $p->setIdOrders(intval($session->get('usr')->getIdutilisateur().date_create()->getTimestamp()));
+
+        $em = $this->getDoctrine()->getManager();
+        $em->merge($p);
+        $em->flush();
+
+        $session->set("trans",$p);
+        $session->set('order',$order);
+        return $this->redirect($session->get('confirmUrl'));
+    }
 
     /**
-     * @Route("/paiement/user/{id}/creer", name="creation")
+     * @Route("/cancelOrder", name="cancelOrder")
      * @Method({"POST"})
-     * @param $id
-     * @param Request $request
      */
-	public function createPaiement($id, Request $request){
-		$somme = $request->request->get('somme');
-		$desc = $request->request->get('desc');
+    public function cancelPayment(){
+        $session = new Session();
+        $session->start();
 
-			//www.yasp.fr/paiement/user/67890/creer
-	}
+        if(UserCtrl::isLoggedIn($session,$this) != "OK"){return UserCtrl::isLoggedIn($session,$this);}
 
-    /**
-     * @Route("/paiement/user/{id}/creer", name="creationGET")
-     * @Method({"GET"})
-     * @param $id
-     */
-	public function createPaiementGET($id){
-			//www.yasp.fr/paiement/user/67890/creer
-	}
+        $session->set('order',null);
 
-    /**
-     * @Route("/paiement/user/{id}/remboursement", name="remboursement")
-     * @Method({"POST"})
-     * @param $id
-     * @param Request $request
-     */
-	public function refund($id, Request $request){
-		$paiement = $request->request->get('paiement');
-
-			//www.yasp.fr/paiement/user/67890/remboursement
-	}
-			/**
-	 * @Route("/paiement/user/{id}/remboursement", name="remboursementGet")
-	 * @Method({"GET"})
-	 */
-	public function refundGet(){
-			//www.yasp.fr/paiement/user/67890/remboursement
-	}
+        return $this->redirect($session->get('cancelUrl'));
+    }
 }
 

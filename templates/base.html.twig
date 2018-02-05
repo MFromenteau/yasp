@@ -14,7 +14,7 @@
           <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
-          <a class="navbar-brand" href="#">YASP !</a>
+          <a class="navbar-brand" href="/">YASP !</a>
 
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="nav navbar-nav mr-auto navbar-left">
@@ -24,16 +24,27 @@
                 {% block links %}{% endblock %}
             </ul>
 
-            <form class="form-inline my-2 my-lg-0" role="search" style="padding-right: 10px;">
-              <input class="form-control mr-sm-2" type="text" placeholder="Search">
-              <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
-            </form>
 
-              {% if usr and usr.idutilisateur %}
-              <a href="/user/profile"><p>{{   usr.prenom }}{{ usr.nom }}</p></a>
-              <a href="/user/logout"><button type="button" class="btn btn-outline-danger" >
-                      Log Out
-                  </button></a>
+
+              {% if usr is defined and usr.idutilisateur is defined %}
+              <ul class="nav navbar-nav navbar-right">
+                  <li class="nav-item">
+                      <form class="form-inline my-2 my-lg-0 nav-link" role="search" style="padding-right: 10px;">
+                          <input class="form-control mr-sm-2" type="text" placeholder="Search">
+                          <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
+                      </form>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link" href="/user/profile">
+                          <div class="profileAvatar">
+                              <img src="{{ usr.urlavatar }}">
+                          </div>
+                      </a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link" href="/user/logout"><button type="button" class="btn btn-outline-danger" >Log Out</button></a>
+                  </li>
+              </ul>
               {% else %}
             <div class="navbar-form navbar-right btn-group">
               <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#signinModal">
@@ -43,18 +54,13 @@
                 Sign up
               </button>
                 {% endif %}
-
-              <!--  Une fois connecté affiché =>
-              <button type="button" class="btn btn-info">Profil</button>
-              <button type="button" class="btn btn-danger">Disconnect</button>
-              -->
             </div>
           </div>
 
         </nav>
 
         <div class="container">
-            <div class="jumbotron">
+            <div class="jumbotron" style="margin-top: 5px;">
                 {% block body %}{% endblock %}
             </div>
         </div>
@@ -81,11 +87,13 @@
                 <div class="modal-body">
                   <div class="form-group">
                     <label for="exampleInputEmail1">Email address</label>
-                    <input type="email" name="email" class="form-control" id="emailLogin" placeholder="Enter email">
+                    <input type="email" name="email" class="form-control" id="emailLogin" placeholder="Enter email"/>
+                      <p id="mailError" hidden="true">Invalid Mail</p>
                   </div>
                   <div class="form-group">
                     <label for="exampleInputPassword1">Password</label>
-                    <input type="password" name="password" class="form-control" id="passwordLogin" placeholder="Password">
+                    <input type="password" name="password" class="form-control" id="passwordLogin" placeholder="Password"/>
+                    <p id="passwordError" hidden="true">Invalid Password</p>
                   </div>
                 </div>
                 <div class="modal-footer">
@@ -112,7 +120,8 @@
                   <div class="row">
                     <div class="col">
                       <label for="email">Email</label>
-                      <input id="email" name="email" type="email" class="form-control" placeholder="Email">
+                      <input id="email" name="email" type="email" class="form-control" id="emailRegister" placeholder="Email">
+                        <p id="regMailError" hidden="true">Invalid Mail</p>
                     </div>
                     <div class="col">
                       <label for="confEmail">Confirm Email</label>
@@ -134,7 +143,8 @@
                   <div class="row">
                     <div class="col">
                       <label for="password">Password</label>
-                      <input id="password" name="password" type="password" class="form-control" aria-describedby="passwordHelpInline" placeholder="Password">
+                      <input id="password" name="password" type="password" class="form-control" aria-describedby="passwordHelpInline" id= "passwordRegister" placeholder="Password">
+                        <p id="regPasswordError" hidden="true">Invalid Password</p>
                       <small id="passwordHelpInline" class="form-text text-muted">
                         Must be 8-20 characters long.
                       </small>
@@ -159,15 +169,43 @@
               font-family: 'Arimo', sans-serif;
               background-color: #f2f4f7 !important;
           }
+
+          .container{
+              margin-top: 1.75em;
+          }
           .jumbotron{
               background-color: #11ffee00 !important;
           }
+          .profileAvatar {
+              width: 40px;
+              height: 40px;
+              border-radius: 50%;
+              box-shadow:
+                      inset 0 0 0 2px rgba(255,255,255,0.6),
+                      0 1px 1px rgba(0,0,0,0.1);
+              background-color: transparent !important;
+              z-index: 999;
+          }
+          .profileAvatar img {
+              border-radius: inherit;
+              width: inherit;
+              height: inherit;
+              display: block;
+              position: relative;
+              z-index: 998;
+          }
         </style>
+
+
+        <script
+                src="http://code.jquery.com/jquery-3.3.1.min.js"
+                integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+                crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+        <script src="Verification.js"></script>
 
         {% block javascripts %}{% endblock %}
 
-        <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
     </body>
 </html>

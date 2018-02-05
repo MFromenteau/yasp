@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use Psr\Log\LoggerInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
@@ -10,6 +12,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Video;
 use App\Entity\Commentaire;
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\Encoder\XmlEncoder;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 class VideoCtrl extends Controller
 {
@@ -42,11 +48,10 @@ class VideoCtrl extends Controller
         $commentaries = $this->getDoctrine()
             ->getRepository(Commentaire::class)
             ->findBy([
-                'idvideo' => $id
+               'idvideo' => $id
             ]);
-
         $usr = $session->get('usr');
-        return $this->render('all/video.html.twig',array("usr"=>$usr,'video' => $video,'commentaries' => $commentaries));
+        return $this->render('all/video.html.twig',array("usr"=>$session->get("usr"),'video' => $video,'commentaries' => $commentaries));
 
 	}
 
@@ -79,16 +84,45 @@ class VideoCtrl extends Controller
 	}
 
     /**
-     * @Route("/video/{id}/new/comment", name="newComment")
+     * @Route("/video/{id}/comment/new", name="newComment")
      * @Method({"POST"})
      * @param $id
      * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
      */
 	public function createCommentByIdVideo($id, Request $request){
-		$idUser = $request->request->get('idUser');
-		$text = $request->request->get('text');
+        $session = new Session();
+        $session->start();
+	    $postedComment = $request->request->get('comment');
+        $usr = $session->get('usr');
+
+        if(!$usr){
+            return $this->render('all/404.html.twig'); // We need a better error handler here
+        }
+
+        $em = $this->getDoctrine()->getManager();
 
 
+        $comment = new Commentaire();
+        $comment->setIdutilisateur($usr->getIdutilisateur());
+        $comment->setIdvideo($id);
+        $comment->setMessage($postedComment);
+        $comment->setCreatedat(new \DateTime());
+
+        $em->persist($comment);
+        $em->flush();
+
+        $encoders = array(new XmlEncoder(), new JsonEncoder());
+        $normalizers = array(new ObjectNormalizer());
+        $serializer = new Serializer($normalizers, $encoders);
+
+        // need to serialize the two entities to array them and get json of that array, so that we can return this big pack to the js
+        $usrJson = $serializer->serialize($usr, 'json');
+        $commentJson = $serializer->serialize($comment, 'json');
+
+        $jsonFinal = ['comment'=>$commentJson,'usr'=>$usrJson];
+
+	    return new JsonResponse($serializer->serialize($jsonFinal, 'json'));
 	}
 
     /**
@@ -131,8 +165,28 @@ class VideoCtrl extends Controller
      * @param $id
      */
 	public function getAllCommentByVideoId($id){
+        $session = new Session();
+        $session->start();
 
-	}
+        $em = $this->getDoctrine()->getManager();
+        $qb = $em->createQueryBuilder();
+
+        $qb->select('v')
+            ->addSelect('c')
+            ->addSelect('u')
+            ->addSelect('i')
+            ->join('e.comments', 'c')
+            ->join('c.user', 'u')
+            ->join('u.infos', 'i')
+            ->from('App\Entity\User', 'u')
+            ->from('App\Entity\Video', 'v')
+            ->from('App\Entity\Paiement', 'p')
+            ->where("u.idutilisateur = p.idrecipient")
+            ->andWhere("p.idvideo = v.idvideo")
+            ->andWhere("u.idutilisateur = ".$session->get("usr")->getIdutilisateur());
+
+        return $session;
+    }
 
     /**
      * @Route("/comment/{id}", name="getCommentById")

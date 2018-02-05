@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1 style="text-align : center;">Confirm your order</h1>
+    <hr />
+    <h3>You order contains :</h3>
+    <ul>
+        {% for desc in orderDescList %}
+            <li>{{ desc }}</li>
+        {% endfor %}
+    </ul>
+    <p>Total price : {{ totalPrice }} €</p>
+    <p>Do you agree to this transaction ?</p>
+    <form action="/payment/confirmOrder" method="post">
+        <input class="btn btn-primary" type="submit" value="Yes">
+    </form>
+
+    <form action="/payment/cancelOrder" method="post">
+        <input class="btn btn-success" type="submit" value="No">
+    </form>
+
+{% endblock %}
+
+{% block stylesheets %}
+    <style>
+
+        .blurry:hover{
+            -webkit-transition: 0.1s -webkit-filter linear;
+            -webkit-filter:blur(1px);
+        }
+
+
+    </style>
+{% endblock %}
+
+{% block javascripts %}
+
+{% endblock %}
