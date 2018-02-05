@@ -152,15 +152,24 @@ class AbonnementCtrl extends Controller
      * @Route("/unsubscribe", name="annulation_abo")
      * @Method({"GET"})
      */
-	public function annuleSub($id){
+    public function annuleSub(){
         $session = new Session();
         $session->start();
 
         if(UserCtrl::isLoggedIn($session,$this) != "OK"){return UserCtrl::isLoggedIn($session,$this);}
 
-        
+        $em = $this->getDoctrine()->getManager();
+        $res = AbonnementCtrl::getLastPurchasedAbonnement($session,$em);
 
-        return $this->render("all/message.html.twig",["usr"=>$session->get('usr'),"message"=>"You successfully unsubscribe"]);
+        if(!$res || ($lastAbo = $res[0]) && !AbonnementCtrl::isAboValid($lastAbo)){
+            // User is not subscribed
+            return $this->render("all/message.html.twig",["usr"=>$session->get("usr"),"message"=>"You don't have a subscription to cancel"]);
+        }
+
+        $em->remove($lastAbo);
+        $em->flush();
+
+        return $this->render("all/message.html.twig",["usr"=>$session->get('usr'),"message"=>"You successfully unsubscribed"]);
     }
 }
 
