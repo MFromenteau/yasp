@@ -20,9 +20,11 @@ class Order
     private $descList;
     private $totalPrice;
     private $status;
+    private $descPriceList;
 
     function __construct() {
         $this->descList = [];
+        $this->descPriceList = [];
         $this->totalPrice = 0;
         $this->status = ORDER_STATUS::TO_CONFIRM;
     }
@@ -71,5 +73,6 @@ class Order
     public function addProduct($pDesc,$pPrice){
         $this->totalPrice += $pPrice;
         array_push($this->descList,$pDesc);
+        array_push($this->descPriceList,['desc'=>$pDesc,'price'=>$pPrice]);
     }
 }

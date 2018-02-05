@@ -3,32 +3,71 @@
 {% block body %}
     <h1 style="text-align : center;">Confirm your order</h1>
     <hr />
-    <h3>You order contains :</h3>
-    <ul>
-        {% for desc in orderDescList %}
-            <li>{{ desc }}</li>
-        {% endfor %}
-    </ul>
-    <p>Total price : {{ totalPrice }} €</p>
-    <p>Do you agree to this transaction ?</p>
-    <form action="/payment/confirmOrder" method="post">
-        <input class="btn btn-primary" type="submit" value="Yes">
-    </form>
+    <div class="card">
+        <div class="card-header">
+            <h3>You order contains :</h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-8">
+                    <table class="table">
+                        <thead class="thead-light">
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Description</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for desc in orderDescList %}
+                            <tr>
+                                <th scope="row"></th>
+                                <td>{{ desc }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
 
-    <form action="/payment/cancelOrder" method="post">
-        <input class="btn btn-success" type="submit" value="No">
-    </form>
-
+                <div class="col-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title">Order total</h5>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text currency">{{ totalPrice }}€</p>
+                            <p class="card-text" style="text-align:center;"><strong>Proceed the payement</strong></p>
+                            <row>
+                                <form action="/payment/confirmOrder" method="post">
+                                    <input class="btn btn-success" style="width: 100%;" type="submit" value="Yes">
+                                </form>
+                            </row>
+                            <div class="spacer"></div>
+                            <row>
+                                <form action="/payment/cancelOrder" method="post">
+                                    <input class="btn btn-danger" style="width: 100%;" type="submit" value="No">
+                                </form>
+                            </row>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
 {% block stylesheets %}
     <style>
 
-        .blurry:hover{
-            -webkit-transition: 0.1s -webkit-filter linear;
-            -webkit-filter:blur(1px);
+        .currency {
+            font-size: 4rem;
+            font-weight: 300 + 100;
+            letter-spacing: 0px;
+            text-align:center;
         }
 
+        .spacer {
+            height: 5px;
+        }
 
     </style>
 {% endblock %}

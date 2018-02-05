@@ -229,9 +229,7 @@ class UserCtrl extends Controller
             ->where("p.idrecipient = ".$session->get("usr")->getIdutilisateur())
             ->orderBy('p.createdat', 'DESC');
 
-        dump($qb->getDql());
         $achat=  $qb->getQuery()->getResult();
-        $usr = $session->get('usr');
         return $this->render('all/user/Orders.html.twig', ["usr"=>$session->get("usr"),'orders' => $achat, "count"=>count($achat)]);
     }
 

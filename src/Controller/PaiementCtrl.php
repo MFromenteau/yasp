@@ -60,12 +60,11 @@ class PaiementCtrl extends Controller
         $p = new Orders();
         $p->setDescription($order->getDescConcat());
         $p->setCreatedat(new DateTime("now"));
-        $p->setIdrecipient($session->get('usr'));
+        $p->setIdrecipient($session->get('usr')->getIdutilisateur());
         $p->setTotalPrice($order->getTotalPrice());
-        $p->setIdOrders(intval($session->get('usr')->getIdutilisateur().date_create()->getTimestamp()));
 
         $em = $this->getDoctrine()->getManager();
-        $em->merge($p);
+        $em->persist($p);
         $em->flush();
 
         $session->set("trans",$p);
