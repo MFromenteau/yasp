@@ -12,6 +12,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use App\Entity\Abonnement;
+use App\Entity\User;
+
 use DateTime;
 /**
  * @Route("/subscription")
@@ -112,14 +114,20 @@ class AbonnementCtrl extends Controller
         if( $session->get('abonnementToSub') == null)
             $this->render("all/message.html.twig",["usr"=>$session->get('usr'),"message"=>"You don't have a subscription validated"]);
 
+
+        $usr = $em->getRepository(User::class)
+            ->findOneBy([
+                'idutilisateur' => $session->get('usr')->getIdutilisateur()
+            ]);
+
         $ah = new Abonnementhistorique();
         $ah->setCreatedat(new DateTime("now"));
         $ah->setIdabonnement($em->getRepository(Abonnement::class)->find($session->get('aboToSub')));
-        $ah->setIdutilisateur($session->get('usr'));
+        $ah->setIdutilisateur($usr);
         $ah->setIdOrders($session->get('trans'));
 
         //merge is important so it doesn't try tro recreate(persist) user and abonnement in cascade
-        $em->persist($ah);
+        $em->merge($ah);
         $em->flush();
 
         return $this->render("all/message.html.twig",["usr"=>$session->get('usr'),"message"=>"You successfully subscribed"]);
@@ -144,15 +152,24 @@ class AbonnementCtrl extends Controller
      * @Route("/unsubscribe", name="annulation_abo")
      * @Method({"GET"})
      */
-	public function annuleSub($id){
+    public function annuleSub(){
         $session = new Session();
         $session->start();
 
         if(UserCtrl::isLoggedIn($session,$this) != "OK"){return UserCtrl::isLoggedIn($session,$this);}
 
+        $em = $this->getDoctrine()->getManager();
+        $res = AbonnementCtrl::getLastPurchasedAbonnement($session,$em);
 
+        if(!$res || ($lastAbo = $res[0]) && !AbonnementCtrl::isAboValid($lastAbo)){
+            // User is not subscribed
+            return $this->render("all/message.html.twig",["usr"=>$session->get("usr"),"message"=>"You don't have a subscription to cancel"]);
+        }
 
-        //www.yasp.fr/abbonnement/user/67890/annulation
-	}
+        $em->remove($lastAbo);
+        $em->flush();
+
+        return $this->render("all/message.html.twig",["usr"=>$session->get('usr'),"message"=>"You successfully unsubscribed"]);
+    }
 }
 
