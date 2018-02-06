@@ -27,12 +27,10 @@
             <div class="photo">
                 <div class="avatar" style="background-image: url('{{ usr.urlAvatar }}')"></div>
             </div>
-            <div class="comment-block">
-                <form action="">
-                    <textarea name="comment" id="comment" cols="30" rows="3" placeholder="Add comment..."></textarea>
+                <form class="comment-block" action="">
+                    <textarea name="comment" id="comment" cols="30" rows="1" placeholder="Add comment..."></textarea>
                     <button name="postComment" id="postComment" type="button" class="btn btn-primary btn-sm" style="float:right;">Post</button>
                 </form>
-            </div>
         </div>
     {% else %}
         <div class="comment-wrap" style="text-align: center;">
@@ -99,6 +97,7 @@
 
         textarea{
             padding-left: 5px;
+            border: none;
         }
 
         .comments {
@@ -134,6 +133,10 @@
             vertical-align: top;
             border-radius: 0.1875rem;
             box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.08);
+        }
+
+        .comment-block, form {
+            display: flex;
         }
 
         .comment-block textarea {

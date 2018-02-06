@@ -74,7 +74,7 @@ class VideoCtrl extends Controller
         if($video->getPrix() != 0) {
             if(UserCtrl::isLoggedIn($session,$this) != "OK"){return UserCtrl::isLoggedIn($session,$this);}
 
-            if(!AbonnementCtrl::isAboValid(AbonnementCtrl::getLastPurchasedAbonnement($session,$em)[0])){
+            if(!AbonnementCtrl::isAboValid(AbonnementCtrl::getLastPurchasedAbonnement($session,$em))){
                 $bought = VideoCtrl::getLibByUserVid($idv, $session->get('usr')->getIdutilisateur(), $em);
 
                 if (!$bought)
@@ -221,11 +221,12 @@ class VideoCtrl extends Controller
         $em->persist($lib);
         $em->flush();
 
+        $vid = $session->get('vidToBuy');
         $session->set('vidToBuy',null);
         $session->set('order',null);
         $session->set('trans',null);
 
-        return $this->render('all/message.html.twig',['usr'=>$session->get('usr'),'message'=>"You successfully bought ".$session->get('vid')->getTitre()]);
+        return $this->render('all/message.html.twig',['usr'=>$session->get('usr'),'message'=>"You successfully bought ".$vid->getTitre()]);
     }
 
     /**

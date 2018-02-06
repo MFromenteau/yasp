@@ -42,7 +42,7 @@ class AbonnementCtrl extends Controller
         if(!$abo)
             return false;
 
-            $endDate = DateTime::createFromFormat('d-m-Y H:i',$abo->getCreatedat()->format('d-m-Y H:i'))->add(date_interval_create_from_date_string($abo->getIdabonnement()->getDuree().' days'));
+        $endDate = DateTime::createFromFormat('d-m-Y H:i',$abo->getCreatedat()->format('d-m-Y H:i'))->add(date_interval_create_from_date_string($abo->getIdabonnement()->getDuree().' days'));
         return ((new DateTime())  <= $endDate);
     }
 
@@ -61,7 +61,16 @@ class AbonnementCtrl extends Controller
                     ->where("mah.idutilisateur = ".$session->get("usr")->getIdutilisateur())->getDql().")"
             );
 
-        return $qb->getQuery()->getResult();
+        $res = $qb->getQuery()->getResult();
+        $a = $res;
+
+        if($res == [])
+            return null;
+
+        if(is_array($res))
+            $a = $res[0];
+
+        return $a;
     }
 
     /**
