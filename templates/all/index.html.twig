@@ -11,6 +11,14 @@
                 <img class="card-img-top blurry" src="data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22318%22%20height%3D%22180%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20318%20180%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_16041245514%20text%20%7B%20fill%3Argba(255%2C255%2C255%2C.75)%3Bfont-weight%3Anormal%3Bfont-family%3AHelvetica%2C%20monospace%3Bfont-size%3A16pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_16041245514%22%3E%3Crect%20width%3D%22318%22%20height%3D%22180%22%20fill%3D%22%23777%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%22109.1328125%22%20y%3D%2297.2%22%3EImage%20cap%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E" alt="Card image cap">
                 <div class="card-body">
                     <h5 class="card-title" style="color: black;">{{ video.titre }}</h5>
+                    {% if video.prix == 0 %}
+                        <div class="chip freechip">free</div>
+                    {% else %}
+                        <div class="chip paychip">
+                            <img src="{{ asset('eurochip.png') }}" alt="chip" width="20" height="20">
+                            <div class="text"> {{  video.prix}} </div>
+                        </div>
+                    {% endif %}
                     <p class="card-text"></p>
                 </div>
             </div>
@@ -21,6 +29,9 @@
 
 {% block stylesheets %}
 <style>
+    .card-deck a{
+        margin-bottom: 2rem;
+    }
 
     .card {
         border: 0;
@@ -29,7 +40,41 @@
         box-shadow: 0 3px 0px 0 rgba(0, 0, 0, .08);
         transition: all .3s ease-in-out;
         will-change: transform;
+    }
 
+    .chip{
+        width :30%;
+        color : white;
+        position: absolute;
+        bottom: 80%;
+        right : 75%;
+    }
+
+    .paychip{
+        border : solid 1px;
+        border-radius: 1rem;
+        display: flex;
+        border-color:  lightskyblue;
+        background-color : lightskyblue;
+        box-shadow: 3px 3px 6px 2px rgba(0, 0, 255, .2);
+    }
+    .freechip{
+        border : solid 1px;
+        border-radius: 1rem;
+        text-align: center;
+        border-color: #57e2b2;
+        background-color : #57e2b2;
+        box-shadow: 3px 3px 4px 2px rgba(0, 200, 0, .2);
+    }
+    .paychip .text{
+        text-align: center;
+        padding: 30%;
+    }
+    .paychip img{
+        position: absolute;
+        border-radius: 1rem;
+        right: 3.6rem;
+        box-shadow: 3px 3px 5px 2px rgba(0, 0, 255, .2);
     }
     .card:after {
 

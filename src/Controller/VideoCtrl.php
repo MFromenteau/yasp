@@ -61,7 +61,7 @@ class VideoCtrl extends Controller
         $session = new Session();
         $session->start();
         $em = $this->getDoctrine()->getManager();
-
+        $comment = null;
 
         $video = $this->getDoctrine()
             ->getRepository(Video::class)
@@ -74,9 +74,12 @@ class VideoCtrl extends Controller
         if($video->getPrix() != 0) {
             if(UserCtrl::isLoggedIn($session,$this) != "OK"){return UserCtrl::isLoggedIn($session,$this);}
 
-            $bought = VideoCtrl::getLibByUserVid($idv, $session->get('usr')->getIdutilisateur(), $em);
-            if (!$bought)
-                return $this->render('all/video/buyRequest.html.twig', ['usr' => $session->get('usr'), 'idv' => $idv]);
+            if(!AbonnementCtrl::isAboValid(AbonnementCtrl::getLastPurchasedAbonnement($session,$em)[0])){
+                $bought = VideoCtrl::getLibByUserVid($idv, $session->get('usr')->getIdutilisateur(), $em);
+
+                if (!$bought)
+                    return $this->render('all/video/buyRequest.html.twig', ['usr' => $session->get('usr'), 'idv' => $idv]);
+            }
         }
 
         $commentaries = $this->getDoctrine()

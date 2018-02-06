@@ -3,6 +3,9 @@
 
 
 {% block body %}
+    {% if comment is defined %}
+        <p>{{ comment }}</p>
+        {% endif %}
     <div class="embed-responsive embed-responsive-16by9">
         <video class="embed-responsive-item" controls>
             <source src="{{ video.titre }}.mp4" type="video/mp4">

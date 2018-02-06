@@ -31,6 +31,8 @@ class UserCtrl extends Controller
 	 * @Method({"POST"})
 	 */
 	public function register(Request $request){
+        $session = new Session();
+        $session->start();
         //file_put_contents( 'debug' . date('_M_D_H,m,s',time()  ).'.log', var_export( $request, true));
        // $logger->info(var_dump($request->request));
 
@@ -77,6 +79,9 @@ class UserCtrl extends Controller
 
         $em->persist($usr);
         $em->flush();
+
+        $usr->setPsw("nope");
+        $session->set("usr",$usr);
 
         //file_put_contents( 'logs/debugobj' . date('_M_D_H,m,s',time()  ).'.log', var_export( $usr, true));
 
