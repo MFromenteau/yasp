@@ -209,5 +209,46 @@ class VideoCtrl extends Controller
 
 			//www.yasp.fr/video/acheter/67890
 	}
+
+    /**
+     * @Route("/search", name="search")
+     * @Method({"POST"})
+     * @param Request $request
+     */
+    public function search(Request $request)
+    {
+        $session = new Session();
+        $session->start();
+
+        $search = $request->request->get('search');
+
+        $em = $this->getDoctrine()->getManager();
+        $qb = $em->createQueryBuilder();
+        $qb->select('v')
+            ->from('App\Entity\Video','v')
+            ->where("v.titre LIKE '%".$search."%'");
+
+        $videos =  $qb->getQuery()->getResult();
+
+        $qb->select('t',$qb->expr()->count('tv'))
+            ->from('App\Entity\Theme','t')
+            ->join('t.idvideo','tv')
+            ->where("t.label LIKE '%".$search."%'");
+
+        $themes =  $qb->getQuery()->getResult();
+        dump($themes);
+
+        return $this->render('all/search.html.twig',array("usr"=>$session->get("usr"),'videos' => $videos,'themes' => $themes));
+
+    }
+
+    /**
+     * @Route("/search", name="searchGet")
+     * @Method({"GET"})
+     *
+     */
+    public function redirectSearchGET(){
+        return  $this->redirect($this->generateUrl('homepage'));
+    }
 }
 
