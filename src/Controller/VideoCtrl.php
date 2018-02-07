@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use Doctrine\ORM\Query\Expr;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
@@ -12,6 +13,7 @@ use App\Entity\Video;
 use App\Entity\Commentaire;
 use App\Order;
 use App\Entity\Library;
+use Symfony\Component\Finder\Expression;
 
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
@@ -82,14 +84,88 @@ class VideoCtrl extends Controller
             }
         }
 
-        $commentaries = $this->getDoctrine()
-            ->getRepository(Commentaire::class)
-            ->findBy([
-               'idvideo' => $idv
-            ]);
+        $comments = VideoCtrl::getAllCommentByVideoId($idv,$this->getDoctrine()->getManager());
 
-        return $this->render('all/video/display.html.twig',array("usr"=>$session->get("usr"),'video' => $video,'commentaries' => $commentaries));
+        return $this->render('all/video/display.html.twig',array("usr"=>$session->get("usr"),'video' => $video,'commentaries' => $comments));
 	}
+
+    /**
+     * @Route("/buy/{idv}", name="buyVideoById" , requirements={"idv"="\d+"})
+     * @Method({"GET"})
+     */
+    public function buyVideoById($idv){
+        $session = new Session();
+        $session->start();
+        $em = $this->getDoctrine()->getManager();
+
+
+        $video = $this->getDoctrine()
+            ->getRepository(Video::class)
+            ->find($idv);
+
+        //verif
+        if (!$video) {
+            return $this->render('all/404.html.twig');
+        }
+
+        if(VideoCtrl::getLibByUserVid($idv,$session->get('usr')->getIdutilisateur(),$em))
+            return  $this->render("all/message.html.twig",['usr'=>$session->get('usr'),'message'=>'You already bought the video.']);
+
+        if($video->getPrix() == 0) {
+            return  $this->render("all/message.html.twig",['usr'=>$session->get('usr'),'message'=>'This video is free, are you sure you want to buy it ? :p']);
+        }
+
+
+        if(UserCtrl::isLoggedIn($session,$this) != "OK"){return UserCtrl::isLoggedIn($session,$this);}
+
+        $cmd = new Order();
+        $cmd->addProduct($video->getTitre(),$video->getPrix());
+        $session->set('vidToBuy',$video);
+
+        return PaiementCtrl::validatePaiement(
+            $cmd,
+            $this->generateUrl("confirmBuy"),
+            $this->generateUrl("cancelBuy"),
+            $this,
+            $session);
+    }
+
+    /**
+     * @Route("/buy/confirm", name="confirmBuy")
+     * @Method({"GET"})
+     */
+    public function confirmBuy(){
+        $session = new Session();
+        $session->start();
+        $em = $this->getDoctrine()->getManager();
+
+        $lib = new Library();
+        $lib->setIdOrders($session->get('trans')->getIdorders());
+        $lib->setIdowner($session->get('usr')->getIdutilisateur());
+        $lib->setIdvideo($session->get('vidToBuy')->getIdvideo());
+        $em->persist($lib);
+        $em->flush();
+
+        $vid = $session->get('vidToBuy');
+        $session->set('vidToBuy',null);
+        $session->set('order',null);
+        $session->set('trans',null);
+
+        return $this->render('all/message.html.twig',['usr'=>$session->get('usr'),'message'=>"You successfully bought ".$vid->getTitre()]);
+    }
+    /**
+     * @Route("/buy/cancel", name="cancelBuy")
+     * @Method({"GET"})
+     */
+    public function cancelBuy(){
+        $session = new Session();
+        $session->start();
+        $session->set('vidToBuy',null);
+        $session->set('order',null);
+        $session->set('trans',null);
+
+        return $this->redirect($this->generateUrl('homepage'));
+    }
 
 	//*********API*****************/
     /**
@@ -134,106 +210,19 @@ class VideoCtrl extends Controller
 	    return new JsonResponse($serializer->serialize($jsonFinal, 'json'));
 	}
 
-    /**
-     * @Route("/{id}/comment/list", name="getAllCommentByVideoId")
-     * @Method({"GET"})
-     * @param $id
-     */
-	public function getAllCommentByVideoId($id){
-        $session = new Session();
-        $session->start();
-
-        $em = $this->getDoctrine()->getManager();
+	public static function getAllCommentByVideoId($idv,$em){
         $qb = $em->createQueryBuilder();
 
-        $qb->select('v')
-            ->addSelect('c')
-            ->addSelect('u')
-            ->addSelect('i')
-            ->join('e.comments', 'c')
-            ->join('c.user', 'u')
-            ->join('u.infos', 'i')
-            ->from('App\Entity\User', 'u')
+        $qb->select('c','uc.prenom','uc.nom','uc.urlavatar')
             ->from('App\Entity\Video', 'v')
-            ->from('App\Entity\Paiement', 'p')
-            ->where("u.idutilisateur = p.idrecipient")
-            ->andWhere("p.idvideo = v.idvideo")
-            ->andWhere("u.idutilisateur = ".$session->get("usr")->getIdutilisateur());
+            ->from('App\Entity\Commentaire', 'c')
+            ->join('c.idutilisateur','uc')
+            ->where('v.idvideo = '.$idv)
+            ->andWhere('c.idvideo = v.idvideo');
 
-        $qb->getResult();
-        return $session;
+        $res = $qb->getQuery()->getResult();
+        return $res;
     }
 
-    /**
-     * @Route("/buy/{idv}", name="buyVideoById" , requirements={"idv"="\d+"})
-     * @Method({"GET"})
-     */
-    public function buyVideoById($idv){
-        $session = new Session();
-        $session->start();
-        $em = $this->getDoctrine()->getManager();
 
-
-        $video = $this->getDoctrine()
-            ->getRepository(Video::class)
-            ->find($idv);
-
-        //verif
-        if (!$video) {
-            return $this->render('all/404.html.twig');
-        }
-
-       if(VideoCtrl::getLibByUserVid($idv,$session->get('usr')->getIdutilisateur(),$em))
-            return  $this->render("all/message.html.twig",['usr'=>$session->get('usr'),'message'=>'You already bought the video.']);
-
-        if($video->getPrix() == 0) {
-           return  $this->render("all/message.html.twig",['usr'=>$session->get('usr'),'message'=>'This video is free, are you sure you want to buy it ? :p']);
-        }
-
-
-        if(UserCtrl::isLoggedIn($session,$this) != "OK"){return UserCtrl::isLoggedIn($session,$this);}
-
-        $cmd = new Order();
-        $cmd->addProduct($video->getTitre(),$video->getPrix());
-        $session->set('vidToBuy',$video);
-
-        return PaiementCtrl::validatePaiement(
-            $cmd,
-            $this->generateUrl("confirmBuy"),
-            $this->generateUrl("cancelBuy"),
-            $this,
-            $session);
-    }
-
-    /**
-     * @Route("/buy/confirm", name="confirmBuy")
-     * @Method({"GET"})
-     */
-    public function confirmBuy(){
-        $session = new Session();
-        $session->start();
-        $em = $this->getDoctrine()->getManager();
-
-        $lib = new Library();
-        $lib->setIdOrders($session->get('trans')->getIdorders());
-        $lib->setIdowner($session->get('usr')->getIdutilisateur());
-        $lib->setIdvideo($session->get('vidToBuy')->getIdvideo());
-        $em->persist($lib);
-        $em->flush();
-
-        $vid = $session->get('vidToBuy');
-        $session->set('vidToBuy',null);
-        $session->set('order',null);
-        $session->set('trans',null);
-
-        return $this->render('all/message.html.twig',['usr'=>$session->get('usr'),'message'=>"You successfully bought ".$vid->getTitre()]);
-    }
-
-    /**
-     * @Route("/buy/cancel", name="cancelBuy")
-     * @Method({"GET"})
-     */
-    public function cancelBuy(){
-
-    }
 }

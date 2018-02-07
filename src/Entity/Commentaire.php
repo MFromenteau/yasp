@@ -3,8 +3,8 @@
 
 namespace App\Entity;
 
+
 use Doctrine\ORM\Mapping as ORM;
-use DateTime;
 
 /**
  * Commentaire
@@ -56,33 +56,49 @@ class Commentaire
     }
 
     /**
-     * @return int
+     * @return \DateTime
      */
-    public function getIdutilisateur(): int
+    public function getCreatedat(): \DateTime
+    {
+        return $this->createdat;
+    }
+
+    /**
+     * @param \DateTime $createdat
+     */
+    public function setCreatedat(\DateTime $createdat): void
+    {
+        $this->createdat = $createdat;
+    }
+
+    /**
+     * @return User
+     */
+    public function getIdutilisateur(): User
     {
         return $this->idutilisateur;
     }
 
     /**
-     * @param int $idutilisateur
+     * @param User $idutilisateur
      */
-    public function setIdutilisateur(int $idutilisateur): void
+    public function setIdutilisateur(User $idutilisateur): void
     {
         $this->idutilisateur = $idutilisateur;
     }
 
     /**
-     * @return int
+     * @return Video
      */
-    public function getIdvideo(): int
+    public function getIdvideo(): Video
     {
         return $this->idvideo;
     }
 
     /**
-     * @param int $idvideo
+     * @param Video $idvideo
      */
-    public function setIdvideo(int $idvideo): void
+    public function setIdvideo(Video $idvideo): void
     {
         $this->idvideo = $idvideo;
     }
@@ -95,20 +111,6 @@ class Commentaire
     private $message;
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="idUtilisateur", type="integer", nullable=false)
-     */
-    private $idutilisateur;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="idVideo", type="integer", nullable=false)
-     */
-    private $idvideo;
-
-    /**
      * @var \DateTime
      *
      * @ORM\Column(name="createdAt", type="datetime", nullable=false)
@@ -116,19 +118,24 @@ class Commentaire
     private $createdat;
 
     /**
-     * @return \DateTime
+     * @var User
+     *
+     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="idUtilisateur", referencedColumnName="idUtilisateur")
+     * })
      */
-    public function getCreatedat()
-    {
-        return $this->createdat;
-    }
+    private $idutilisateur;
 
     /**
-     * @param \DateTime $createdat
+     * @var Video
+     *
+     * @ORM\ManyToOne(targetEntity="Video")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="idVideo", referencedColumnName="idVideo")
+     * })
      */
-    public function setCreatedat($createdat)
-    {
-        $this->createdat = $createdat;
-    }
+    private $idvideo;
+
 
 }

@@ -41,12 +41,12 @@
         {% for comment in commentaries %}
             <div class="comment-wrap">
                 <div class="photo">
-                    <div class="avatar" style="background-image: url('https://pbs.twimg.com/profile_images/789250023582294016/aiIKUDdn_400x400.jpg')"></div>
+                    <div class="avatar" style="background-image: url('{{ comment.urlavatar }}')"></div>
                 </div>
                 <div class="comment-block">
-                    <p class="comment-text">{{ comment.message }}</p>
+                    <p class="comment-text">{{ comment[0].message }}</p>
                     <div class="bottom-comment">
-                        <div class="comment-date">{{ comment.createdat.format('d-m-y H:i:s') }} by ...</div>
+                        <div class="comment-date">{{ comment[0].createdat.format('d-m-y H:i:s') }} by {{ comment.prenom }}{{ comment.nom }}</div>
                     </div>
                 </div>
             </div>

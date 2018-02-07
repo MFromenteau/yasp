@@ -159,7 +159,7 @@ class AbonnementCtrl extends Controller
 
         $session->set('aboToSub',null);
 
-        return $this->render("all/message.html.twig",["usr"=>$session->get('usr'),"message"=>"You canceled your subscription"]);
+        return $this->redirect($this->generateUrl('homepage'));
     }
 
     /**
