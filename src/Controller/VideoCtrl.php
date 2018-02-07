@@ -224,10 +224,6 @@ class VideoCtrl extends Controller
         return $res;
     }
 
-
-			//www.yasp.fr/video/acheter/67890
-	}
-
     /**
      * @Route("/search", name="search")
      * @Method({"POST"})
