@@ -3,6 +3,9 @@
 
 
 {% block body %}
+    {% if comment is defined %}
+        <p>{{ comment }}</p>
+        {% endif %}
     <div class="embed-responsive embed-responsive-16by9">
         <video class="embed-responsive-item" controls>
             <source src="{{ video.titre }}.mp4" type="video/mp4">
@@ -18,18 +21,16 @@
 
     <div class="comments">
 
-    {% if session is defined and session.get("usr") is defined and session.get("usr").idutilisateur is defined %}
+    {% if usr is defined %}
 
         <div class="comment-wrap">
             <div class="photo">
-                <div class="avatar" style="background-image: url('{{ session.get("usr").urlAvatar }}')"></div>
+                <div class="avatar" style="background-image: url('{{ usr.urlAvatar }}')"></div>
             </div>
-            <div class="comment-block">
-                <form action="">
-                    <textarea name="comment" id="comment" cols="30" rows="3" placeholder="Add comment..."></textarea>
+                <form class="comment-block" action="">
+                    <textarea name="comment" id="comment" cols="30" rows="1" placeholder="Add comment..."></textarea>
                     <button name="postComment" id="postComment" type="button" class="btn btn-primary btn-sm" style="float:right;">Post</button>
                 </form>
-            </div>
         </div>
     {% else %}
         <div class="comment-wrap" style="text-align: center;">
@@ -40,12 +41,12 @@
         {% for comment in commentaries %}
             <div class="comment-wrap">
                 <div class="photo">
-                    <div class="avatar" style="background-image: url('https://pbs.twimg.com/profile_images/789250023582294016/aiIKUDdn_400x400.jpg')"></div>
+                    <div class="avatar" style="background-image: url('{{ comment.urlavatar }}')"></div>
                 </div>
                 <div class="comment-block">
-                    <p class="comment-text">{{ comment.message }}</p>
+                    <p class="comment-text">{{ comment[0].message }}</p>
                     <div class="bottom-comment">
-                        <div class="comment-date">{{ comment.createdat.format('d-m-y H:i:s') }} by ...</div>
+                        <div class="comment-date">{{ comment[0].createdat.format('d-m-y H:i:s') }} by {{ comment.prenom }}{{ comment.nom }}</div>
                     </div>
                 </div>
             </div>
@@ -96,6 +97,7 @@
 
         textarea{
             padding-left: 5px;
+            border: none;
         }
 
         .comments {
@@ -131,6 +133,10 @@
             vertical-align: top;
             border-radius: 0.1875rem;
             box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.08);
+        }
+
+        .comment-block, form {
+            display: flex;
         }
 
         .comment-block textarea {

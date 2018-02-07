@@ -9,7 +9,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
-use App\Order;
 use App\Entity\Orders;
 use DateTime;
 
@@ -25,11 +24,9 @@ class PaiementCtrl extends Controller
      * @description this function prepare the transaction and
      * ask the user for confirmation
      */
-    public static function validatePaiement($desc,$price,$confirmUrl,$cancelUrl,$render,$session){
+    public static function validatePaiement($order,$confirmUrl,$cancelUrl,$render,$session){
 
         //prepare the paiement in the session
-        $order = new Order();
-        $order->addProduct($desc,$price);
 
         //Save the details of order in session
         $session->set("order",$order);

@@ -24,8 +24,6 @@
                 {% block links %}{% endblock %}
             </ul>
 
-
-
               {% if usr is defined and usr.idutilisateur is defined %}
               <ul class="nav navbar-nav navbar-right">
                   <li class="nav-item">
@@ -67,7 +65,8 @@
 
         <footer class="footer">
           <div class="container">
-            <span class="text-muted">YASP ! Realised by Alban Buffet, Alexandre Weisser, Marvin Fromenteau (Licence Sans thé)</span>
+            <p class="text-muted">YASP ! Realised by Alban Buffet, Alexandre Weisser, Marvin Fromenteau (Licence Sans thé)</p>
+              <a href="/legal">Legal Notice</a>
           </div>
         </footer>
 
@@ -175,6 +174,7 @@
           }
           .jumbotron{
               background-color: #11ffee00 !important;
+              padding-right : 0px;
           }
           .profileAvatar {
               width: 40px;
@@ -205,8 +205,8 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
         <script src="Verification.js"></script>
-
-        {% block javascripts %}{% endblock %}
+        {% block javascripts %}
+        {% endblock %}
 
     </body>
 </html>
