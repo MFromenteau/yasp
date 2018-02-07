@@ -17,6 +17,11 @@
     <hr />
     <h5>Description :</h5>
     <p>{{ video.description }}</p>
+    {% if video.prix != 0 and isBought != true %}
+        <a href="/video/buy/{{ video.idvideo }}"> <button>Buy it to watch it without subscription to !</button></a>
+    {% else %}
+        <p></p>
+    {% endif %}
     <hr />
 
     <div class="comments">
@@ -25,7 +30,7 @@
 
         <div class="comment-wrap">
             <div class="photo">
-                <div class="avatar" style="background-image: url('{{ usr.urlAvatar }}')"></div>
+                <div class="avatar" style="background-image: url('{{usr.urlavatar }}')"></div>
             </div>
                 <form class="comment-block" action="">
                     <textarea name="comment" id="comment" cols="30" rows="1" placeholder="Add comment..."></textarea>
@@ -56,14 +61,14 @@
 
 {% block javascripts %}
     <script type="text/javascript">
-        $(document).ready(() => {
+        $(document).ready(()=> {
             $('#postComment').click(()=>{
                 $.ajax({
                     url : '{{ app.request.uri }}/comment/new',
                     type : 'POST',
                     data : {comment: $('#comment').val()},
                     dataType : 'json',
-                    success: (json, status) => {
+                    success: function(json, status){
 
                         parsedJson = JSON.parse(json)
                         comment = JSON.parse(parsedJson.comment)
@@ -146,6 +151,8 @@
 
         .comment-text {
             margin-bottom: 1.25rem;
+            max-width: 50vw;
+            overflow: fragments;
         }
 
         .bottom-comment {
@@ -154,7 +161,7 @@
         }
 
         .comment-date {
-            float: left;
+            float: right;
         }
 
         .comment-actions {

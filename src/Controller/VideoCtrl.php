@@ -73,11 +73,13 @@ class VideoCtrl extends Controller
             return $this->render('all/404.html.twig');
         }
 
+        //do not ove this instruction, it is neede deven if user is subscribed
+        $bought = VideoCtrl::getLibByUserVid($idv, $session->get('usr')->getIdutilisateur(), $em);
+
         if($video->getPrix() != 0) {
             if(UserCtrl::isLoggedIn($session,$this) != "OK"){return UserCtrl::isLoggedIn($session,$this);}
 
             if(!AbonnementCtrl::isAboValid(AbonnementCtrl::getLastPurchasedAbonnement($session,$em))){
-                $bought = VideoCtrl::getLibByUserVid($idv, $session->get('usr')->getIdutilisateur(), $em);
 
                 if (!$bought)
                     return $this->render('all/video/buyRequest.html.twig', ['usr' => $session->get('usr'), 'idv' => $idv]);
@@ -85,8 +87,12 @@ class VideoCtrl extends Controller
         }
 
         $comments = VideoCtrl::getAllCommentByVideoId($idv,$this->getDoctrine()->getManager());
-
-        return $this->render('all/video/display.html.twig',array("usr"=>$session->get("usr"),'video' => $video,'commentaries' => $comments));
+       return $this->render('all/video/display.html.twig',array(
+            "usr"=>$session->get("usr"),
+            'video' => $video,
+            'commentaries' => $comments,
+            'isBought' => $bought)
+        );
 	}
 
     /**
@@ -182,6 +188,7 @@ class VideoCtrl extends Controller
         $usr = $session->get('usr');
 
         if(!$usr){
+            dump("shiet");
             return $this->render('all/404.html.twig'); // We need a better error handler here
         }
 
@@ -218,7 +225,8 @@ class VideoCtrl extends Controller
             ->from('App\Entity\Commentaire', 'c')
             ->join('c.idutilisateur','uc')
             ->where('v.idvideo = '.$idv)
-            ->andWhere('c.idvideo = v.idvideo');
+            ->andWhere('c.idvideo = v.idvideo')
+            ->orderBy('c.createdat','DESC');
 
         $res = $qb->getQuery()->getResult();
         return $res;

@@ -81,7 +81,9 @@ class UserCtrl extends Controller
         $em->flush();
 
         $usr->setPsw("nope");
+        $usr->abo = null;
         $session->set("usr",$usr);
+
 
         //file_put_contents( 'logs/debugobj' . date('_M_D_H,m,s',time()  ).'.log', var_export( $usr, true));
 
@@ -113,6 +115,9 @@ class UserCtrl extends Controller
             return $this->render('all/message.html.twig',['message'=>'Wrong password']);
         }
         $usr->setPsw("nope");
+        $session->set("usr",$usr);
+        $abo = AbonnementCtrl::getLastPurchasedAbonnement($session,$this->getDoctrine()->getManager());
+        $usr->abo = $abo;
         $session->set("usr",$usr);
 
         return  $this->redirect($this->generateUrl('homepage'));

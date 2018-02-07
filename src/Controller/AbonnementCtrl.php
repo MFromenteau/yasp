@@ -87,7 +87,7 @@ class AbonnementCtrl extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $res = AbonnementCtrl::getLastPurchasedAbonnement($session,$em);
-        if($res && ($lastAbo = $res[0]) && AbonnementCtrl::isAboValid($lastAbo)){
+        if($res && AbonnementCtrl::isAboValid($res)){
                 // User is already subscribed
                 return $this->render("all/message.html.twig",["usr"=>$session->get("usr"),"message"=>"You already are linked to a subscription plan, please unsubscribe in you profile page if you want to change subscription."]);
         }
@@ -175,12 +175,12 @@ class AbonnementCtrl extends Controller
         $em = $this->getDoctrine()->getManager();
         $res = AbonnementCtrl::getLastPurchasedAbonnement($session,$em);
 
-        if(!$res || ($lastAbo = $res[0]) && !AbonnementCtrl::isAboValid($lastAbo)){
+        if(!$res  && !AbonnementCtrl::isAboValid($res)){
             // User is not subscribed
             return $this->render("all/message.html.twig",["usr"=>$session->get("usr"),"message"=>"You don't have a subscription to cancel"]);
         }
 
-        $em->remove($lastAbo);
+        $em->remove($res);
         $em->flush();
 
         return $this->render("all/message.html.twig",["usr"=>$session->get('usr'),"message"=>"You successfully unsubscribed"]);

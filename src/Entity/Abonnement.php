@@ -3,6 +3,7 @@
 
 namespace App\Entity;
 
+use App\Controller\AbonnementCtrl;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -22,6 +23,9 @@ class Abonnement
      */
     private $idabonnement;
 
+    public function isValid() : bool{
+        return AbonnementCtrl::isAboValid($this);
+    }
     /**
      * @return int
      */
