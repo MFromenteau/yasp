@@ -18,6 +18,10 @@ use Doctrine\ORM\Query\Expr;
  */
 class UserCtrl extends Controller
 {
+    private $passwordPattern = '/^[a-zA-Z0-9-. _\/]{8,20}$/';
+    private $mailPattern = '/^[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]{2,}\.[a-zA-Z]{2,}$/';
+    private $namePattern = '/^[a-zA-Z]{2,}$/';
+
     public static function isLoggedIn($session,$ctrl){
 
         if(!$session || !$session->get("usr")){
@@ -45,13 +49,29 @@ class UserCtrl extends Controller
 
 		$em = $this->getDoctrine()->getManager();
 
+		if(!preg_match($this->mailPattern, $email)){
+            return $this->render('all/message.html.twig',['message'=>'Invalid E-mail.']);
+        }
+
 		if($email != $confemail){
-            return $this->render('all/message.html.twig',['message'=>'E-mail non identique.']);
+            return $this->render('all/message.html.twig',['message'=>'E-mail is not identical.']);
 		}
+
+		if(!preg_match($this->passwordPattern, $password)){
+            return $this->render('all/message.html.twig',['message'=>'Invalid Password']);
+        }
 		
 		if($password != $confpassword){
-            return $this->render('all/message.html.twig',['message'=>'Mot de passe non-identique']);
+            return $this->render('all/message.html.twig',['message'=>'The password is not identical']);
 		}
+
+		if(!preg_match($this->namePattern, $firstname)){
+            return $this->render('all/message.html.twig',['message'=>'Invalid firstname']);
+        }
+
+        if(!preg_match($this->namePattern, $lastname)){
+            return $this->render('all/message.html.twig',['message'=>'Invalid lastname']);
+        }
 
         $usr = new User();
         $usr->setEmail($email);
@@ -100,6 +120,15 @@ class UserCtrl extends Controller
         $session->start();
 		$email = $request->request->get('email');
 		$password = crypt($request->request->get('password'),$_ENV["SALT"]);
+		$passwordSubject = $request->request->get('password');
+
+		if ( !preg_match($this->passwordPattern, $passwordSubject)){
+            return $this->render('all/message.html.twig',['message'=>'Wrong password']);
+        }
+
+        if (!preg_match($this->mailPattern, $email)){
+            return $this->render('all/message.html.twig',['message'=>'User not found']);
+        }
 
         $em = $this->getDoctrine()->getManager();
         $usr = $em->getRepository(User::class)
