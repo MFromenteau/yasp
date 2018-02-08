@@ -39,80 +39,71 @@ class Library
     }
 
     /**
-     * @return \Orders
+     * @return int
      */
-    public function getIdOrders(): \Orders
+    public function getIdOrders(): int
     {
         return $this->idOrders;
     }
 
     /**
-     * @param \Orders $idOrders
+     * @param int $idOrders
      */
-    public function setIdOrders(\Orders $idOrders): void
+    public function setIdOrders(int $idOrders): void
     {
         $this->idOrders = $idOrders;
     }
 
     /**
-     * @return \User
+     * @return int
      */
-    public function getIdowner(): \User
+    public function getIdowner(): int
     {
         return $this->idowner;
     }
 
     /**
-     * @param \User $idowner
+     * @param int $idowner
      */
-    public function setIdowner(\User $idowner): void
+    public function setIdowner(int $idowner): void
     {
         $this->idowner = $idowner;
     }
 
     /**
-     * @return \Video
+     * @return int
      */
-    public function getIdvideo(): \Video
+    public function getIdvideo(): int
     {
         return $this->idvideo;
     }
 
     /**
-     * @param \Video $idvideo
+     * @param int $idvideo
      */
-    public function setIdvideo(\Video $idvideo): void
+    public function setIdvideo(int $idvideo): void
     {
         $this->idvideo = $idvideo;
     }
 
     /**
-     * @var \Orders
+     * @var int
      *
-     * @ORM\ManyToOne(targetEntity="Orders")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="idOrders", referencedColumnName="idOrders")
-     * })
+     * @ORM\Column(name="idOrders", type="integer", nullable=false)
      */
     private $idOrders;
 
     /**
-     * @var \User
+     * @var int
      *
-     * @ORM\ManyToOne(targetEntity="User")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="idOwner", referencedColumnName="idUtilisateur")
-     * })
+     * @ORM\Column(name="idOwner", type="integer", nullable=false)
      */
     private $idowner;
 
     /**
-     * @var \Video
+     * @var int
      *
-     * @ORM\ManyToOne(targetEntity="Video")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="idVideo", referencedColumnName="idVideo")
-     * })
+     * @ORM\Column(name="idVideo", type="integer", nullable=false)
      */
     private $idvideo;
 

@@ -173,7 +173,7 @@ class Video
      * @var \Doctrine\Common\Collections\Collection
      *
      * @ORM\ManyToMany(targetEntity="Theme", inversedBy="idvideo")
-     * @ORM\JoinTable(name="taglist",
+     * @ORM\JoinTable(name="TagList",
      *   joinColumns={
      *     @ORM\JoinColumn(name="idVideo", referencedColumnName="idVideo")
      *   },

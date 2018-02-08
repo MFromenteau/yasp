@@ -34,11 +34,22 @@ class DefaultController extends Controller
         $random_video = $repo->createQueryBuilder('a')
             ->where('a.idvideo IN (:ids)') // if is another field, change it
             ->setParameter('ids', $random_ids)
-            ->setMaxResults(3)// Add this line if you want to give a limit to the records (if all the ids exists then you would like to give a limit)
+            ->setMaxResults(5)// Add this line if you want to give a limit to the records (if all the ids exists then you would like to give a limit)
             ->getQuery()
             ->getResult();
 
         return $this->render('all/index.html.twig', ['videos' => $random_video,"usr"=>$session->get("usr")]);
+    }
+
+    /**
+     * @Route("/legal", name="legal")
+     */
+    public function legalNotice()
+    {
+        $session = new Session();
+        $session->start();
+
+        return $this->render('all/legal.html.twig',['usr'=>$session->get('usr')]);
     }
 
 }
