@@ -13,7 +13,6 @@ use App\Entity\Video;
 use App\Entity\Commentaire;
 use App\Order;
 use App\Entity\Library;
-use Symfony\Component\Finder\Expression;
 
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
@@ -26,6 +25,7 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
  */
 class VideoCtrl extends Controller
 {
+    //****** STATIC FN ************//
     public static function  getAllVideoByUser($idu,$em){
         $qb = $em->createQueryBuilder();
 
@@ -52,9 +52,24 @@ class VideoCtrl extends Controller
         return $qb->getQuery()->getResult();
     }
 
+    public static function getAllCommentByVideoId($idv,$em){
+        $qb = $em->createQueryBuilder();
+
+        $qb->select('c','uc.prenom','uc.nom','uc.urlavatar')
+            ->from('App\Entity\Video', 'v')
+            ->from('App\Entity\Commentaire', 'c')
+            ->join('c.idutilisateur','uc')
+            ->where('v.idvideo = '.$idv)
+            ->andWhere('c.idvideo = v.idvideo')
+            ->orderBy('c.createdat','DESC');
+
+        $res = $qb->getQuery()->getResult();
+        return $res;
+    }
+
 	//*****PAGES*************/
     /**
-     * @Route("/{idv}", name="getVideoById")
+     * @Route("/{idv}", name="getVideoById" , requirements={"idv"="\d+"})
      * @param $id
      * @return \Symfony\Component\HttpFoundation\Response retourne la vue correspondante à la video
      * ou 404 si video absente
@@ -70,14 +85,15 @@ class VideoCtrl extends Controller
             ->find($idv);
 
         if (!$video) {
-            return $this->render('all/404.html.twig');
+            return $this->render('all/404.html.twig',['usr'=>$session->get('usr')]);
         }
 
         //do not ove this instruction, it is neede deven if user is subscribed
-        $bought = VideoCtrl::getLibByUserVid($idv, $session->get('usr')->getIdutilisateur(), $em);
-
+        $bought = null;
         if($video->getPrix() != 0) {
             if(UserCtrl::isLoggedIn($session,$this) != "OK"){return UserCtrl::isLoggedIn($session,$this);}
+
+            $bought = VideoCtrl::getLibByUserVid($idv, $session->get('usr')->getIdutilisateur(), $em);
 
             if(!AbonnementCtrl::isAboValid(AbonnementCtrl::getLastPurchasedAbonnement($session,$em))){
 
@@ -188,7 +204,6 @@ class VideoCtrl extends Controller
         $usr = $session->get('usr');
 
         if(!$usr){
-            dump("shiet");
             return $this->render('all/404.html.twig'); // We need a better error handler here
         }
 
@@ -217,59 +232,4 @@ class VideoCtrl extends Controller
 	    return new JsonResponse($serializer->serialize($jsonFinal, 'json'));
 	}
 
-	public static function getAllCommentByVideoId($idv,$em){
-        $qb = $em->createQueryBuilder();
-
-        $qb->select('c','uc.prenom','uc.nom','uc.urlavatar')
-            ->from('App\Entity\Video', 'v')
-            ->from('App\Entity\Commentaire', 'c')
-            ->join('c.idutilisateur','uc')
-            ->where('v.idvideo = '.$idv)
-            ->andWhere('c.idvideo = v.idvideo')
-            ->orderBy('c.createdat','DESC');
-
-        $res = $qb->getQuery()->getResult();
-        return $res;
-    }
-
-    /**
-     * @Route("/search", name="search")
-     * @Method({"POST"})
-     * @param Request $request
-     */
-    public function search(Request $request)
-    {
-        $session = new Session();
-        $session->start();
-
-        $search = $request->request->get('search');
-
-        $em = $this->getDoctrine()->getManager();
-        $qb = $em->createQueryBuilder();
-        $qb->select('v')
-            ->from('App\Entity\Video','v')
-            ->where("v.titre LIKE '%".$search."%'");
-
-        $videos =  $qb->getQuery()->getResult();
-
-        $qb->select('t',$qb->expr()->count('tv'))
-            ->from('App\Entity\Theme','t')
-            ->join('t.idvideo','tv')
-            ->where("t.label LIKE '%".$search."%'");
-
-        $themes =  $qb->getQuery()->getResult();
-        dump($themes);
-
-        return $this->render('all/search.html.twig',array("usr"=>$session->get("usr"),'videos' => $videos,'themes' => $themes));
-
-    }
-
-    /**
-     * @Route("/search", name="searchGet")
-     * @Method({"GET"})
-     *
-     */
-    public function redirectSearchGET(){
-        return  $this->redirect($this->generateUrl('homepage'));
-    }
 }
