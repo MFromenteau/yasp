@@ -22,12 +22,13 @@ class DefaultController extends Controller
 
         $em = $this->getDoctrine()->getManager();
         $repo = $em->getRepository(Video::class);
-        $quantity = 10; // Number of rows wanted
+        $quantity = 5; // Number of rows wanted, will be displayed quantity -1
 
         // This is the number of rows in the database
         $totalRowsTable = $repo->createQueryBuilder('a')->select('count(a.idvideo)')->getQuery()->getSingleScalarResult();// This will be in this case 10 because i have 10 records on this table
 
         $numbers = range(1, $totalRowsTable);
+
         shuffle($numbers);
         $random_ids = array_slice($numbers, 0, $quantity);
 
