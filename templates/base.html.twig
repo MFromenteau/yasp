@@ -24,7 +24,6 @@
                 {% block links %}{% endblock %}
             </ul>
 
-              {% if usr is defined and usr.idutilisateur is defined %}
               <ul class="nav navbar-nav navbar-right">
                   <li class="nav-item">
                       <form class="form-inline my-2 my-lg-0 nav-link" action="/search" method="POST" role="search" style="padding-right: 10px;">
@@ -32,6 +31,7 @@
                           <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
                       </form>
                   </li>
+              {% if usr %}
                   <li class="nav-item">
                       <a class="nav-link" href="/user/profile">
                           <div class="profileAvatar">
@@ -42,7 +42,6 @@
                   <li class="nav-item">
                       <a class="nav-link" href="/user/logout"><button type="button" class="btn btn-outline-danger" >Log Out</button></a>
                   </li>
-              </ul>
               {% else %}
             <div class="navbar-form navbar-right btn-group">
               <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#signinModal" onclick="initForm();">
@@ -52,6 +51,7 @@
                 Sign up
               </button>
                 {% endif %}
+              </ul>
             </div>
           </div>
 
