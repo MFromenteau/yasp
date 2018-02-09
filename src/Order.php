@@ -12,7 +12,8 @@ class ORDER_STATUS {
     public const TO_CONFIRM = 0;
     public const CONFIRMED  = 1;
     public const CANCELED   = 3;
-    public const TERMINATED = 4;
+    public const TO_PAY     = 4;
+    public const TERMINATED = 5;
 }
 
 class Order

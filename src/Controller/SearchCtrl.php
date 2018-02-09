@@ -51,7 +51,6 @@ class SearchCtrl extends Controller
 
         dump($themes);
         return $this->render('all/search.html.twig',array("usr"=>$session->get("usr"),'videos' => $videos,'themes' => $themes));
-
     }
 
     /**

@@ -25,7 +25,7 @@ class UserCtrl extends Controller
     public static function isLoggedIn($session,$ctrl){
 
         if(!$session || !$session->get("usr")){
-            return $ctrl->render('all/message.html.twig', ["message"=>"You must login to access this page"]);
+            return $ctrl->render('all/message.html.twig', ["usr"=>null,"message"=>"You must login to access this page"]);
         }
         return "OK";
     }

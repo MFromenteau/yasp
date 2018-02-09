@@ -158,6 +158,7 @@ class AbonnementCtrl extends Controller
         if(UserCtrl::isLoggedIn($session,$this) != "OK"){return UserCtrl::isLoggedIn($session,$this);}
 
         $session->set('aboToSub',null);
+        $session->set('trans',null);
 
         return $this->redirect($this->generateUrl('homepage'));
     }

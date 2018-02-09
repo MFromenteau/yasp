@@ -29,7 +29,9 @@ class PaiementCtrl extends Controller
         //prepare the paiement in the session
 
         //Save the details of order in session
+        $order->setStatus(ORDER_STATUS::TO_PAY);
         $session->set("order",$order);
+
         $session->set('confirmUrl',$confirmUrl);
         $session->set('cancelUrl' ,$cancelUrl);
 
@@ -38,7 +40,7 @@ class PaiementCtrl extends Controller
 
     /**
      * @Route("/confirmOrder", name="confirmOrder")
-     * @Method({"POST"})
+     * @Method({"GET"})
      */
     public function confirmPayment(){
         $session = new Session();
@@ -51,6 +53,10 @@ class PaiementCtrl extends Controller
 
         //getting the order to confirm
         $order =  $session->get("order");
+        if($order->getStatus() != ORDER_STATUS::TO_PAY){
+            return $this->render('all/message.html.twig',["usr"=>$session->get('usr'),"message"=>"You didn't pay your order."]);
+        }
+
         $order->setStatus(ORDER_STATUS::CONFIRMED);
 
         //creating the payement
@@ -71,7 +77,7 @@ class PaiementCtrl extends Controller
 
     /**
      * @Route("/cancelOrder", name="cancelOrder")
-     * @Method({"POST"})
+     * @Method({"GET"})
      */
     public function cancelPayment(){
         $session = new Session();

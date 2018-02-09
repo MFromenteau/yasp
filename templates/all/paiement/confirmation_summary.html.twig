@@ -37,9 +37,8 @@
                             <p class="card-text currency">{{ totalPrice }}€</p>
                             <p class="card-text" style="text-align:center;"><strong>Proceed the payement</strong></p>
                             <row>
-                                <form action="/payment/confirmOrder" method="post">
-                                    <input class="btn btn-success" style="width: 100%;" type="submit" value="Yes">
-                                </form>
+                                <div id="paypal-button"></div>
+
                             </row>
                             <div class="spacer"></div>
                             <row>
@@ -73,5 +72,39 @@
 {% endblock %}
 
 {% block javascripts %}
+
+    <script src="https://www.paypalobjects.com/api/checkout.js"></script>
+
+    <script>
+        paypal.Button.render({
+
+            env: 'sandbox', // Or 'sandbox'
+
+            client: {
+                sandbox:    'AbZExQqOa9AIQnM7q8iOG7PF7fFnO926qUoRNg9A_Yth9pFBGdGSQm1sZtloOr_J8nXaknWN-tsewgrH',
+            },
+
+            commit: true, // Show a 'Pay Now' button
+
+            payment: function(data, actions) {
+                return actions.payment.create({
+                    payment: {
+                        transactions: [
+                            {
+                                amount: { total: '1.00', currency: 'USD' }
+                            }
+                        ]
+                    }
+                });
+            },
+
+            onAuthorize: function(data, actions) {
+                return actions.payment.execute().then(function(payment) {
+                    window.location.replace("http://localhost:8000/payement/confirmOrder");
+                });
+            }
+
+        }, '#paypal-button');
+    </script>
 
 {% endblock %}
