@@ -11,7 +11,7 @@ var passwordLoginOk = false;
 
 var signInButt = document.getElementById("buttonLogin");
 
-password.addEventListener("keyup", function () {
+password.addEventListener("keyup", function(){
     if (!testPassword.test(password.value)) {
         passwordError.hidden = false;
         passwordLoginOk = false;
@@ -20,9 +20,18 @@ password.addEventListener("keyup", function () {
         passwordLoginOk = true;
     }
     loginIsOk();
-}, false);
+});
 
-
+password.addEventListener("load", function(){
+    if (!testPassword.test(password.value)) {
+        passwordError.hidden = false;
+        passwordLoginOk = false;
+    } else {
+        passwordError.hidden = true;
+        passwordLoginOk = true;
+    }
+    loginIsOk();
+});
 
 mail.addEventListener("keyup", function() {
     if(!testMail.test(mail.value)) {
