@@ -38,7 +38,6 @@
                             <p class="card-text" style="text-align:center;"><strong>Proceed the payement</strong></p>
                             <row>
                                 <div id="paypal-button"></div>
-
                             </row>
                             <div class="spacer"></div>
                             <row>
@@ -100,7 +99,7 @@
 
             onAuthorize: function(data, actions) {
                 return actions.payment.execute().then(function(payment) {
-                    window.location.replace("http://localhost:8000/payement/confirmOrder");
+                    alert(payment);
                 });
             }
 
