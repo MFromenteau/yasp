@@ -1,18 +1,20 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Alexa
- * Date: 07/02/2018
- * Time: 16:17
- */
 
 namespace App\Controller;
 
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
+
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\Encoder\XmlEncoder;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use App\Entity\Video;
 
 
 /**
@@ -34,8 +36,9 @@ class SearchCtrl extends Controller
 
         $em = $this->getDoctrine()->getManager();
         $qb = $em->createQueryBuilder();
-        $qb->select('v')
+        $qb->select('v','t')
             ->from('App\Entity\Video','v')
+            ->join('v.idtheme','t')
             ->where("v.titre LIKE '%".$search."%'");
 
         $videos =  $qb->getQuery()->getResult();
@@ -48,8 +51,6 @@ class SearchCtrl extends Controller
             ->where("t.label LIKE '%".$search."%'");
 
         $themes =  $qb2->getQuery()->getResult();
-
-        dump($themes);
         return $this->render('all/search.html.twig',array("usr"=>$session->get("usr"),'videos' => $videos,'themes' => $themes));
     }
 
@@ -61,4 +62,38 @@ class SearchCtrl extends Controller
     public function redirectSearchGET(){
         return  $this->redirect($this->generateUrl('homepage'));
     }
+
+
+    /**
+     * @Route("/video/by/theme", name="seachVideoByIdTheme")
+     * @Method({"POST"})
+     *
+     */
+    public function getVideoByIdTheme(Request $request){
+        $session = new Session();
+        $session->start();
+
+        $idTheme = $request->request->get('selectedIdTheme');
+
+        $em = $this->getDoctrine()->getManager();
+        $qb = $em->createQueryBuilder();
+
+
+        if(!empty($idTheme)){
+            $videos= $qb->select('v','tv')
+                ->from('App\Entity\Video', 'v')
+                ->join('v.idtheme','tv')
+                ->Where("tv.idtheme = ".$idTheme);
+            $videos = $qb->getQuery()->getArrayResult();
+            return new JsonResponse($videos);
+        }else{
+            $response = new Response();
+            $response->setStatusCode(500);
+            return $response;
+        }
+
+
+
+    }
+
 }

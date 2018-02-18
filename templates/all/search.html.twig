@@ -14,35 +14,73 @@
 
     <!-- Tab panes -->
     <div class="tab-content">
+
+        <!-- VIDEOS -->
+
         <div class="tab-pane active" id="video" role="tabpanel">
             <div class="container">
-                <div class="card-deck">
+
+
+            {% if videos %}
+                <div class="row">
+                    <h5>Filter by theme :&nbsp;</h5>
+                    <select class="forms-group">
+                        <option value="">Any</option>
+                        {% for video in videos %}
+                            {% for theme in video.getIdtheme() %}
+                                <option value="{{ theme.idtheme }}">{{ theme.label }}</option>
+                            {% endfor %}
+                        {% endfor %}
+                    </select>
+                </div>
+                <br/>
+            {% endif %}
+
+
+                {% if videos %}
+                <div class="card-deck" id="videoDeck">
                     {% for video in videos %}
                         <a href="{% if video.url %} {{ video.url }} {% else %} {{ video.path }} {% endif %}" style="text-decoration: none;">
                             <div class="card" style="width: 15rem;">
                                 <img class="card-img-top blurry" src="data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22318%22%20height%3D%22180%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20318%20180%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_16041245514%20text%20%7B%20fill%3Argba(255%2C255%2C255%2C.75)%3Bfont-weight%3Anormal%3Bfont-family%3AHelvetica%2C%20monospace%3Bfont-size%3A16pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_16041245514%22%3E%3Crect%20width%3D%22318%22%20height%3D%22180%22%20fill%3D%22%23777%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%22109.1328125%22%20y%3D%2297.2%22%3EImage%20cap%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E" alt="Card image cap">
                                 <div class="card-body">
                                     <h5 class="card-title" style="color: black;">{{ video.titre }}</h5>
-                                    <p class="card-text"></p>
+                                    <p class="card-text">{{ video.description|length > 20 ? video.description|slice(0, 20) ~ '...' : video.description  }}</p>
                                 </div>
                             </div>
                         </a>
                     {% endfor %}
                 </div>
+                <div class="card-deck" id="videoDeckResponse">
+                </div>
+                {% else %}
+                    <h3 style="text-align: center;"><p><em><small>No video found.</small></em></p></h3>
+                {% endif %}
             </div>
         </div>
+
+        <!-- THEMES -->
+
         <div class="tab-pane" id="theme" role="tabpanel">
             <div class="container">
                 <div class="list-group">
                     {% for theme in themes %}
-                        <div class="row  justify-content-center">
+                        {% if theme[0] %}
+                        <div class="row justify-content-center">
                             <div class="col-6">
-                                <a href="/theme/{{ theme.idtheme }}" class="list-group-item list-group-item-action">
-                                    {{ theme.label }}
+
+                                <a href="/theme/{{ theme[0].idtheme }}" class="list-group-item list-group-item-action">
+                                    {{ theme[0].label }}
+                                    <div class="badge badge-pill badge-primary">
+                                        {{ theme[1] }}
+                                    </div>
                                 </a>
+
                             </div>
                         </div>
-
+                        {% else %}
+                            <h3 style="text-align: center;"><p><em><small>No theme found.</small></em></p></h3>
+                        {% endif %}
                     {% endfor %}
                 </div>
             </div>
@@ -82,20 +120,64 @@
 
 {% block javascripts %}
     <script type="text/javascript">
-    $(document).ready(() => {
-        $('#nav-video-tab').click(()=>{
-            if(!$('#nav-video-tab').hasClass('active')){
-                $('#nav-theme-tab').removeClass('active');
-                $('#nav-video-tab').addClass('active');
-            }
-        })
+        $(document).ready(()=> {
+            $('#videoDeckResponse').hide()
 
-        $('#nav-theme-tab').click(()=>{
-            if(!$('#nav-theme-tab').hasClass('active')){
-                $('#nav-video-tab').removeClass('active');
-                $('#nav-theme-tab').addClass('active');
-            }
-        })
-    }
+            $( "select" )
+                .change(function() {
+                    var idTheme = "";
+                    $( "select option:selected" ).each(function() {
+                        idTheme = $( this ).val();
+                    });
+
+                    if(idTheme==""){
+                        $('#videoDeck').show()
+                        $('#videoDeckResponse').empty()
+                        $('#videoDeckResponse').hide()
+                    }else{
+                        console.log(idTheme)
+                        $.ajax({
+                            url : '{{ app.request.uri }}/video/by/theme',
+                            type : 'POST',
+                            data : {selectedIdTheme: idTheme},
+                            dataType :'json',
+                            success: function(json, status){
+                                $('#videoDeck').hide()
+                                $('#videoDeckResponse').empty()
+                                $('#videoDeckResponse').show()
+                                $.each(json, (id,video) => {
+                                    var videoWrapper =  " <a href=\"";
+
+                                    if(video.url!=""){
+                                        videoWrapper += video.url
+                                    }else{
+                                        videoWrapper += video.path
+                                    }
+
+                                    videoWrapper+="\" style=\"text-decoration: none;\">"+
+                                        "<div class=\"card\" style=\"width: 15rem;\">\n" +
+                                        "<img class=\"card-img-top blurry\" src=\"data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22318%22%20height%3D%22180%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20318%20180%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_16041245514%20text%20%7B%20fill%3Argba(255%2C255%2C255%2C.75)%3Bfont-weight%3Anormal%3Bfont-family%3AHelvetica%2C%20monospace%3Bfont-size%3A16pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_16041245514%22%3E%3Crect%20width%3D%22318%22%20height%3D%22180%22%20fill%3D%22%23777%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%22109.1328125%22%20y%3D%2297.2%22%3EImage%20cap%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E\" alt=\"Card image cap\">\n" +
+                                        "<div class=\"card-body\">\n" +
+                                        "<h5 class=\"card-title\" style=\"color: black;\">"+video.titre+"</h5>"+
+                                        "<p class=\"card-text\">"+video.description.trunc(21)+"</p>"+
+                                        "</div>"+
+                                        "</div>"+
+                                        "</a>"
+
+                                    $('#videoDeckResponse').append(videoWrapper);
+                                })
+                            }
+                        });
+                    }
+
+                });
+
+            String.prototype.trunc = String.prototype.trunc ||
+                function(n){
+                    return (this.length > n) ? this.substr(0, n-1) + '&hellip;' : this;
+                };
+        });
+
+
     </script>
 {% endblock %}
