@@ -22,6 +22,33 @@ class Order
     private $totalPrice;
     private $status;
     private $descPriceList;
+    private $md5;
+
+    /**
+     * @return array
+     */
+    public function getDescPriceList(): array
+    {
+        return $this->descPriceList;
+    }
+
+
+    /**
+     * @return mixed
+     */
+    public function getMd5()
+    {
+        return $this->md5;
+    }
+
+    /**
+     * @param mixed $md5
+     */
+    public function generateMd5($idUser): void
+    {
+        $md5 = md5($_ENV['SALT'].$this->getDescConcat().$idUser.date('U'));
+        $this->md5 = $md5;
+    }
 
     function __construct() {
         $this->descList = [];
@@ -53,7 +80,7 @@ class Order
     /**
      * @return int
      */
-    public function getTotalPrice(): int
+    public function getTotalPrice(): float
     {
         return $this->totalPrice;
     }

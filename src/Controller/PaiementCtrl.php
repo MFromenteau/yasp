@@ -35,7 +35,12 @@ class PaiementCtrl extends Controller
         $session->set('confirmUrl',$confirmUrl);
         $session->set('cancelUrl' ,$cancelUrl);
 
-        return $render->render("all/paiement/confirmation_summary.html.twig",["usr"=>$session->get("usr"),"orderDescList"=>$order->getDescList(),"totalPrice"=>$order->getTotalPrice()]);
+        //the success and validity of paiement is assured by the checksum
+        //at end of paypal work, it redirect to confirm page wich will check the paypal validity and
+        // concordance of check sum, only if the two value are correct the paiement will be valid
+        $order->generateMd5($session->get('usr')->getIdutilisateur());
+        //TODO Secure payement, verify subscription
+        return $render->render("all/paiement/confirmation_summary.html.twig",["usr"=>$session->get("usr"),"checksum" => $order->getMd5(),"orderDescList"=>$order->getDescList(),"totalPrice"=>$order->getTotalPrice()]);
     }
 
     /**
@@ -77,7 +82,7 @@ class PaiementCtrl extends Controller
 
     /**
      * @Route("/cancelOrder", name="cancelOrder")
-     * @Method({"GET"})
+     * @Method({"GET","POST"})
      */
     public function cancelPayment(){
         $session = new Session();

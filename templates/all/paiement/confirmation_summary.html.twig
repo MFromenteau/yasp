@@ -90,7 +90,13 @@
                     payment: {
                         transactions: [
                             {
-                                amount: { total: '1.00', currency: 'USD' }
+                                amount:
+                                    { total: {{ totalPrice }},
+                                        currency: 'EUR' ,
+                                        details:{
+                                            checksum : {{ checksum }}
+                                        }
+                                    }
                             }
                         ]
                     }
@@ -99,7 +105,7 @@
 
             onAuthorize: function(data, actions) {
                 return actions.payment.execute().then(function(payment) {
-                    alert(payment);
+                    alert(JSON.stringify(payment));
                 });
             }
 
