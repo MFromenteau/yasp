@@ -136,7 +136,7 @@ class UserCtrl extends Controller
         $usr = $em->getRepository(User::class)
             ->findOneBy([
                 'email' => $email,
-                'accountDeleted' => 0
+                'accountDelete' => 0
             ]);
 
         if(!$usr){
@@ -332,6 +332,12 @@ class UserCtrl extends Controller
         $em = $this->getDoctrine()->getManager();
         $user = $em->getRepository(User::class)
             ->find($session->get("usr")->getIdutilisateur());
+
+        if(!$user){
+            throw $this->createNotFoundException(
+                'No User found for id '.$session->get("usr")->getIdutilisateur()
+            );
+        }
 
         $user->setAccountDelete = 1;
 

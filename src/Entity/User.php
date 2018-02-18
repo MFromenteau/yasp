@@ -155,14 +155,14 @@ class User
     /**
      * @var int
      *
-     * @ORM\Column(name="accountDelete", type="int")
+     * @ORM\Column(name="accountDelete", type="integer")
      */
     private $accountDelete;
 
     /**
      * @return int
      */
-    public function getAccountDelete($accountDelete){
+    public function getAccountDelete(){
         return $this->accountDelete;
     }
     /**
