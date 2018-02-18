@@ -26,7 +26,7 @@ class VideoStream
 
     function __construct($filePath)
     {
-        $this->path = $filePath;
+        $this->path = $_ENV['VIDEOPATH'].$filePath;
     }
 
     /**
@@ -34,8 +34,9 @@ class VideoStream
      */
     private function open()
     {
+        var_dump(getcwd(),true);
         if (!($this->stream = fopen($this->path, 'rb'))) {
-            die('Could not open stream for reading');
+            die('Video not found on server');
         }
 
     }
