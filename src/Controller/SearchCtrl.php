@@ -69,7 +69,7 @@ class SearchCtrl extends Controller
         $qb2->groupBy('t.label');
 
         $themes =  $qb2->getQuery()->getResult();
-        return $this->render('all/search.html.twig',array("usr"=>$session->get("usr"),'videos' => $videos,'themes' => $themes));
+        return $this->render('all/video/search.html.twig',array("usr"=>$session->get("usr"),'videos' => $videos,'themes' => $themes));
     }
 
     /**

@@ -48,7 +48,7 @@ class ThemeCtrl extends Controller
             return $this->render('all/404.html.twig',['usr'=>$session->get('usr')]);
         }
 
-       return $this->render('all/theme.html.twig',array(
+       return $this->render('all/video/theme.html.twig',array(
             "usr"=>$session->get("usr"),
             'videos' => $video)
         );
