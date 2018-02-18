@@ -14,9 +14,27 @@
 
     <!-- Tab panes -->
     <div class="tab-content">
+
+        <!-- VIDEOS -->
+
         <div class="tab-pane active" id="video" role="tabpanel">
             <div class="container">
-                <div class="card-deck">
+
+
+            {% if videos %}
+                <select class="forms-group">
+                    <option value="">Any</option>
+                    {% for video in videos %}
+                        {% for theme in video.getIdtheme() %}
+                            <option value="{{ theme.idtheme }}">{{ theme.label }}</option>
+                        {% endfor %}
+                    {% endfor %}
+                </select>
+            {% endif %}
+
+
+                {% if videos %}
+                <div class="card-deck" id="videoDeck">
                     {% for video in videos %}
                         <a href="{% if video.url %} {{ video.url }} {% else %} {{ video.path }} {% endif %}" style="text-decoration: none;">
                             <div class="card" style="width: 15rem;">
@@ -29,20 +47,34 @@
                         </a>
                     {% endfor %}
                 </div>
+                {% else %}
+                    <h3 style="text-align: center;"><p><em><small>No video found.</small></em></p></h3>
+                {% endif %}
             </div>
         </div>
+
+        <!-- THEMES -->
+
         <div class="tab-pane" id="theme" role="tabpanel">
             <div class="container">
                 <div class="list-group">
                     {% for theme in themes %}
-                        <div class="row  justify-content-center">
+                        {% if theme[0] %}
+                        <div class="row justify-content-center">
                             <div class="col-6">
-                                <a href="/theme/{{ theme.idtheme }}" class="list-group-item list-group-item-action">
-                                    {{ theme.label }}
+
+                                <a href="/theme/{{ theme[0].idtheme }}" class="list-group-item list-group-item-action">
+                                    {{ theme[0].label }}
+                                    <div class="badge badge-pill badge-primary">
+                                        {{ theme[1] }}
+                                    </div>
                                 </a>
+
                             </div>
                         </div>
-
+                        {% else %}
+                            <h3 style="text-align: center;"><p><em><small>No theme found.</small></em></p></h3>
+                        {% endif %}
                     {% endfor %}
                 </div>
             </div>
@@ -82,20 +114,27 @@
 
 {% block javascripts %}
     <script type="text/javascript">
-    $(document).ready(() => {
-        $('#nav-video-tab').click(()=>{
-            if(!$('#nav-video-tab').hasClass('active')){
-                $('#nav-theme-tab').removeClass('active');
-                $('#nav-video-tab').addClass('active');
-            }
-        })
+        $(document).ready(()=> {
 
-        $('#nav-theme-tab').click(()=>{
-            if(!$('#nav-theme-tab').hasClass('active')){
-                $('#nav-video-tab').removeClass('active');
-                $('#nav-theme-tab').addClass('active');
-            }
-        })
-    }
+            $( "select" )
+                .change(function() {
+                    var idTheme = "";
+                    $( "select option:selected" ).each(function() {
+                        idTheme = $( this ).val();
+                    });
+                    $.ajax({
+                        url : '{{ app.request.uri }}/video/by/theme',
+                        type : 'POST',
+                        data : {selectedIdTheme: idTheme},
+                        dataType : 'json',
+                        success: function(json, status){
+                            parsedJson = JSON.parse(json)
+                            console.log(parsedJson)
+                        }
+                    });
+                });
+        });
+
+
     </script>
 {% endblock %}
