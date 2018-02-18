@@ -198,6 +198,7 @@ class UserCtrl extends Controller
         $user = $em->getRepository(User::class)
                 ->find($session->get("usr")->getIdutilisateur());
 
+
         if(!$user){
             throw $this->createNotFoundException(
                 'No User found for id '.$session->get("usr")->getIdutilisateur()
@@ -209,7 +210,8 @@ class UserCtrl extends Controller
         $user->setPrenom($firstname);
         $user->setNom($lastname);
         $user->setUrlAvatar($urlAvatar);
-        if($password != ""){
+
+                if($password != ""){
             $user->setPsw(crypt ($password,$_ENV["SALT"]));
         }
 
