@@ -33,26 +33,32 @@
                         {% endfor %}
                     </select>
                 </div>
-                <br/>
             {% endif %}
 
 
                 {% if videos %}
                 <div class="card-deck" id="videoDeck">
                     {% for video in videos %}
-                        <a href="{% if video.url %} {{ video.url }} {% else %} {{ video.path }} {% endif %}" style="text-decoration: none;">
+                        <a href="{{ video.path }}" style="text-decoration: none;margin-top:20px;">
                             <div class="card" style="width: 15rem;">
                                 <img class="card-img-top blurry" src="data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22318%22%20height%3D%22180%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20318%20180%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_16041245514%20text%20%7B%20fill%3Argba(255%2C255%2C255%2C.75)%3Bfont-weight%3Anormal%3Bfont-family%3AHelvetica%2C%20monospace%3Bfont-size%3A16pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_16041245514%22%3E%3Crect%20width%3D%22318%22%20height%3D%22180%22%20fill%3D%22%23777%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%22109.1328125%22%20y%3D%2297.2%22%3EImage%20cap%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E" alt="Card image cap">
                                 <div class="card-body">
                                     <h5 class="card-title" style="color: black;">{{ video.titre }}</h5>
+                                    {% if video.prix == 0 %}
+                                        <div class="chip freechip">free</div>
+                                    {% else %}
+                                        <div class="chip paychip">
+                                            <img src="{{ asset('eurochip.png') }}" alt="chip" width="20" height="20">
+                                            <div class="text"> {{video.prix}}</div>
+                                        </div>
+                                    {% endif %}
                                     <p class="card-text">{{ video.description|length > 20 ? video.description|slice(0, 20) ~ '...' : video.description  }}</p>
                                 </div>
                             </div>
                         </a>
                     {% endfor %}
                 </div>
-                <div class="card-deck" id="videoDeckResponse">
-                </div>
+                <div class="card-deck" id="videoDeckResponse"></div>
                 {% else %}
                     <h3 style="text-align: center;"><p><em><small>No video found.</small></em></p></h3>
                 {% endif %}
@@ -115,6 +121,62 @@
             width: 100%;
         }
 
+        .chip{
+            width :30%;
+            height:12.5%;
+            color : white;
+            position: absolute;
+            bottom: 80%;
+            right : 75%;
+        }
+
+        .paychip{
+            border : solid 1px;
+            border-radius: 1rem;
+            display: flex;
+            border-color:  lightskyblue;
+            background-color : lightskyblue;
+            box-shadow: 3px 3px 6px 2px rgba(0, 0, 255, .2);
+        }
+        .freechip{
+            border : solid 1px;
+            border-radius: 1rem;
+            text-align: center;
+            border-color: #57e2b2;
+            background-color : #57e2b2;
+            box-shadow: 3px 3px 4px 2px rgba(0, 200, 0, .2);
+        }
+        .paychip .text{
+            text-align: center;
+            padding-left: 30%;
+        }
+        .paychip img{
+            position: absolute;
+            border-radius: 1rem;
+            position: absolute;
+            right: 3.6rem;
+            box-shadow: 3px 3px 5px 2px rgba(0, 0, 255, .2);
+        }
+
+        .paychip:hover img{
+            background-color: #4CAF50;
+            -ms-transform: translate(300%,0);
+            -webkit-transform: translate(300%,0);
+            transform: translate(300%,0);
+            -webkit-transition: 0.25s ease-in;
+            -moz-transition: 0.25s ease-in;
+            -o-transition: 0.25s ease-in;
+            transition: 0.25s ease-in;
+        }
+
+        .paychip:after img{
+            transition: 0.25s;
+            -webkit-transition: 0.25s ease-out;
+            -moz-transition: 0.25s ease-out;
+            -o-transition: 0.25s ease-out;
+        }
+
+
     </style>
 {% endblock %}
 
@@ -146,23 +208,26 @@
                                 $('#videoDeckResponse').empty()
                                 $('#videoDeckResponse').show()
                                 $.each(json, (id,video) => {
-                                    var videoWrapper =  " <a href=\"";
-
-                                    if(video.url!=""){
-                                        videoWrapper += video.url
-                                    }else{
-                                        videoWrapper += video.path
-                                    }
-
-                                    videoWrapper+="\" style=\"text-decoration: none;\">"+
+                                    var videoWrapper =  " <a href=\""+video.path+
+                                        "\" style=\"text-decoration: none;margin-top:20px;\">"+
                                         "<div class=\"card\" style=\"width: 15rem;\">\n" +
                                         "<img class=\"card-img-top blurry\" src=\"data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22318%22%20height%3D%22180%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20318%20180%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_16041245514%20text%20%7B%20fill%3Argba(255%2C255%2C255%2C.75)%3Bfont-weight%3Anormal%3Bfont-family%3AHelvetica%2C%20monospace%3Bfont-size%3A16pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_16041245514%22%3E%3Crect%20width%3D%22318%22%20height%3D%22180%22%20fill%3D%22%23777%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%22109.1328125%22%20y%3D%2297.2%22%3EImage%20cap%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E\" alt=\"Card image cap\">\n" +
                                         "<div class=\"card-body\">\n" +
-                                        "<h5 class=\"card-title\" style=\"color: black;\">"+video.titre+"</h5>"+
-                                        "<p class=\"card-text\">"+video.description.trunc(21)+"</p>"+
+                                        "<h5 class=\"card-title\" style=\"color: black;\">"+video.titre+"</h5>";
+
+                                        if(video.prix == 0){
+                                            videoWrapper+="<div class=\"chip freechip\">free</div>"
+                                        }else{
+                                            videoWrapper+="<div class=\"chip paychip\">"+
+                                                        "<img src=\"{{ asset('eurochip.png') }}\" alt=\"chip\" width=\"20px\" height=\"20px\">"+
+                                                        "<div class=\"text\">"+video.prix+"</div>"+
+                                                        "</div>"
+                                        }
+
+                                       videoWrapper+="<p class=\"card-text\">"+video.description.trunc(21)+"</p>"+
                                         "</div>"+
                                         "</div>"+
-                                        "</a>"
+                                        "</a>";
 
                                     $('#videoDeckResponse').append(videoWrapper);
                                 })
