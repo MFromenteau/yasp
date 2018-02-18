@@ -103,13 +103,34 @@ class VideoCtrl extends Controller
         }
 
         $comments = VideoCtrl::getAllCommentByVideoId($idv,$this->getDoctrine()->getManager());
-       return $this->render('all/video/display.html.twig',array(
-            "usr"=>$session->get("usr"),
-            'video' => $video,
-            'commentaries' => $comments,
-            'isBought' => $bought)
-        );
-	}
+
+        if($video->getTypepath() == "YTB"){
+            return $this->render('all/video/displayYoutube.html.twig',array(
+                    "usr"=>$session->get("usr"),
+                    'video' => $video,
+                    'commentaries' => $comments,
+                    'isBought' => $bought)
+            );
+        }else if ($video->getTypepath() == "DMT"){
+            return $this->render('all/video/displayDailymotion.html.twig',array(
+                    "usr"=>$session->get("usr"),
+                    'video' => $video,
+                    'commentaries' => $comments,
+                    'isBought' => $bought)
+            );
+
+        }else if ($video->getTypepath() == "LCL"){
+            return $this->render('all/video/display.html.twig',array(
+                    "usr"=>$session->get("usr"),
+                    'video' => $video,
+                    'commentaries' => $comments,
+                    'isBought' => $bought)
+            );
+        }
+        return  $this->render("all/message.html.twig",['usr'=>$session->get('usr'),
+            'message'=>'Unknow video provenance ']);
+
+    }
 
     /**
      * @Route("/buy/{idv}", name="buyVideoById" , requirements={"idv"="\d+"})

@@ -33,13 +33,22 @@ class SearchCtrl extends Controller
         $session->start();
 
         $search = $request->request->get('search');
+        $AllWord = explode(" ", $search);
 
         $em = $this->getDoctrine()->getManager();
         $qb = $em->createQueryBuilder();
         $qb->select('v','t')
             ->from('App\Entity\Video','v')
-            ->join('v.idtheme','t')
-            ->where("v.titre LIKE '%".$search."%'");
+            ->join('v.idtheme','t');
+
+        foreach ($AllWord as $key => $value) {
+            if($key == 0){
+                $qb->where("v.titre LIKE '%".$value."%'");
+            }else{
+                $qb->orWhere("v.titre LIKE '%".$value."%'");
+            }
+        }
+
 
         $videos =  $qb->getQuery()->getResult();
 
@@ -47,11 +56,20 @@ class SearchCtrl extends Controller
 
         $qb2->select('t',$qb2->expr()->count('tv'))
             ->from('App\Entity\Theme','t')
-            ->join('t.idvideo','tv')
-            ->where("t.label LIKE '%".$search."%'");
+            ->join('t.idvideo','tv');
+
+        foreach ($AllWord as $key => $value) {
+            if($key == 0){
+                $qb2->where("t.label LIKE '%".$value."%'");
+            }else{
+                $qb2->orWhere("t.label LIKE '%".$value."%'");
+            }
+        }
+
+        $qb2->groupBy('t.label');
 
         $themes =  $qb2->getQuery()->getResult();
-        return $this->render('all/search.html.twig',array("usr"=>$session->get("usr"),'videos' => $videos,'themes' => $themes));
+        return $this->render('all/video/search.html.twig',array("usr"=>$session->get("usr"),'videos' => $videos,'themes' => $themes));
     }
 
     /**
