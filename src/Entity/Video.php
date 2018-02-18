@@ -86,21 +86,6 @@ class Video
         $this->path = $path;
     }
 
-    /**
-     * @return string
-     */
-    public function getUrl(): string
-    {
-        return $this->url;
-    }
-
-    /**
-     * @param string $url
-     */
-    public function setUrl(string $url): void
-    {
-        $this->url = $url;
-    }
 
     /**
      * @return string
@@ -155,12 +140,6 @@ class Video
      */
     private $path;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="url", type="text", length=65535, nullable=false, options={"comment"="SOIT PATH SOIT URL"})
-     */
-    private $url;
 
     /**
      * @var string
