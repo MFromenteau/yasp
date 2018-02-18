@@ -47,6 +47,8 @@ class UserCtrl extends Controller
 		$password = $request->request->get('password');
 		$confpassword = $request->request->get('confpassword');
 
+
+
 		$em = $this->getDoctrine()->getManager();
 
 		if(!preg_match($this->mailPattern, $email)){
@@ -79,6 +81,7 @@ class UserCtrl extends Controller
         $usr->setNom($lastname);
         $usr->setUrlAvatar('https://steamuserimages-a.akamaihd.net/ugc/868480752636433334/1D2881C5C9B3AD28A1D8852903A8F9E1FF45C2C8/');
         $usr->setPsw(crypt ($password,$_ENV["SALT"]));
+        $usr->setAccountDelete(0);
 
 
         if( $em->getRepository(User::class)
@@ -341,9 +344,12 @@ class UserCtrl extends Controller
             );
         }
 
-        $user->setAccountDelete = 1;
+        $user->setAccountDelete(1);
 
         $em->flush();
+
+        $session->invalidate();
+        return  $this->redirect($this->generateUrl('homepage'));
     }
 }
 
