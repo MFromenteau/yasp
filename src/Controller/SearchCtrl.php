@@ -51,7 +51,7 @@ class SearchCtrl extends Controller
             ->where("t.label LIKE '%".$search."%'");
 
         $themes =  $qb2->getQuery()->getResult();
-        return $this->render('all/search.html.twig',array("usr"=>$session->get("usr"),'videos' => $videos,'themes' => $themes));
+        return $this->render('all/video/search.html.twig',array("usr"=>$session->get("usr"),'videos' => $videos,'themes' => $themes));
     }
 
     /**

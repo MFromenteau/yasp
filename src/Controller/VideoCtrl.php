@@ -13,6 +13,7 @@ use App\Entity\Video;
 use App\Entity\Commentaire;
 use App\Order;
 use App\Entity\Library;
+use App\VideoStream;
 
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
@@ -103,11 +104,17 @@ class VideoCtrl extends Controller
         }
 
         $comments = VideoCtrl::getAllCommentByVideoId($idv,$this->getDoctrine()->getManager());
+
+        if($video->getTypepath() == "LCL"){
+            $vs = new VideoStream($video->getPath());
+        }
+
        return $this->render('all/video/display.html.twig',array(
             "usr"=>$session->get("usr"),
             'video' => $video,
             'commentaries' => $comments,
-            'isBought' => $bought)
+            'isBought' => $bought,
+            "stream"=>$vs)
         );
 	}
 

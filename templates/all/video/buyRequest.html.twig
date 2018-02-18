@@ -3,8 +3,11 @@
 
 
 {% block body %}
-    <h3> <inline> <bold>You don't have bought this video yet. You can buy it to access content and interact with other members about it !</bold></inline></h3>
-    <a href="/video/buy/{{ idv }}"> <button>Buy it !</button></a>
+    <h3> <inline> <bold>You didn't bought this video yet. You can buy it to access content and interact with other members !</bold></inline></h3>
+    <a href="/video/buy/{{ idv }}" class="btn btn-success"> Buy it !</a>
+    </br>
+    <h3> <inline> <bold>You can also subscribe to have access to this video and all of our other high quality videos !</bold></inline></h3>
+    <a href="/subscription/subscribe" class="btn btn-warning" >Subscribe for more advantages !</a>
 {% endblock %}
 
 

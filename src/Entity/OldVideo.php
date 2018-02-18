@@ -1,8 +1,6 @@
 <?php
 
-namespace App\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Video
@@ -10,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="Video", uniqueConstraints={@ORM\UniqueConstraint(name="titre", columns={"titre"})})
  * @ORM\Entity
  */
-class Video
+class OldVideo
 {
     /**
      * @var int
@@ -70,22 +68,6 @@ class Video
     }
 
     /**
-     * @return \DateTime
-     */
-    public function getCreatedat(): \DateTime
-    {
-        return $this->createdat;
-    }
-
-    /**
-     * @param \DateTime $createdat
-     */
-    public function setCreatedat(\DateTime $createdat): void
-    {
-        $this->createdat = $createdat;
-    }
-
-    /**
      * @return string
      */
     public function getPath(): string
@@ -104,17 +86,17 @@ class Video
     /**
      * @return string
      */
-    public function getTypepath(): string
+    public function getUrl(): string
     {
-        return $this->typepath;
+        return $this->url;
     }
 
     /**
-     * @param string $typepath
+     * @param string $url
      */
-    public function setTypepath(string $typepath): void
+    public function setUrl(string $url): void
     {
-        $this->typepath = $typepath;
+        $this->url = $url;
     }
 
     /**
@@ -164,25 +146,18 @@ class Video
     private $titre;
 
     /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="createdAt", type="datetime", nullable=false)
-     */
-    private $createdat;
-
-    /**
      * @var string
      *
-     * @ORM\Column(name="path", type="text", length=65535, nullable=false)
+     * @ORM\Column(name="path", type="text", length=65535, nullable=false, options={"comment"="SOIT PATH SOIT URL"})
      */
     private $path;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="typePath", type="string", length=3, nullable=false)
+     * @ORM\Column(name="url", type="text", length=65535, nullable=false, options={"comment"="SOIT PATH SOIT URL"})
      */
-    private $typepath;
+    private $url;
 
     /**
      * @var string
@@ -213,5 +188,29 @@ class Video
     {
         $this->idtheme = new \Doctrine\Common\Collections\ArrayCollection();
     }
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="createdAt", type="datetime", nullable=false)
+     */
+    private $createdat;
+
+    /**
+     * @return \DateTime
+     */
+    public function getCreatedat()
+    {
+        return $this->createdat;
+    }
+
+    /**
+     * @param \DateTime $createdat
+     */
+    public function setCreatedat($createdat)
+    {
+        $this->createdat = $createdat;
+    }
+
 
 }
