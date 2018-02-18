@@ -50,27 +50,27 @@ class UserCtrl extends Controller
 		$em = $this->getDoctrine()->getManager();
 
 		if(!preg_match($this->mailPattern, $email)){
-            return $this->render('all/message.html.twig',['message'=>'Invalid E-mail.']);
+            return $this->render('all/message.html.twig',["usr"=>$session->get("usr"),'message'=>'Invalid E-mail.']);
         }
 
 		if($email != $confemail){
-            return $this->render('all/message.html.twig',['message'=>'E-mail is not identical.']);
+            return $this->render('all/message.html.twig',["usr"=>$session->get("usr"),'message'=>'E-mail is not identical.']);
 		}
 
 		if(!preg_match($this->passwordPattern, $password)){
-            return $this->render('all/message.html.twig',['message'=>'Invalid Password']);
+            return $this->render('all/message.html.twig',["usr"=>$session->get("usr"),'message'=>'Invalid Password']);
         }
 		
 		if($password != $confpassword){
-            return $this->render('all/message.html.twig',['message'=>'The password is not identical']);
+            return $this->render('all/message.html.twig',["usr"=>$session->get("usr"),'message'=>'The password is not identical']);
 		}
 
 		if(!preg_match($this->namePattern, $firstname)){
-            return $this->render('all/message.html.twig',['message'=>'Invalid firstname']);
+            return $this->render('all/message.html.twig',["usr"=>$session->get("usr"),'message'=>'Invalid firstname']);
         }
 
         if(!preg_match($this->namePattern, $lastname)){
-            return $this->render('all/message.html.twig',['message'=>'Invalid lastname']);
+            return $this->render('all/message.html.twig',["usr"=>$session->get("usr"),'message'=>'Invalid lastname']);
         }
 
         $usr = new User();
@@ -86,7 +86,7 @@ class UserCtrl extends Controller
                 'nom' => $lastname
             ])
         ){
-            return $this->render('all/message.html.twig',['message'=>'User déjà présent avec ce nom prénom.']);
+            return $this->render('all/message.html.twig',["usr"=>$session->get("usr"),'message'=>'User déjà présent avec ce nom prénom.']);
         }
 
         if( $em->getRepository(User::class)
@@ -94,7 +94,7 @@ class UserCtrl extends Controller
                 'email' => $email
             ])
         ){
-            return $this->render('all/message.html.twig',['message'=>'User déjà présent avec cet email.']);
+            return $this->render('all/message.html.twig',["usr"=>$session->get("usr"),'message'=>'User déjà présent avec cet email.']);
         }
 
         $em->persist($usr);
@@ -123,11 +123,11 @@ class UserCtrl extends Controller
 		$passwordSubject = $request->request->get('password');
 
 		if ( !preg_match($this->passwordPattern, $passwordSubject)){
-            return $this->render('all/message.html.twig',['message'=>'Wrong password']);
+            return $this->render('all/message.html.twig',["usr"=>$session->get("usr"),'message'=>'Wrong password']);
         }
 
         if (!preg_match($this->mailPattern, $email)){
-            return $this->render('all/message.html.twig',['message'=>'User not found']);
+            return $this->render('all/message.html.twig',["usr"=>$session->get("usr"),'message'=>'User not found']);
         }
 
         $em = $this->getDoctrine()->getManager();
@@ -137,11 +137,11 @@ class UserCtrl extends Controller
             ]);
 
         if(!$usr){
-            return $this->render('all/message.html.twig',['message'=>'User not found']);
+            return $this->render('all/message.html.twig',["usr"=>$session->get("usr"),'message'=>'User not found']);
         }
 
         if ($usr->getPsw() != $password){
-            return $this->render('all/message.html.twig',['message'=>'Wrong password']);
+            return $this->render('all/message.html.twig',["usr"=>$session->get("usr"),'message'=>'Wrong password']);
         }
         $usr->setPsw("nope");
         $session->set("usr",$usr);
