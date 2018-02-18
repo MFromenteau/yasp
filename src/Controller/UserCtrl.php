@@ -80,6 +80,7 @@ class UserCtrl extends Controller
         $usr->setUrlAvatar('https://steamuserimages-a.akamaihd.net/ugc/868480752636433334/1D2881C5C9B3AD28A1D8852903A8F9E1FF45C2C8/');
         $usr->setPsw(crypt ($password,$_ENV["SALT"]));
 
+
         if( $em->getRepository(User::class)
             ->findBy([
                 'prenom' => $firstname,
@@ -122,6 +123,7 @@ class UserCtrl extends Controller
 		$password = crypt($request->request->get('password'),$_ENV["SALT"]);
 		$passwordSubject = $request->request->get('password');
 
+
 		if ( !preg_match($this->passwordPattern, $passwordSubject)){
             return $this->render('all/message.html.twig',['message'=>'Wrong password']);
         }
@@ -133,7 +135,8 @@ class UserCtrl extends Controller
         $em = $this->getDoctrine()->getManager();
         $usr = $em->getRepository(User::class)
             ->findOneBy([
-                'email' => $email
+                'email' => $email,
+                'accountDeleted' => 0
             ]);
 
         if(!$usr){
@@ -317,6 +320,22 @@ class UserCtrl extends Controller
                 'abohisto' => $abo,
                 'currAbo'=>$currAbo,
                 'trial'=>$trial]);
+    }
+    /**
+     * @Route("/accountDelete" , name="accountDelete")
+     * @Method({"GET"})
+     */
+    public function accountDelete(){
+        $session = new Session();
+        $session->start();
+
+        $em = $this->getDoctrine()->getManager();
+        $user = $em->getRepository(User::class)
+            ->find($session->get("usr")->getIdutilisateur());
+
+        $user->setAccountDelete = 1;
+
+        $em->flush();
     }
 }
 

@@ -152,4 +152,25 @@ class User
     {
         $this->urlavatar = $urlAvatar;
     }
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="accountDelete", type="int")
+     */
+    private $accountDelete;
+
+    /**
+     * @return int
+     */
+    public function getAccountDelete($accountDelete){
+        return $this->accountDelete;
+    }
+    /**
+     * @param int $accountDelete
+     */
+    public function setAccountDelete(int $accountDelete): void
+    {
+        $this->accountDelete = $accountDelete;
+    }
+
 }
