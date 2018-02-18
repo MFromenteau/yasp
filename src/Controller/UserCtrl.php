@@ -209,7 +209,7 @@ class UserCtrl extends Controller
         $user->setEmail($email);
         $user->setPrenom($firstname);
         $user->setNom($lastname);
-        $user->setUrlAvatar($urlAvatar);
+        $user->setUrlavatar($urlAvatar);
 
                 if($password != ""){
             $user->setPsw(crypt ($password,$_ENV["SALT"]));

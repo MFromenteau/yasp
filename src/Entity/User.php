@@ -150,6 +150,6 @@ class User
      */
     public function setUrlavatar($urlAvatar)
     {
-        $this->urlAvatar = $urlAvatar;
+        $this->urlavatar = $urlAvatar;
     }
 }
