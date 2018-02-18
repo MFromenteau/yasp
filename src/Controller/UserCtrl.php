@@ -47,30 +47,32 @@ class UserCtrl extends Controller
 		$password = $request->request->get('password');
 		$confpassword = $request->request->get('confpassword');
 
+
+
 		$em = $this->getDoctrine()->getManager();
 
 		if(!preg_match($this->mailPattern, $email)){
-            return $this->render('all/message.html.twig',['message'=>'Invalid E-mail.']);
+            return $this->render('all/message.html.twig',["usr"=>$session->get("usr"),'message'=>'Invalid E-mail.']);
         }
 
 		if($email != $confemail){
-            return $this->render('all/message.html.twig',['message'=>'E-mail is not identical.']);
+            return $this->render('all/message.html.twig',["usr"=>$session->get("usr"),'message'=>'E-mail is not identical.']);
 		}
 
 		if(!preg_match($this->passwordPattern, $password)){
-            return $this->render('all/message.html.twig',['message'=>'Invalid Password']);
+            return $this->render('all/message.html.twig',["usr"=>$session->get("usr"),'message'=>'Invalid Password']);
         }
 		
 		if($password != $confpassword){
-            return $this->render('all/message.html.twig',['message'=>'The password is not identical']);
+            return $this->render('all/message.html.twig',["usr"=>$session->get("usr"),'message'=>'The password is not identical']);
 		}
 
 		if(!preg_match($this->namePattern, $firstname)){
-            return $this->render('all/message.html.twig',['message'=>'Invalid firstname']);
+            return $this->render('all/message.html.twig',["usr"=>$session->get("usr"),'message'=>'Invalid firstname']);
         }
 
         if(!preg_match($this->namePattern, $lastname)){
-            return $this->render('all/message.html.twig',['message'=>'Invalid lastname']);
+            return $this->render('all/message.html.twig',["usr"=>$session->get("usr"),'message'=>'Invalid lastname']);
         }
 
         $usr = new User();
@@ -79,6 +81,8 @@ class UserCtrl extends Controller
         $usr->setNom($lastname);
         $usr->setUrlAvatar('https://steamuserimages-a.akamaihd.net/ugc/868480752636433334/1D2881C5C9B3AD28A1D8852903A8F9E1FF45C2C8/');
         $usr->setPsw(crypt ($password,$_ENV["SALT"]));
+        $usr->setAccountDelete(0);
+
 
         if( $em->getRepository(User::class)
             ->findBy([
@@ -86,7 +90,8 @@ class UserCtrl extends Controller
                 'nom' => $lastname
             ])
         ){
-            return $this->render('all/message.html.twig',['message'=>'User déjà présent avec ce nom prénom.']);
+            return $this->render('all/message.html.twig',["usr"=>$session->get("usr"),'message'=>'User déjà présent avec ce nom prénom.']);
+            return $this->render('all/message.html.twig',['message'=>'User already exists whit this name']);
         }
 
         if( $em->getRepository(User::class)
@@ -94,7 +99,8 @@ class UserCtrl extends Controller
                 'email' => $email
             ])
         ){
-            return $this->render('all/message.html.twig',['message'=>'User déjà présent avec cet email.']);
+            return $this->render('all/message.html.twig',["usr"=>$session->get("usr"),'message'=>'User déjà présent avec cet email.']);
+            return $this->render('all/message.html.twig',['message'=>'User already exists whit this email']);
         }
 
         $em->persist($usr);
@@ -122,26 +128,28 @@ class UserCtrl extends Controller
 		$password = crypt($request->request->get('password'),$_ENV["SALT"]);
 		$passwordSubject = $request->request->get('password');
 
+
 		if ( !preg_match($this->passwordPattern, $passwordSubject)){
-            return $this->render('all/message.html.twig',['message'=>'Wrong password']);
+            return $this->render('all/message.html.twig',["usr"=>$session->get("usr"),'message'=>'Wrong password']);
         }
 
         if (!preg_match($this->mailPattern, $email)){
-            return $this->render('all/message.html.twig',['message'=>'User not found']);
+            return $this->render('all/message.html.twig',["usr"=>$session->get("usr"),'message'=>'User not found']);
         }
 
         $em = $this->getDoctrine()->getManager();
         $usr = $em->getRepository(User::class)
             ->findOneBy([
-                'email' => $email
+                'email' => $email,
+                'accountDelete' => 0
             ]);
 
         if(!$usr){
-            return $this->render('all/message.html.twig',['message'=>'User not found']);
+            return $this->render('all/message.html.twig',["usr"=>$session->get("usr"),'message'=>'User not found']);
         }
 
         if ($usr->getPsw() != $password){
-            return $this->render('all/message.html.twig',['message'=>'Wrong password']);
+            return $this->render('all/message.html.twig',["usr"=>$session->get("usr"),'message'=>'Wrong password']);
         }
         $usr->setPsw("nope");
         $session->set("usr",$usr);
@@ -317,6 +325,31 @@ class UserCtrl extends Controller
                 'abohisto' => $abo,
                 'currAbo'=>$currAbo,
                 'trial'=>$trial]);
+    }
+    /**
+     * @Route("/accountDelete" , name="accountDelete")
+     * @Method({"GET"})
+     */
+    public function accountDelete(){
+        $session = new Session();
+        $session->start();
+
+        $em = $this->getDoctrine()->getManager();
+        $user = $em->getRepository(User::class)
+            ->find($session->get("usr")->getIdutilisateur());
+
+        if(!$user){
+            throw $this->createNotFoundException(
+                'No User found for id '.$session->get("usr")->getIdutilisateur()
+            );
+        }
+
+        $user->setAccountDelete(1);
+
+        $em->flush();
+
+        $session->invalidate();
+        return  $this->redirect($this->generateUrl('homepage'));
     }
 }
 
