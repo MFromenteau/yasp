@@ -44,12 +44,15 @@ class PaiementCtrl extends Controller
     }
 
     /**
-     * @Route("/confirmOrder", name="confirmOrder")
-     * @Method({"GET"})
+     * @Route("/createOrder", name="confirmPaypalOrder")
+     * @Method({"POST"})
+     * The function crate an order to insert into the DB
      */
-    public function confirmPayment(){
+    public function confirmPaypalPayment(Request $request){
         $session = new Session();
         $session->start();
+
+        dump($request->request->get('paymentID'));
 
         //verifiacation of order and usr
         if(UserCtrl::isLoggedIn($session,$this) != "OK"){return UserCtrl::isLoggedIn($session,$this);}
@@ -77,6 +80,30 @@ class PaiementCtrl extends Controller
 
         $session->set("trans",$p);
         $session->set('order',$order);
+
+        return new Response('OK');
+    }
+
+    /**
+     * @Route("/create-payment", name="createPaypalPaiement")
+     * @Method({"POST"})
+     */
+    public function confirmPayment(){
+        $session = new Session();
+        $session->start();
+
+        return "{id:}";
+    }
+
+
+    /**
+     * @Route("/confirmOrder", name="confirmOrder")
+     * @Method({"GET"})
+     */
+    public function confirmOrder(){
+        $session = new Session();
+        $session->start();
+
         return $this->redirect($session->get('confirmUrl'));
     }
 
