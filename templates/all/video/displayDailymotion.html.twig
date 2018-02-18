@@ -1,0 +1,191 @@
+{% extends 'base.html.twig' %}
+
+
+
+{% block body %}
+    {% if comment is defined %}
+        <p>{{ comment }}</p>
+        {% endif %}
+    <div class="embed-responsive embed-responsive-16by9">
+        <iframe frameborder="0" width="480" height="270"
+                src="{{ video.path }}"
+                allowfullscreen allow="autoplay">
+
+        </iframe>
+    </div>
+    <h4>{{ video.titre }}</h4>
+    <hr />
+    <h5>Description :</h5>
+    <p>{{ video.description }}</p>
+    {% if video.prix != 0 and isBought != true %}
+        <a href="/video/buy/{{ video.idvideo }}"> <button>Buy it to watch it without subscription to !</button></a>
+    {% else %}
+        <p>You bought this video</p>
+    {% endif %}
+    <hr />
+
+    <div class="comments">
+
+    {% if usr %}
+
+        <div class="comment-wrap">
+            <div class="photo">
+                <div class="avatar" style="background-image: url('{{usr.urlavatar }}')"></div>
+            </div>
+                <form class="comment-block" action="">
+                    <textarea name="comment" id="comment" cols="30" rows="1" placeholder="Add comment..."></textarea>
+                    <button name="postComment" id="postComment" type="button" class="btn btn-primary btn-sm" style="float:right;">Post</button>
+                </form>
+        </div>
+    {% else %}
+        <div class="comment-wrap" style="text-align: center;">
+            <p><em><small>You need to be logged in to add a comment.</small></em></p>
+        </div>
+    {% endif %}
+        <div id="newComment" name="newComment"></div>
+        {% for comment in commentaries %}
+            <div class="comment-wrap">
+                <div class="photo">
+                    <div class="avatar" style="background-image: url('{{ comment.urlavatar }}')"></div>
+                </div>
+                <div class="comment-block">
+                    <p class="comment-text">{{ comment[0].message }}</p>
+                    <div class="bottom-comment">
+                        <div class="comment-date">{{ comment[0].createdat.format('d-m-y H:i:s') }} by {{ comment.prenom }}{{ comment.nom }}</div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        $(document).ready(()=> {
+            $('#postComment').click(()=>{
+                $.ajax({
+                    url : '{{ app.request.uri }}/comment/new',
+                    type : 'POST',
+                    data : {comment: $('#comment').val()},
+                    dataType : 'json',
+                    success: function(json, status){
+
+                        parsedJson = JSON.parse(json)
+                        comment = JSON.parse(parsedJson.comment)
+                        usr = JSON.parse(parsedJson.usr)
+                        var date = new Date(comment.createdat.timestamp*1000);
+                        Date.prototype.format=function(e){var t="";var n=Date.replaceChars;for(var r=0;r<e.length;r++){var i=e.charAt(r);if(r-1>=0&&e.charAt(r-1)=="\\"){t+=i}else if(n[i]){t+=n[i].call(this)}else if(i!="\\"){t+=i}}return t};Date.replaceChars={shortMonths:["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],longMonths:["January","February","March","April","May","June","July","August","September","October","November","December"],shortDays:["Sun","Mon","Tue","Wed","Thu","Fri","Sat"],longDays:["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],d:function(){return(this.getDate()<10?"0":"")+this.getDate()},D:function(){return Date.replaceChars.shortDays[this.getDay()]},j:function(){return this.getDate()},l:function(){return Date.replaceChars.longDays[this.getDay()]},N:function(){return this.getDay()+1},S:function(){return this.getDate()%10==1&&this.getDate()!=11?"st":this.getDate()%10==2&&this.getDate()!=12?"nd":this.getDate()%10==3&&this.getDate()!=13?"rd":"th"},w:function(){return this.getDay()},z:function(){var e=new Date(this.getFullYear(),0,1);return Math.ceil((this-e)/864e5)},W:function(){var e=new Date(this.getFullYear(),0,1);return Math.ceil(((this-e)/864e5+e.getDay()+1)/7)},F:function(){return Date.replaceChars.longMonths[this.getMonth()]},m:function(){return(this.getMonth()<9?"0":"")+(this.getMonth()+1)},M:function(){return Date.replaceChars.shortMonths[this.getMonth()]},n:function(){return this.getMonth()+1},t:function(){var e=new Date;return(new Date(e.getFullYear(),e.getMonth(),0)).getDate()},L:function(){var e=this.getFullYear();return e%400==0||e%100!=0&&e%4==0},o:function(){var e=new Date(this.valueOf());e.setDate(e.getDate()-(this.getDay()+6)%7+3);return e.getFullYear()},Y:function(){return this.getFullYear()},y:function(){return(""+this.getFullYear()).substr(2)},a:function(){return this.getHours()<12?"am":"pm"},A:function(){return this.getHours()<12?"AM":"PM"},B:function(){return Math.floor(((this.getUTCHours()+1)%24+this.getUTCMinutes()/60+this.getUTCSeconds()/3600)*1e3/24)},g:function(){return this.getHours()%12||12},G:function(){return this.getHours()},h:function(){return((this.getHours()%12||12)<10?"0":"")+(this.getHours()%12||12)},H:function(){return(this.getHours()<10?"0":"")+this.getHours()},i:function(){return(this.getMinutes()<10?"0":"")+this.getMinutes()},s:function(){return(this.getSeconds()<10?"0":"")+this.getSeconds()},u:function(){var e=this.getMilliseconds();return(e<10?"00":e<100?"0":"")+e},e:function(){return"Not Yet Supported"},I:function(){var e=null;for(var t=0;t<12;++t){var n=new Date(this.getFullYear(),t,1);var r=n.getTimezoneOffset();if(e===null)e=r;else if(r<e){e=r;break}else if(r>e)break}return this.getTimezoneOffset()==e|0},O:function(){return(-this.getTimezoneOffset()<0?"-":"+")+(Math.abs(this.getTimezoneOffset()/60)<10?"0":"")+Math.abs(this.getTimezoneOffset()/60)+"00"},P:function(){return(-this.getTimezoneOffset()<0?"-":"+")+(Math.abs(this.getTimezoneOffset()/60)<10?"0":"")+Math.abs(this.getTimezoneOffset()/60)+":00"},T:function(){var e=this.getMonth();this.setMonth(0);var t=this.toTimeString().replace(/^.+ \(?([^\)]+)\)?$/,"$1");this.setMonth(e);return t},Z:function(){return-this.getTimezoneOffset()*60},c:function(){return this.format("Y-m-d\\TH:i:sP")},r:function(){return this.toString()},U:function(){return this.getTime()/1e3}}
+                        var commentWrapper =  "<div class=\"comment-wrap\">"+
+                            "<div class='photo'>"+
+                            "<div class='avatar' style='background-image: url("+usr.urlAvatar+")'></div>"+
+                            "</div>"+
+                            "<div class='comment-block'>"+
+                            "<p class='comment-text'>"+comment.message+"</p>"+
+                            "<div class='bottom-comment'>"+
+                            "<div class='comment-date'>"+date.format('d-m-y H:i:s')+" by "+usr.nom+" "+usr.prenom+"</div>"+
+                            "</div>"+
+                            "</div>"+
+                            "</div>";
+
+                        $('#newComment').append(commentWrapper);
+                    }
+                });
+            });
+        });
+
+
+    </script>
+{% endblock %}
+
+{% block stylesheets %}
+    <style>
+
+        textarea{
+            padding-left: 5px;
+            border: none;
+        }
+
+        .comments {
+            margin: 2.5rem auto 0;
+            max-width: 60.75rem;
+            padding: 0 1.25rem;
+        }
+
+        .comment-wrap {
+            margin-bottom: 1.25rem;
+            display: table;
+            width: 100%;
+            min-height: 5.3125rem;
+        }
+
+        .photo {
+            padding-top: 0.625rem;
+            display: table-cell;
+            width: 3.5rem;
+        }
+
+        .photo .avatar {
+            height: 2.25rem;
+            width: 2.25rem;
+            border-radius: 50%;
+            background-size: contain;
+        }
+
+        .comment-block {
+            padding: 1rem;
+            background-color: #fff;
+            display: table-cell;
+            vertical-align: top;
+            border-radius: 0.1875rem;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.08);
+        }
+
+        .comment-block, form {
+            display: flex;
+        }
+
+        .comment-block textarea {
+            width: 100%;
+            resize: none;
+        }
+
+        .comment-text {
+            margin-bottom: 1.25rem;
+            max-width: 50vw;
+            overflow: fragments;
+        }
+
+        .bottom-comment {
+            color: #acb4c2;
+            font-size: 0.875rem;
+        }
+
+        .comment-date {
+            float: right;
+        }
+
+        .comment-actions {
+            float: right;
+        }
+
+        .comment-actions li {
+            display: inline;
+            margin: -2px;
+            cursor: pointer;
+        }
+
+        .comment-actions li.complain {
+            padding-right: 0.75rem;
+            border-right: 1px solid #e1e5eb;
+        }
+
+        .comment-actions li.reply {
+            padding-left: 0.75rem;
+            padding-right: 0.125rem;
+        }
+
+        .comment-actions li:hover {
+            color: #0095ff;
+        }
+        </style>
+{% endblock %}
