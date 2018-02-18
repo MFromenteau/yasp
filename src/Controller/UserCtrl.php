@@ -191,6 +191,7 @@ class UserCtrl extends Controller
         $firstname = $request->request->get('firstname');
         $lastname = $request->request->get('lastname');
         $password = $request->request->get('password');
+        $urlAvatar = $request->request->get('urlAvatar');
 
 
         $em = $this->getDoctrine()->getManager();
@@ -207,6 +208,7 @@ class UserCtrl extends Controller
         $user->setEmail($email);
         $user->setPrenom($firstname);
         $user->setNom($lastname);
+        $user->setUrlAvatar($urlAvatar);
         if($password != ""){
             $user->setPsw(crypt ($password,$_ENV["SALT"]));
         }
