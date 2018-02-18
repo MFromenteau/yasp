@@ -19,7 +19,7 @@
                                 <div class="text"> {{video.prix}}</div>
                             </div>
                         {% endif %}
-                    <p class="card-text"></p>
+                    <p class="card-text">{{ video.description|length > 20 ? video.description|slice(0, 20) ~ '...' : video.description  }}</p>
                 </div>
             </div>
         </a>

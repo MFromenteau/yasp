@@ -66,7 +66,7 @@ class SearchCtrl extends Controller
 
 
     /**
-     * @Route("/video/by/theme", name="searchGet")
+     * @Route("/video/by/theme", name="seachVideoByIdTheme")
      * @Method({"POST"})
      *
      */
@@ -85,15 +85,8 @@ class SearchCtrl extends Controller
                 ->from('App\Entity\Video', 'v')
                 ->join('v.idtheme','tv')
                 ->Where("tv.idtheme = ".$idTheme);
-            $videos = $qb->getQuery()->getResult();
-            dump($videos);
-
-            $encoders = array(new XmlEncoder(), new JsonEncoder());
-            $normalizers = array(new ObjectNormalizer());
-
-
-            $serializer = new Serializer($normalizers, $encoders);
-            return new JsonResponse($serializer->serialize($videos, 'json'));
+            $videos = $qb->getQuery()->getArrayResult();
+            return new JsonResponse($videos);
         }else{
             $response = new Response();
             $response->setStatusCode(500);
