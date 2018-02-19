@@ -2,15 +2,21 @@
 
 namespace App\Controller;
 
-use App\Entity\Paiement;
 use App\ORDER_STATUS;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Response;
 use App\Entity\Orders;
 use DateTime;
+
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\Encoder\XmlEncoder;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
     /**
      * @Route("/payment")
@@ -40,19 +46,20 @@ class PaiementCtrl extends Controller
         // concordance of check sum, only if the two value are correct the paiement will be valid
         $order->generateMd5($session->get('usr')->getIdutilisateur());
         //TODO Secure payement, verify subscription
-        return $render->render("all/paiement/confirmation_summary.html.twig",["usr"=>$session->get("usr"),"checksum" => $order->getMd5(),"orderDescList"=>$order->getDescList(),"totalPrice"=>$order->getTotalPrice()]);
+        return $render->render("all/paiement/confirmation_summary.html.twig",[
+            "usr"=>$session->get("usr"),
+            "checksum" => $order->getMd5(),
+            "orderDescList"=>$order->getDescList(),
+            "totalPrice"=>$order->getTotalPrice()]);
     }
 
     /**
-     * @Route("/createOrder", name="confirmPaypalOrder")
-     * @Method({"POST"})
-     * The function crate an order to insert into the DB
+     * @Route("/confirmOrder", name="confirmOrder")
+     * @Method({"GET"})
      */
-    public function confirmPaypalPayment(Request $request){
+    public function confirmOrder(){
         $session = new Session();
         $session->start();
-
-        dump($request->request->get('paymentID'));
 
         //verifiacation of order and usr
         if(UserCtrl::isLoggedIn($session,$this) != "OK"){return UserCtrl::isLoggedIn($session,$this);}
@@ -80,29 +87,6 @@ class PaiementCtrl extends Controller
 
         $session->set("trans",$p);
         $session->set('order',$order);
-
-        return new Response('OK');
-    }
-
-    /**
-     * @Route("/create-payment", name="createPaypalPaiement")
-     * @Method({"POST"})
-     */
-    public function confirmPayment(){
-        $session = new Session();
-        $session->start();
-
-        return "{id:}";
-    }
-
-
-    /**
-     * @Route("/confirmOrder", name="confirmOrder")
-     * @Method({"GET"})
-     */
-    public function confirmOrder(){
-        $session = new Session();
-        $session->start();
 
         return $this->redirect($session->get('confirmUrl'));
     }

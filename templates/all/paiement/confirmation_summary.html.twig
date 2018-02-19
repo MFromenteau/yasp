@@ -37,12 +37,12 @@
                             <p class="card-text currency">{{ totalPrice }}€</p>
                             <p class="card-text" style="text-align:center;"><strong>Proceed the payement</strong></p>
                             <row>
-                                <div id="paypal-button"></div>
+                                <div id="paypal-button" style="text-align: center; align-self: center"></div>
                             </row>
                             <div class="spacer"></div>
                             <row>
                                 <form action="/payment/cancelOrder" method="post">
-                                    <input class="btn btn-danger" style="width: 100%;" type="submit" value="No">
+                                    <input class="btn btn-danger" style="padding: 0; border-radius:30px; width: 50%; margin-right:25%; margin-left:25%" type="submit" value="Cancel">
                                 </form>
                             </row>
                         </div>
@@ -75,8 +75,8 @@
     <script src="https://www.paypalobjects.com/api/checkout.js"></script>
 
     <script>
-        var CREATE_PAYMENT_URL  = '/payement/create-payment';
-        var EXECUTE_PAYMENT_URL = '/payement/confirmOrder';
+        var CREATE_PAYMENT_URL  = '/payment/create-payment';
+        var EXECUTE_PAYMENT_URL = '/payment/confirmOrder';
 
         paypal.Button.render({
 
@@ -87,13 +87,13 @@
             },
 
             commit: true, // Show a 'Pay Now' button
-
-            payment: function() {
-                return paypal.request.post(CREATE_PAYMENT_URL).then(function(data) {
-                    return data.id;
-                });
+            style: {
+                color: 'gold',
+                size: 'medium'
             },
-            /*OLD payment: function(data, actions) {
+
+
+            payment: function(data, actions) {
                 return actions.payment.create({
                     payment: {
                         transactions: [
@@ -102,34 +102,21 @@
                                     { total: {{ totalPrice }},
                                         currency: 'EUR' ,
                                         details:{
-                                           // checksum : "{{ checksum }}"
                                         }
                                     }
                             }
                         ]
+                    },
+                    custom:{
+                        checksum : "{{ checksum }}"
                     }
                 });
-            },*/
+            },
 
-            onAuthorize: function(data) {
-                return paypal.request.post(EXECUTE_PAYMENT_URL, {
-                    paymentID: data.paymentID,
-                    payerID:   data.payerID
-                }).then(function() {
-                    // The payment is complete!
-                    // You can now show a confirmation message to the customer
-                    alert(JSON.stringify(payment));
+            onAuthorize: function(data, actions) {
+                return actions.payment.execute().then(function(payment) {
+                    window.location.replace("/payment/confirmOrder");
                 });
-            },
-
-            onCancel: function(data, actions) {
-
-            },
-
-            onError: function(err) {
-                /*
-                 * An error occurred during the transaction
-                 */
             }
 
         }, '#paypal-button');

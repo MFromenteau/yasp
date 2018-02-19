@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use Doctrine\ORM\Query\Expr;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -14,6 +13,7 @@ use App\Entity\Commentaire;
 use App\Order;
 use App\Entity\Library;
 
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
